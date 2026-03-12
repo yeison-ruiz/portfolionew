@@ -1,6 +1,7 @@
 ---
 import { db } from "../utils/db";
 import ThreeScene from "./ThreeScene.astro";
+import Footer from "./Footer.astro";
 
 interface Props {
   lang?: "es" | "en";
@@ -8,11 +9,12 @@ interface Props {
 
 const { lang = "es" } = Astro.props;
 const { personalInfo, ui } = db[lang];
+const { slugs } = ui;
 ---
 
 <section
-  id="contactenos"
-  class="relative min-h-full flex flex-col justify-center py-32 overflow-hidden"
+  id={slugs.contact}
+  class="relative min-h-full flex flex-col justify-center pt-32 overflow-hidden"
 >
   <!-- Background Elements -->
   <div class="absolute inset-0 bg-bg-dark -z-20">
@@ -25,7 +27,7 @@ const { personalInfo, ui } = db[lang];
   </div>
 
   <div
-    class="container mx-auto px-6 relative z-10 grow flex flex-col justify-center"
+    class="container mx-auto px-6 relative z-10 grow flex flex-col justify-center pb-20"
   >
     <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
       <!-- Left Side: Globe Visualization -->
@@ -168,74 +170,21 @@ const { personalInfo, ui } = db[lang];
             target="_blank"
             class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-5 h-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              ><path
-                d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"
-              ></path><rect x="2" y="9" width="4" height="12"></rect><circle
-                cx="4"
-                cy="4"
-                r="2"></circle></svg
-            >
+           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.28 1.15-.28 2.35 0 3.5-.73 1.02-1.08 2.25-1 3.5 0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+          </a>
+          <a
+            href={personalInfo.social.linkedin}
+            target="_blank"
+            class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
           </a>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer
-    class="mt-auto border-t border-white/5 bg-[#0A0A0A]/50 backdrop-blur-md"
-  >
-    <div class="container mx-auto px-6 py-8">
-      <div class="flex flex-col md:flex-row justify-between items-center gap-6">
-        <div class="text-center md:text-left">
-          <h4 class="text-2xl font-bold text-white mb-1">
-            {personalInfo.name[0]}{personalInfo.lastName[0]}
-          </h4>
-          <p class="text-gray-500 text-sm">{ui.footer.tagline}</p>
-        </div>
-
-        <nav class="flex gap-8">
-          <a
-            href="#trayectoria"
-            class="text-sm text-gray-400 hover:text-white transition-colors"
-            >{ui.nav.timeline}</a
-          >
-          <a
-            href="#servicios"
-            class="text-sm text-gray-400 hover:text-white transition-colors"
-            >{ui.nav.services}</a
-          >
-          <a
-            href="#proyectos"
-            class="text-sm text-gray-400 hover:text-white transition-colors"
-            >{ui.nav.projects}</a
-          >
-          <a href="#contactenos" class="text-sm text-white transition-colors"
-            >{ui.nav.contact}</a
-          >
-        </nav>
-
-        <div class="flex gap-4 opacity-50">
-          <div class="w-8 h-8 rounded-full bg-white/5"></div>
-          <div class="w-8 h-8 rounded-full bg-white/5"></div>
-        </div>
-      </div>
-      <div class="text-center mt-8 text-xs text-gray-600">
-        © {new Date().getFullYear()}
-        {personalInfo.name}
-        {personalInfo.lastName}. {ui.footer.rights}
-      </div>
-    </div>
-  </footer>
+  <Footer lang={lang} />
 </section>
 
 <script>
