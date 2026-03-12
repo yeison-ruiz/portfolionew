@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg-dark: #0f0518;
+  --color-bg-card: rgba(255, 255, 255, 0.03);
+  --color-bg-card-hover: rgba(255, 255, 255, 0.08);
+  --color-primary: #7627be;
+  --color-primary-glow: #9d4edd;
+  --color-green-glow:#1b9d32;
+  
+  --color-text-main: #ffffff;
+  --color-text-secondary: #b3b3b3;
+  
+  --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Base Styles */
+html, body {
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-main);
+  font-family: var(--font-inter);
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
+  scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg-dark);
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-primary);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-primary-glow);
+}
+
+/* Utility to simulate the gradient text from design */
+.text-gradient {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-glow) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

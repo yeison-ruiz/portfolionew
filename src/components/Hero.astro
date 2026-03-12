@@ -1,0 +1,437 @@
+---
+import { db } from "../utils/db";
+
+interface Props {
+  lang?: "es" | "en";
+}
+
+const { lang = "es" } = Astro.props;
+const { personalInfo, ui } = db[lang];
+
+const techCards = [
+  // LEFT SIDE
+  {
+    title: "Frontend",
+    tech: "React.js",
+    color: "#61dafb",
+    icon: '<svg viewBox="-11.5 -10.23174 23 20.46348" xmlns="http://www.w3.org/2000/svg"><circle cx="0" cy="0" r="2.05" fill="#61dafb"/><g stroke="#61dafb" stroke-width="1" fill="none"><ellipse rx="11" ry="4.2"/><ellipse rx="11" ry="4.2" transform="rotate(60)"/><ellipse rx="11" ry="4.2" transform="rotate(120)"/></g></svg>',
+    position: "top: 8%; left: 4%;",
+    delay: 0,
+  },
+  {
+    title: "Styling",
+    tech: "Tailwind CSS",
+    color: "#38B2AC",
+    icon: '<svg fill="none" viewBox="0 0 54 33" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#tailwindcss__a)"><path fill="#38bdf8" fill-rule="evenodd" d="M27 0c-7.2 0-11.7 3.6-13.5 10.8 2.7-3.6 5.85-4.95 9.45-4.05 2.054.513 3.522 2.004 5.147 3.653C30.744 13.09 33.808 16.2 40.5 16.2c7.2 0 11.7-3.6 13.5-10.8-2.7 3.6-5.85 4.95-9.45 4.05-2.054-.513-3.522-2.004-5.147-3.653C36.756 3.11 33.692 0 27 0zM13.5 16.2C6.3 16.2 1.8 19.8 0 27c2.7-3.6 5.85-4.95 9.45-4.05 2.054.514 3.522 2.004 5.147 3.653C17.244 29.29 20.308 32.4 27 32.4c7.2 0 11.7-3.6 13.5-10.8-2.7 3.6-5.85 4.95-9.45 4.05-2.054-.513-3.522-2.004-5.147-3.653C23.256 19.31 20.192 16.2 13.5 16.2z" clip-rule="evenodd"/></g><defs><clipPath id="tailwindcss__a"><path fill="#fff" d="M0 0h54v32.4H0z"/></clipPath></defs></svg>',
+    position: "top: 32%; left: -6%;",
+    delay: 1.1,
+  },
+  {
+    title: "Astro",
+    tech: "Astro.js",
+    color: "#BC52EE",
+    icon: '<svg fill="none" viewBox="0 0 85 107" xmlns="http://www.w3.org/2000/svg"><path fill="#ffffff" d="M27.59 91.136c-4.834-4.418-6.246-13.703-4.232-20.429 3.492 4.241 8.33 5.584 13.342 6.343 7.737 1.17 15.336.732 22.523-2.804.822-.405 1.582-.943 2.48-1.489.675 1.957.85 3.932.615 5.943-.573 4.896-3.01 8.678-6.885 11.545-1.55 1.147-3.19 2.172-4.79 3.253-4.917 3.323-6.247 7.22-4.4 12.888.044.139.084.277.183.614-2.51-1.124-4.344-2.76-5.742-4.911-1.475-2.27-2.177-4.78-2.214-7.498-.019-1.322-.019-2.656-.197-3.96-.434-3.178-1.926-4.601-4.737-4.683-2.884-.084-5.166 1.699-5.771 4.507-.046.216-.113.429-.18.68l.004.001ZM0 69.587s14.314-6.973 28.668-6.973L39.49 29.12c.405-1.62 1.588-2.72 2.924-2.72 1.335 0 2.518 1.1 2.924 2.72L56.16 62.614c17 0 28.668 6.973 28.668 6.973S60.514 3.352 60.467 3.219C59.769 1.261 58.591 0 57.003 0H27.827c-1.588 0-2.718 1.261-3.464 3.22C24.311 3.35 0 69.586 0 69.586Z"/></svg>',
+    position: "top: 58%; left: 0%;",
+    delay: 1.0,
+  },
+  {
+    title: "Mobile",
+    tech: "React Native",
+    color: "#61dafb",
+    icon: '<svg viewBox="-11.5 -10.23174 23 20.46348" xmlns="http://www.w3.org/2000/svg"><circle cx="0" cy="0" r="2.05" fill="#61dafb"/><g stroke="#61dafb" stroke-width="1" fill="none"><ellipse rx="11" ry="4.2"/><ellipse rx="11" ry="4.2" transform="rotate(60)"/><ellipse rx="11" ry="4.2" transform="rotate(120)"/></g></svg>',
+    position: "top: 82%; left: 10%;",
+    delay: 0.8,
+  },
+
+  // RIGHT SIDE
+  {
+    title: "Framework",
+    tech: "Next.js",
+    color: "#ffffff",
+    icon: '<svg viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg"><path d="M90 180c49.706 0 90-40.294 90-90S139.706 0 90 0 0 40.294 0 90s40.294 90 90 90z" fill="#fff"/><path d="M149.508 157.52 69.142 54H54v71.97h12.114V69.384l73.885 95.461c3.334-2.231 6.51-4.68 9.509-7.325z" fill="#000"/><path d="M115.012 54h12.113v71.97h-12.113z" fill="#000"/></svg>',
+    position: "top: 6%; right: 4%;",
+    delay: 0.5,
+  },
+  {
+    title: "Automation",
+    tech: "n8n",
+    color: "#EA3A54",
+    icon: '<svg viewBox="0 0 228 120" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M204 48C192.817 48 183.42 40.3514 180.756 30H153.248C147.382 30 142.376 34.241 141.412 40.0272L140.425 45.9456C139.489 51.5648 136.646 56.4554 132.626 60C136.646 63.5446 139.489 68.4352 140.425 74.0544L141.412 79.9728C142.376 85.759 147.382 90 153.248 90H156.756C159.42 79.6486 168.817 72 180 72C193.255 72 204 82.7452 204 96C204 109.255 193.255 120 180 120C168.817 120 159.42 112.351 156.756 102H153.248C141.516 102 131.504 93.5181 129.575 81.9456L128.588 76.0272C127.624 70.241 122.618 66 116.752 66H107.244C104.58 76.3514 95.183 84 84 84C72.817 84 63.4204 76.3514 60.7561 66H47.2439C44.5796 76.3514 35.183 84 24 84C10.7452 84 0 73.2548 0 60C0 46.7452 10.7452 36 24 36C35.183 36 44.5796 43.6486 47.2439 54H60.7561C63.4204 43.6486 72.817 36 84 36C95.183 36 104.58 43.6486 107.244 54H116.752C122.618 54 127.624 49.759 128.588 43.9728L129.575 38.0544C131.504 26.4819 141.516 18 153.248 18L180.756 18C183.42 7.64864 192.817 0 204 0C217.255 0 228 10.7452 228 24C228 37.2548 217.255 48 204 48ZM204 36C210.627 36 216 30.6274 216 24C216 17.3726 210.627 12 204 12C197.373 12 192 17.3726 192 24C192 30.6274 197.373 36 204 36ZM24 72C30.6274 72 36 66.6274 36 60C36 53.3726 30.6274 48 24 48C17.3726 48 12 53.3726 12 60C12 66.6274 17.3726 72 24 72ZM96 60C96 66.6274 90.6274 72 84 72C77.3726 72 72 66.6274 72 60C72 53.3726 77.3726 48 84 48C90.6274 48 96 53.3726 96 60ZM192 96C192 102.627 186.627 108 180 108C173.373 108 168 102.627 168 96C168 89.3726 173.373 84 180 84C186.627 84 192 89.3726 192 96Z" fill="#ea4b71"/></svg>',
+    position: "top: 25%; right: -5%;",
+    delay: 1.4,
+  },
+  {
+    title: "Backend",
+    tech: "Laravel",
+    color: "#FF2D20",
+    icon: '<svg preserveAspectRatio="xMidYMid" viewBox="0 0 256 264" xmlns="http://www.w3.org/2000/svg"><path d="m255.9 59.6.1 1.1v56.6c0 1.4-.8 2.8-2 3.5l-47.6 27.4v54.2c0 1.4-.7 2.8-2 3.5l-99.1 57-.7.4-.3.1c-.7.2-1.4.2-2.1 0l-.4-.1-.6-.3L2 206c-1.3-.8-2.1-2.2-2.1-3.6V32.7l.1-1.1.2-.4.3-.6.2-.4.4-.5.4-.3c.2 0 .3-.2.5-.3L51.6.6c1.3-.8 2.9-.8 4.1 0L105.3 29c.2 0 .3.2.4.3l.5.3c0 .2.2.4.3.5l.3.4.3.6.1.4.2 1v106l41.2-23.7V60.7c0-.4 0-.7.2-1l.1-.4.3-.7.3-.3.3-.5.5-.3.4-.4 49.6-28.5c1.2-.7 2.8-.7 4 0L254 57l.5.4.4.3.4.5.2.3c.2.2.2.5.3.7l.2.3Zm-8.2 55.3v-47l-17.3 10-24 13.7v47l41.3-23.7Zm-49.5 85v-47l-23.6 13.5-67.2 38.4v47.5l90.8-52.3ZM8.2 39.9V200l90.9 52.3v-47.5l-47.5-26.9-.4-.4c-.2 0-.3-.1-.4-.3l-.4-.4-.3-.4-.2-.5-.2-.5v-.6l-.2-.5V63.6L25.6 49.8l-17.3-10Zm45.5-31L12.4 32.8l41.3 23.7 41.2-23.7L53.7 8.9ZM75 157.3l24-13.8V39.8l-17.3 10-24 13.8v103.6l17.3-10ZM202.3 36.9 161 60.7l41.3 23.8 41.3-23.8-41.3-23.8Zm-4.1 54.7-24-13.8-17.3-10v47l24 13.9 17.3 10v-47Zm-95 106 60.6-34.5 30.2-17.3-41.2-23.8-47.5 27.4L62 174.3l41.2 23.3Z" fill="#FF2D20"/></svg>',
+    position: "top: 50%; right: 4%;",
+    delay: 1.5,
+  },
+  {
+    title: "Runtime",
+    tech: "Node.js",
+    color: "#339933",
+    icon: '<svg viewBox="0 0 256 292" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="nodejs__a" x1="68.188%" x2="27.823%" y1="17.487%" y2="89.755%"><stop offset="0%" stop-color="#41873F"/><stop offset="32.88%" stop-color="#418B3D"/><stop offset="63.52%" stop-color="#419637"/><stop offset="93.19%" stop-color="#3FA92D"/><stop offset="100%" stop-color="#3FAE2A"/></linearGradient><linearGradient id="nodejs__c" x1="43.277%" x2="159.245%" y1="55.169%" y2="-18.306%"><stop offset="13.76%" stop-color="#41873F"/><stop offset="40.32%" stop-color="#54A044"/><stop offset="71.36%" stop-color="#66B848"/><stop offset="90.81%" stop-color="#6CC04A"/></linearGradient><linearGradient id="nodejs__f" x1="-4.389%" x2="101.499%" y1="49.997%" y2="49.997%"><stop offset="9.192%" stop-color="#6CC04A"/><stop offset="28.64%" stop-color="#66B848"/><stop offset="59.68%" stop-color="#54A044"/><stop offset="86.24%" stop-color="#41873F"/></linearGradient><path id="nodejs__b" d="M134.923 1.832c-4.344-2.443-9.502-2.443-13.846 0L6.787 67.801C2.443 70.244 0 74.859 0 79.745v132.208c0 4.887 2.715 9.502 6.787 11.945l114.29 65.968c4.344 2.444 9.502 2.444 13.846 0l114.29-65.968c4.344-2.443 6.787-7.058 6.787-11.945V79.745c0-4.886-2.715-9.501-6.787-11.944L134.923 1.832Z"/><path id="nodejs__e" d="M134.923 1.832c-4.344-2.443-9.502-2.443-13.846 0L6.787 67.801C2.443 70.244 0 74.859 0 79.745v132.208c0 4.887 2.715 9.502 6.787 11.945l114.29 65.968c4.344 2.444 9.502 2.444 13.846 0l114.29-65.968c4.344-2.443 6.787-7.058 6.787-11.945V79.745c0-4.886-2.715-9.501-6.787-11.944L134.923 1.832Z"/></defs><path fill="url(#nodejs__a)" d="M134.923 1.832c-4.344-2.443-9.502-2.443-13.846 0L6.787 67.801C2.443 70.244 0 74.859 0 79.745v132.208c0 4.887 2.715 9.502 6.787 11.945l114.29 65.968c4.344 2.444 9.502 2.444 13.846 0l114.29-65.968c4.344-2.443 6.787-7.058 6.787-11.945V79.745c0-4.886-2.715-9.501-6.787-11.944L134.923 1.832Z"/><mask id="nodejs__d" fill="#fff"><use xlink:href="#nodejs__b"/></mask><path fill="url(#nodejs__c)" d="M249.485 67.8 134.65 1.833c-1.086-.542-2.443-1.085-3.529-1.357L2.443 220.912c1.086 1.357 2.444 2.443 3.8 3.258l114.834 65.968c3.258 1.9 7.059 2.443 10.588 1.357L252.47 70.515c-.815-1.086-1.9-1.9-2.986-2.714Z" mask="url(#nodejs__d)"/><mask id="nodejs__g" fill="#fff"><use xlink:href="#nodejs__e"/></mask><path fill="url(#nodejs__f)" d="M249.756 223.898c3.258-1.9 5.701-5.158 6.787-8.687L130.579.204c-3.258-.543-6.787-.272-9.773 1.628L6.786 67.53l122.979 224.238c1.628-.272 3.529-.815 5.158-1.63l114.833-66.239Z" mask="url(#nodejs__g)"/></svg>',
+    position: "top: 72%; right: -2%;",
+    delay: 0.9,
+  },
+  {
+    title: "DevOps",
+    tech: "AWS",
+    color: "#FF9900",
+    icon: '<svg xml:space="preserve" viewBox="0 0 304 182" xmlns="http://www.w3.org/2000/svg"><path fill="#ffffff" d="m86 66 2 9c0 3 1 5 3 8v2l-1 3-7 4-2 1-3-1-4-5-3-6c-8 9-18 14-29 14-9 0-16-3-20-8-5-4-8-11-8-19s3-15 9-20c6-6 14-8 25-8a79 79 0 0 1 22 3v-7c0-8-2-13-5-16-3-4-8-5-16-5l-11 1a80 80 0 0 0-14 5h-2c-1 0-2-1-2-3v-5l1-3c0-1 1-2 3-2l12-5 16-2c12 0 20 3 26 8 5 6 8 14 8 25v32zM46 82l10-2c4-1 7-4 10-7l3-6 1-9v-4a84 84 0 0 0-19-2c-6 0-11 1-15 4-3 2-4 6-4 11s1 8 3 11c3 2 6 4 11 4zm80 10-4-1-2-3-23-78-1-4 2-2h10l4 1 2 4 17 66 15-66 2-4 4-1h8l4 1 2 4 16 67 17-67 2-4 4-1h9c2 0 3 1 3 2v2l-1 2-24 78-2 4-4 1h-9l-4-1-1-4-16-65-15 64-2 4-4 1h-9zm129 3a66 66 0 0 1-27-6l-3-3-1-2v-5c0-2 1-3 2-3h2l3 1a54 54 0 0 0 23 5c6 0 11-2 14-4 4-2 5-5 5-9l-2-7-10-5-15-5c-7-2-13-6-16-10a24 24 0 0 1 5-34l10-5a44 44 0 0 1 20-2 110 110 0 0 1 12 3l4 2 3 2 1 4v4c0 3-1 4-2 4l-4-2c-6-2-12-3-19-3-6 0-11 0-14 2s-4 5-4 9c0 3 1 5 3 7s5 4 11 6l14 4c7 3 12 6 15 10s5 9 5 14l-3 12-7 8c-3 3-7 5-11 6l-14 2z"/><path d="M274 144A220 220 0 0 1 4 124c-4-3-1-6 2-4a300 300 0 0 0 263 16c5-2 10 4 5 8z" fill="#f90"/><path d="M287 128c-4-5-28-3-38-1-4 0-4-3-1-5 19-13 50-9 53-5 4 5-1 36-18 51-3 2-6 1-5-2 5-10 13-33 9-38z" fill="#f90"/></svg>',
+    position: "top: 90%; right: 15%;",
+    delay: 1.2,
+  },
+];
+---
+
+<section
+  class="min-h-screen flex items-center relative pt-20 bg-bg-dark overflow-hidden"
+>
+  <!-- Left ambient glow -->
+  <div
+    class="absolute top-1/3 -left-[10%] w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(118,39,190,0.25)_0%,rgba(15,5,24,0)_70%)] blur-[100px] pointer-events-none z-0"
+  >
+  </div>
+
+  <div
+    class="container mx-auto px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center w-full relative z-10"
+  >
+    <!-- Text Content -->
+    <div
+      class="z-10 flex flex-col items-center lg:items-start text-center lg:text-left mt-8 lg:mt-0"
+    >
+      <div
+        class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/20 border border-primary/30 text-primary-glow text-sm font-semibold mb-6"
+      >
+        <span
+          class="w-2 h-2 rounded-full bg-green-glow shadow-[0_0_10px_var(--color-primary-glow)]"
+        ></span>
+        {personalInfo.availability.status}
+      </div>
+
+      <h1
+        class="text-6xl lg:text-8xl font-extrabold leading-[0.9] tracking-tighter mb-2"
+      >
+        {personalInfo.name}
+        {personalInfo.lastName}
+        <span class="block mix-blend-overlay opacity-90"></span>
+      </h1>
+
+      <h2
+        class="text-3xl lg:text-4xl font-semibold mb-6 text-gradient"
+        set:html={personalInfo.title}
+      />
+
+      <p
+        class="text-text-secondary text-lg leading-relaxed max-w-lg mb-10 mx-auto lg:mx-0"
+      >
+        {personalInfo.description}
+      </p>
+
+      <div class="flex gap-6 mb-16 justify-center lg:justify-start">
+        <a
+          href="#proyectos"
+          class="inline-flex items-center justify-center px-8 py-3 rounded-lg font-bold bg-linear-to-r from-primary to-primary-glow text-white shadow-[0_4px_15px_rgba(118,39,190,0.3)] hover:translate-y-[-2px] hover:shadow-[0_8px_25px_rgba(118,39,190,0.5)] transition-all duration-300"
+        >
+          {ui.hero.explore}
+        </a>
+        <a
+          href="#servicios"
+          class="inline-flex items-center justify-center px-8 py-3 rounded-lg font-bold bg-transparent border border-white/20 text-white hover:border-primary hover:bg-primary/10 transition-all duration-300"
+        >
+          {ui.hero.viewServices}
+        </a>
+      </div>
+
+      <div class="flex items-center gap-8 justify-center lg:justify-start">
+        <div class="flex flex-col">
+          <strong class="text-3xl font-bold"
+            >{personalInfo.stats.experience}</strong
+          >
+          <span
+            class="text-text-secondary text-sm uppercase tracking-widest mt-1"
+            >{ui.hero.expLabel}</span
+          >
+        </div>
+        <div class="w-px h-10 bg-white/10"></div>
+        <div class="flex flex-col">
+          <strong class="text-3xl font-bold"
+            >{personalInfo.stats.projects}</strong
+          >
+          <span
+            class="text-text-secondary text-sm uppercase tracking-widest mt-1"
+            >{ui.hero.projectsLabel}</span
+          >
+        </div>
+        <div class="w-px h-10 bg-white/10"></div>
+        <div class="flex flex-col">
+          <strong class="text-3xl font-bold"
+            >{personalInfo.stats.satisfied}</strong
+          >
+          <span
+            class="text-text-secondary text-sm uppercase tracking-widest mt-1"
+            >{ui.hero.satisfiedLabel}</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Video Content with Stacking Context Fix -->
+    <div
+      id="hero-scene-container"
+      class="relative h-[480px] sm:h-[500px] lg:h-[600px] w-full flex justify-center items-center order-first lg:order-last bg-bg-dark rounded-3xl shadow-2xl overscroll-x-none touch-pan-y"
+    >
+      <!-- Glow effect (behind video) -->
+      <div
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] h-[250px] md:w-[400px] md:h-[400px] bg-[radial-gradient(circle,rgba(118,39,190,0.4)_0%,rgba(15,5,24,0)_70%)] blur-[40px] md:blur-[60px] pointer-events-none"
+      >
+      </div>
+
+      <!-- Video Element -->
+      <video
+        id="hero-video"
+        src="/yeison.mp4"
+        autoplay
+        loop
+        muted
+        playsinline
+        draggable="false"
+        class="w-full max-w-[280px] sm:max-w-[320px] md:max-w-[380px] lg:max-w-[420px] h-auto object-contain mx-auto mix-blend-lighten pointer-events-none select-none relative z-20"
+      ></video>
+
+      <!-- Tech Floating Cards overlay -->
+      <div id="cards-container" class="absolute inset-0 pointer-events-none">
+        {
+          techCards.map((card, index) => (
+            <div
+              class="absolute tech-card-floating pointer-events-auto"
+              style={`animation-delay: ${card.delay}s; left: 50%; top: 50%; margin-left: -90px; margin-top: -30px;`}
+              data-index={index}
+              draggable="false"
+              ondragstart="return false;"
+            >
+              <div
+                class="card-icon-wrapper"
+                style={`background: ${card.color}15; border: 1px solid ${card.color}30;`}
+              >
+                <div class="card-icon" set:html={card.icon} />
+              </div>
+              <div class="card-info hidden lg:flex">
+                <span class="card-title">{card.title}</span>
+                <span class="card-tech">{card.tech}</span>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Tech Card Styling (Custom 3D Engine) */
+  .tech-card-floating {
+    background: rgba(30, 30, 35, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    user-select: none;
+    -webkit-user-drag: none;
+    touch-action: auto;
+    transition:
+      opacity 0.3s ease,
+      border-color 0.2s ease,
+      background 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .tech-card-floating * {
+    user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
+  }
+
+  .tech-card-floating:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(50, 50, 60, 0.85);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+  }
+
+  .card-icon-wrapper {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card-icon {
+    width: 16px;
+    height: 16px;
+    display: flex;
+  }
+
+  /* Target the SVG inside the dynamically injected HTML */
+  .card-icon :global(svg) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .card-info {
+    flex-direction: column;
+    min-width: max-content;
+  }
+
+  .card-title {
+    font-size: 0.55rem;
+    color: #888;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  .card-tech {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #fff;
+  }
+</style>
+
+<script>
+  const initEngine = () => {
+    const container = document.getElementById("hero-scene-container");
+    const techCards = document.querySelectorAll(".tech-card-floating");
+
+    if (!container || techCards.length === 0) return;
+
+    let isDragging = false;
+    let startX = 0;
+    let rotationY = 0;
+    let targetRotationY = 0;
+    let isMobile = window.innerWidth < 768;
+
+    window.addEventListener("resize", () => {
+      isMobile = window.innerWidth < 768;
+    });
+
+    container.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      startX = e.clientX;
+      container.style.cursor = "grabbing";
+    });
+    window.addEventListener("mouseup", () => {
+      isDragging = false;
+      container.style.cursor = "default";
+    });
+    container.addEventListener("mouseleave", () => {
+      isDragging = false;
+      container.style.cursor = "default";
+    });
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    container.addEventListener(
+      "touchstart",
+      (e) => {
+        isDragging = true;
+        startX = e.touches[0].clientX;
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+      },
+      { passive: true },
+    );
+    window.addEventListener("touchend", () => (isDragging = false));
+
+    container.addEventListener("wheel", () => {}, { passive: true });
+
+    const handleMove = (clientX: number) => {
+      if (isDragging) {
+        const delta = clientX - startX;
+        targetRotationY += delta * 0.005;
+        startX = clientX;
+      }
+    };
+    container.addEventListener("mousemove", (e) => handleMove(e.clientX));
+
+    container.addEventListener(
+      "touchmove",
+      (e) => {
+        if (!isDragging) return;
+
+        const touchX = e.touches[0].clientX;
+        const touchY = e.touches[0].clientY;
+        const diffX = Math.abs(touchX - touchStartX);
+        const diffY = Math.abs(touchY - touchStartY);
+
+        if (diffY > diffX && diffY > 5) {
+          isDragging = false;
+          return;
+        }
+
+        handleMove(touchX);
+      },
+      { passive: true },
+    );
+
+    let reqId: number;
+    const animate = () => {
+      reqId = requestAnimationFrame(animate);
+
+      if (!isDragging) {
+        targetRotationY -= 0.003; 
+      }
+
+      rotationY += (targetRotationY - rotationY) * 0.1;
+
+      techCards.forEach((card, index) => {
+        const el = card as HTMLElement;
+        const angle = (index / techCards.length) * Math.PI * 2;
+        const totalAngle = angle + rotationY;
+
+        const radius = isMobile ? 160 : 320;
+        const x = radius * Math.cos(totalAngle);
+        const z = radius * Math.sin(totalAngle);
+
+        const level = (index % 3) - 1;
+        const y = level * (isMobile ? 55 : 80);
+
+        const focalLength = isMobile ? 300 : 650;
+        const baseScale = isMobile ? 0.6 : 0.8;
+        const scale = (focalLength / (focalLength - z)) * baseScale;
+
+        const screenX = x * scale;
+        const screenY = y * scale;
+
+        el.style.transform = `translate(${screenX}px, ${screenY}px) scale(${scale})`;
+        el.style.zIndex = z > 0 ? "30" : "10";
+
+        const opacity = z > 0 ? 1 : 0.4 + ((z + radius) / (radius * 2)) * 0.6;
+        el.style.opacity = opacity.toString();
+        el.style.filter = z < 0 ? `blur(${2 - scale * 2}px)` : "none";
+      });
+    };
+
+    animate();
+
+    document.addEventListener(
+      "astro:before-preparation",
+      () => {
+        cancelAnimationFrame(reqId);
+      },
+      { once: true },
+    );
+  };
+
+  initEngine();
+  document.addEventListener("astro:page-load", initEngine);
+</script>

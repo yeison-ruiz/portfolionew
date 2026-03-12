@@ -1,0 +1,805 @@
+---
+import { db } from "../utils/db";
+
+interface Props {
+  lang?: "es" | "en";
+}
+
+const { lang = "es" } = Astro.props;
+const { projects, personalInfo, ui } = db[lang];
+---
+
+<section id="proyectos" class="relative min-h-full flex flex-col pt-32 pb-24">
+  <!-- Background Elements -->
+  <div class="absolute inset-0 bg-bg-dark -z-20">
+    <!-- Grid Pattern -->
+    <div
+      class="absolute inset-0 opacity-[0.03]"
+      style="background-image: linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px); background-size: 50px 50px;"
+    >
+    </div>
+  </div>
+  <div class="container mx-auto px-6 grow flex flex-col relative z-10">
+    <!-- Header -->
+    <div
+      class="flex flex-col md:flex-row md:items-end justify-between mb-16 project-header opacity-0 translate-y-10"
+    >
+      <div class="max-w-3xl">
+        <div
+          class="inline-flex items-center px-4 py-1.5 rounded-full border border-purple-500/30 bg-purple-500/10 backdrop-blur-sm mb-6"
+        >
+          <span class="w-2 h-2 rounded-full bg-purple-500 animate-pulse mr-2"
+          ></span>
+          <span
+            class="text-xs font-semibold tracking-widest text-purple-300 uppercase"
+            >{ui.projects.badge}</span
+          >
+        </div>
+        <h2 class="text-5xl md:text-6xl font-bold text-white tracking-tight mb-4">
+          {ui.projects.title} <span
+            class="text-transparent bg-clip-text bg-linear-to-r from-purple-500 to-blue-500"
+            >{ui.projects.titleHighlight}</span
+          >
+        </h2>
+        <p class="text-text-secondary text-lg max-w-2xl">
+          {ui.projects.description}
+        </p>
+      </div>
+
+      <!-- Navigation Buttons -->
+      <div class="hidden md:flex gap-4 mt-8 md:mt-0">
+        <button
+          class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+          aria-label="Previous project"
+          id="prev-project"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"
+            ></path></svg
+          >
+        </button>
+        <button
+          class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+          aria-label="Next project"
+          id="next-project"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"
+            ></path></svg
+          >
+        </button>
+      </div>
+    </div>
+  </div>
+
+    <!-- Projects Carousel -->
+    <div
+      class="relative overflow-x-auto overflow-y-hidden pb-12 no-scrollbar"
+      id="projects-carousel"
+    >
+      <div class="flex gap-8 w-max px-2 md:px-[5vw]">
+        {
+          Array(20).fill(projects).flat().map((project, index) => (
+            <article
+              class="project-card opacity-0 scale-95 w-[85vw] md:w-[600px] shrink-0 bg-[#0A0A0A] border border-white/5 rounded-3xl overflow-hidden group hover:border-white/10 transition-all duration-300"
+            >
+              <!-- Window/Device Mockup Area -->
+              <div
+                class="inner-carousel-container h-[380px] md:h-[420px] relative bg-[#0f0f11] border-b border-white/5 overflow-hidden group/slider"
+              >
+                <!-- Project Images Carousel -->
+                {project.images && project.images.length > 0 ? (
+                  <div class="inner-scroll-area absolute inset-0 z-0 flex overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth">
+                    {project.images.map((img: string) => (
+                      <div class="w-full h-full shrink-0 snap-center relative flex items-center justify-center overflow-hidden">
+                        <!-- Ambient Blurred Background -->
+                        <img 
+                          src={img} 
+                          alt="" 
+                          class="absolute inset-0 w-full h-full object-cover opacity-30 blur-2xl scale-125 saturate-200 pointer-events-none"
+                          aria-hidden="true"
+                        />
+                        <!-- Foreground Content -->
+                        <img
+                          src={img}
+                          alt={project.title}
+                          class={`relative z-10 max-w-full max-h-full object-contain drop-shadow-2xl transition-all duration-700 group-hover:scale-105 ${
+                            project.category.includes("MOBILE") ? "h-[90%] rounded-4xl border-[6px] border-[#1a1a1a] shadow-[0_0_40px_rgba(0,0,0,0.5)] bg-black" : "w-[90%] rounded-t-lg mx-auto shadow-[0_10px_40px_rgba(0,0,0,0.5)]"
+                          }`}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                ) : project.image ? (
+                  <div class="absolute inset-0 z-0 flex items-center justify-center overflow-hidden">
+                     <img 
+                        src={project.image} 
+                        alt="" 
+                        class="absolute inset-0 w-full h-full object-cover opacity-30 blur-2xl scale-125 saturate-200 pointer-events-none"
+                        aria-hidden="true"
+                      />
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      class={`relative z-10 max-w-full max-h-full object-contain drop-shadow-2xl transition-all duration-700 group-hover:scale-105 ${
+                            project.category.includes("MOBILE") ? "p-4" : "w-[90%] rounded-t-lg mx-auto shadow-2xl"
+                          }`}
+                    />
+                  </div>
+                ) : (
+                  <div class="absolute inset-0 p-4 flex flex-col z-0">
+                    <div class="flex-1 flex gap-4 mt-8">
+                      <div class="w-1/3 h-full bg-white/5 rounded-lg animate-pulse-slow"></div>
+                      <div class="flex-1 flex flex-col gap-4">
+                        <div class="h-1/2 w-full bg-white/5 rounded-lg"></div>
+                        <div class="flex gap-4 h-1/2">
+                          <div class="w-1/2 h-full bg-white/5 rounded-lg"></div>
+                          <div class="w-1/2 h-full bg-white/5 rounded-lg"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <!-- Overlay Controls to scroll if multiple images -->
+                {project.images && project.images.length > 1 && (
+                  <>
+                    <!-- Left Arrow -->
+                    <button class="inner-prev absolute left-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 flex items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-md border border-white/10 opacity-0 group-hover/slider:opacity-100 transition-all hover:bg-white/20 hover:scale-110 shadow-xl pointer-events-auto" aria-label="Ver imagen anterior">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                      </svg>
+                    </button>
+                    <!-- Right Arrow -->
+                    <button class="inner-next absolute right-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 flex items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-md border border-white/10 opacity-0 group-hover/slider:opacity-100 transition-all hover:bg-white/20 hover:scale-110 shadow-xl pointer-events-auto" aria-label="Ver siguiente imagen">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                      </svg>
+                    </button>
+                    <!-- Small indicator at bottom to show there are more images -->
+                    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 flex gap-1.5 opacity-0 group-hover/slider:opacity-100 transition-opacity pointer-events-none">
+                       {project.images.map((_: string, idx: number) => (
+                           <div class={`w-1.5 h-1.5 rounded-full ${idx === 0 ? 'bg-white' : 'bg-white/30'}`}></div>
+                       ))}
+                    </div>
+                  </>
+                )}
+
+                <!-- Window Controls Overlay (Only for non-mobile apps to avoid weird cognitive clash) -->
+                {!project.category.includes("MOBILE") && (
+                  <div class="absolute top-0 left-0 w-full p-4 flex gap-2 z-10 bg-linear-to-b from-black/80 to-transparent">
+                    <div class="w-3 h-3 rounded-full bg-red-500/80 shadow-md"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500/80 shadow-md"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500/80 shadow-md"></div>
+                  </div>
+                )}
+
+                <!-- Tech Badges (Floating limit to 2 so they don't clutter the image) -->
+                <div class="relative z-20 w-full h-full pointer-events-none">
+                  {project.tech.slice(0, 2).map((tech: string, i: number) => (
+                    <div
+                      class={`absolute ${
+                        i === 0 ? "top-6 right-6" : i === 1 ? "bottom-6 left-6" : "bottom-6 right-6"
+                      } flex items-center gap-2 px-4 py-2 rounded-full bg-[#1A1A1A]/95 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] pointer-events-auto hover:bg-[#2A2A2A] transition-colors`}
+                    >
+                      {i === 0 && (
+                        <span class="w-2.5 h-2.5 bg-purple-500 rounded-full shadow-[0_0_10px_#a855f7]" />
+                      )}
+                      {i === 1 && (
+                        <span class="w-4 h-4 text-cyan-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]">
+                          <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zm0 9l2.5-1.25L12 8.5l-2.5 1.25L12 11zm0 2.5l-5-2.5-5 2.5L12 22l10-8.5-5-2.5-5 2.5z" />
+                          </svg>
+                        </span>
+                      )}
+                      <span class="text-xs font-bold text-white tracking-wide">{tech}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <!-- Gradient Overlay -->
+                <div
+                  class={`absolute inset-0 bg-linear-to-b from-transparent to-[#0A0A0A] opacity-60 mix-blend-multiply z-10 pointer-events-none`}
+                >
+                </div>
+              </div>
+
+              <!-- Content Area -->
+              <div class="p-8">
+                <div class="flex justify-between items-start mb-6">
+                  <div>
+                    <h3 class="text-2xl font-bold text-white mb-2">
+                      {project.title}
+                    </h3>
+                    <p class="text-purple-400 text-xs font-bold tracking-wider uppercase">
+                      {project.category}
+                    </p>
+                  </div>
+                  <button
+                    class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white/10 hover:-translate-y-1 transition-all"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                      />
+                    </svg>
+                  </button>
+                </div>
+
+                <p class="text-gray-400 text-sm leading-relaxed mb-6 h-12 line-clamp-2">
+                  {project.description}
+                </p>
+
+                <!-- Full Tech Stack List -->
+                <div class="flex flex-wrap gap-2 mb-8">
+                  {project.tech.map((t: string) => (
+                    <span class="px-2.5 py-1 text-xs font-semibold text-white/70 bg-white/5 border border-white/10 rounded-md">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+
+                <button
+                  type="button"
+                  data-project={JSON.stringify(project)}
+                  class="project-detail-btn group flex items-center justify-between w-full p-4 rounded-xl border transition-all bg-white/5 border-white/5 hover:bg-white/10 hover:border-white/10 hover:shadow-[0_0_20px_rgba(255,255,255,0.1)] outline-none"
+                >
+                  <span class="text-sm font-medium text-white">
+                    {ui.projects.discover}
+                  </span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-4 h-4 text-white transform group-hover:translate-x-1 transition-transform"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+
+<!-- Footer -->
+<footer
+  class="mt-auto border-t border-white/5 bg-[#0A0A0A]/50 backdrop-blur-md"
+>
+  <div class="container mx-auto px-6 py-12">
+    <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+      <div class="text-center md:text-left">
+        <h4 class="text-2xl font-bold text-white mb-1">{personalInfo.name[0]}{personalInfo.lastName[0]}</h4>
+        <p class="text-gray-500 text-sm">{ui.footer.tagline}</p>
+      </div>
+
+      <nav class="flex gap-8">
+        <a
+          href="#trayectoria"
+          class="text-sm text-gray-400 hover:text-white transition-colors"
+          >{ui.nav.timeline}</a
+        >
+        <a
+          href="#servicios"
+          class="text-sm text-gray-400 hover:text-white transition-colors"
+          >{ui.nav.services}</a
+        >
+        <a href="#proyectos" class="text-sm text-white transition-colors"
+          >{ui.nav.projects}</a
+        >
+        <a
+          href="#contactenos"
+          class="text-sm text-gray-400 hover:text-white transition-colors"
+          >{ui.nav.contact}</a
+        >
+      </nav>
+
+      <div class="flex gap-4">
+        <a
+          href={personalInfo.social.github}
+          target="_blank"
+          class="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-white transition-colors"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-4 h-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            ><path
+              d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+            ></path></svg
+          >
+        </a>
+      </div>
+    </div>
+    <div class="text-center mt-12 text-xs text-gray-600">
+      © {new Date().getFullYear()} {personalInfo.name} {personalInfo.lastName}. {ui.footer.rights}
+    </div>
+  </div>
+</footer>
+
+<!-- Global Project Details Modal -->
+<div id="project-modal" class="fixed inset-0 z-100 hidden items-center justify-center p-4 md:p-8" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+  <!-- Backdrop -->
+  <div id="modal-backdrop" class="absolute inset-0 bg-black/90 backdrop-blur-md opacity-0 transition-opacity duration-300 pointer-events-auto cursor-pointer"></div>
+  
+  <!-- Content Block -->
+  <div id="modal-content" class="relative z-10 w-full max-w-6xl max-h-[90vh] bg-[#0A0A0A] border border-white/10 rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col md:flex-row transform scale-95 opacity-0 transition-all duration-300 pointer-events-auto">
+    
+    <!-- Close Button -->
+    <button id="modal-close" class="absolute top-4 right-4 z-20 w-10 h-10 bg-[#1A1A1A]/80 hover:bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white transition-colors" aria-label="Cerrar modal">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+    
+    <!-- Left: Image Presentation -->
+    <div class="w-full md:w-[60%] lg:w-[65%] h-64 md:h-auto bg-[#0f0f11] relative overflow-hidden flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-white/5 p-6 md:p-12">
+       <!-- Ambient Blurred Background -->
+       <img id="modal-ambient" src="" class="absolute inset-0 w-full h-full object-cover opacity-30 blur-2xl scale-125 saturate-200 pointer-events-none" aria-hidden="true" />
+       
+       <!-- Desktop Mac Window Container -->
+       <div id="modal-desktop-frame" class="relative z-10 w-full hidden flex-col shadow-2xl rounded-xl border border-white/10 overflow-hidden bg-black transition-opacity duration-500">
+          <div class="h-8 shrink-0 bg-[#1a1a1a] flex items-center px-4 gap-2 border-b border-white/10">
+            <div class="w-3 h-3 rounded-full bg-[#FF5F56]"></div>
+            <div class="w-3 h-3 rounded-full bg-[#FFBD2E]"></div>
+            <div class="w-3 h-3 rounded-full bg-[#27C93F]"></div>
+          </div>
+          <img id="modal-image-desk" src="" class="w-full h-auto max-h-[75vh] object-cover object-top" alt="Preview Desktop" />
+       </div>
+
+       <!-- Mobile Image Container -->
+       <img id="modal-image-mob" src="" class="hidden relative z-10 h-[90%] md:h-full max-h-[80vh] object-contain drop-shadow-[0_0_40px_rgba(0,0,0,0.5)] transition-opacity duration-500 rounded-4xl border-[6px] border-[#1a1a1a] bg-black" alt="Preview Mobile" />
+    </div>
+    
+    <!-- Right: Detail Info -->
+    <div class="w-full md:w-[40%] lg:w-[35%] p-8 md:p-10 overflow-y-auto pb-24 md:pb-10 custom-scrollbar flex flex-col justify-center bg-linear-to-b from-[#111] to-[#0a0a0a]">
+      <!-- Header -->
+      <span id="modal-category" class="text-purple-400 text-xs font-bold tracking-wider uppercase mb-3 block"></span>
+      <h3 id="modal-title" class="text-3xl md:text-4xl font-extrabold text-white mb-6 tracking-tight"></h3>
+      
+      <!-- Description -->
+      <p id="modal-description" class="text-gray-300 text-base md:text-lg leading-relaxed mb-8 flex-1"></p>
+      
+      <!-- Tech Stack Array -->
+      <div class="mb-10" data-tools-label={ui.projects.modal.tools}>
+        <h4 class="text-white/50 font-semibold mb-4 text-sm uppercase tracking-wider">{ui.projects.modal.tools}</h4>
+        <div id="modal-tech" class="flex flex-wrap gap-2">
+           <!-- Tecnologias se inyectan en JS -->
+        </div>
+      </div>
+      
+      <!-- Call to Action Link -->
+      <a id="modal-link" href="#" target="_blank" rel="noopener" class="hidden w-full sm:w-max px-8 py-4 bg-white text-black font-semibold rounded-xl hover:bg-gray-200 hover:scale-105 transition-all outline-none items-center justify-center gap-2">
+        {ui.projects.modal.visit}
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</div>
+</section>
+
+<style>
+  /* Scrollbar custom for the modal */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+</style>
+
+<script>
+  import gsap from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Helper for Infinite Main Projects Carousel
+  const getMainCarouselSetWidth = (carousel: HTMLElement) => {
+    const cards = carousel.querySelectorAll('.project-card');
+    if (cards.length === 0) return 0;
+    const originalCount = 4; // Total original projects
+    const cardWidth = (cards[0] as HTMLElement).offsetWidth;
+    return originalCount * (cardWidth + 32); // 32px is the 2rem (gap-8)
+  };
+
+  // Modal logic
+  const modal = document.getElementById('project-modal');
+  const modalBackdrop = document.getElementById('modal-backdrop');
+  const modalContent = document.getElementById('modal-content');
+  const modalClose = document.getElementById('modal-close');
+  
+  const modalTitle = document.getElementById('modal-title');
+  const modalCategory = document.getElementById('modal-category');
+  const modalDesc = document.getElementById('modal-description');
+  const modalTech = document.getElementById('modal-tech');
+  
+  const modalDesktopFrame = document.getElementById('modal-desktop-frame');
+  const modalImageDesk = document.getElementById('modal-image-desk') as HTMLImageElement;
+  const modalImageMob = document.getElementById('modal-image-mob') as HTMLImageElement;
+  const modalAmbient = document.getElementById('modal-ambient') as HTMLImageElement;
+  
+  const modalLink = document.getElementById('modal-link') as HTMLAnchorElement;
+  
+  let modalSlideInterval: number | null = null;
+  let currentModalImages: string[] = [];
+  let currentModalImageIndex = 0;
+
+  const openModal = (project: any) => {
+    // Fill data
+    if (modalTitle) modalTitle.textContent = project.title;
+    if (modalCategory) modalCategory.textContent = project.category;
+    if (modalDesc) modalDesc.textContent = project.description;
+    
+    // Setup modal images and auto-play
+    currentModalImages = (project.images && project.images.length > 0) ? project.images : (project.image ? [project.image] : []);
+    currentModalImageIndex = 0;
+
+    const updateModalImage = () => {
+      const imgSrc = currentModalImages[currentModalImageIndex] || '';
+      const isMobileImageFile = imgSrc.toLowerCase().includes('iphone') || imgSrc.toLowerCase().includes('mobile');
+      const isMobileCategory = project.category && project.category.includes("MOBILE");
+      const isMobile = isMobileCategory || isMobileImageFile;
+      
+      if (modalDesktopFrame && modalImageDesk && modalImageMob) {
+        if (isMobile) {
+          modalDesktopFrame.classList.add("hidden");
+          modalDesktopFrame.classList.remove("flex");
+          modalImageMob.classList.remove("hidden");
+          
+          modalImageMob.style.opacity = '0.4';
+
+          if (isMobileImageFile) {
+            // Remove the dark device border if the image is an actual iPhone PNG Mockup with its own frame
+            modalImageMob.className = "relative z-10 w-auto h-[90%] md:h-full max-h-[75vh] object-contain drop-shadow-[0_0_40px_rgba(0,0,0,0.5)] transition-opacity duration-500 rounded-3xl";
+          } else {
+            // Include native heavy border to simulate device frame
+            modalImageMob.className = "relative z-10 w-auto h-[90%] md:h-full max-h-[80vh] object-contain drop-shadow-[0_0_40px_rgba(0,0,0,0.5)] transition-opacity duration-500 rounded-4xl border-[6px] border-[#1a1a1a] bg-black";
+          }
+
+          setTimeout(() => {
+            modalImageMob.src = imgSrc;
+            modalImageMob.style.opacity = '1';
+          }, 150);
+        } else {
+          modalImageMob.classList.add("hidden");
+          modalDesktopFrame.classList.remove("hidden");
+          modalDesktopFrame.classList.add("flex");
+          
+          modalDesktopFrame.style.opacity = '0.4';
+          setTimeout(() => {
+            modalImageDesk.src = imgSrc;
+            modalDesktopFrame.style.opacity = '1';
+          }, 150);
+        }
+      }
+      if (modalAmbient) modalAmbient.src = imgSrc;
+    };
+
+    updateModalImage();
+
+    if (modalSlideInterval) {
+      clearInterval(modalSlideInterval);
+      modalSlideInterval = null;
+    }
+
+    if (currentModalImages.length > 1) {
+      modalSlideInterval = window.setInterval(() => {
+        currentModalImageIndex = (currentModalImageIndex + 1) % currentModalImages.length;
+        updateModalImage();
+      }, 3500);
+    }
+    
+    // Set tech stack
+    if (modalTech) {
+      modalTech.innerHTML = project.tech.map((t: string) => 
+        `<span class="px-3 py-1.5 text-xs font-semibold text-white/80 bg-white/10 border border-white/10 rounded-lg shadow-sm">${t}</span>`
+      ).join('');
+    }
+
+    // Set Link
+    if (modalLink) {
+      if (project.link && project.link !== "#") {
+        modalLink.classList.remove('hidden');
+        modalLink.classList.add('flex');
+        modalLink.href = project.link;
+      } else {
+        modalLink.classList.remove('flex');
+        modalLink.classList.add('hidden');
+      }
+    }
+    
+    // Show modal & trigger animations
+    if (modal && modalBackdrop && modalContent) {
+      // Fix Z-Index layering issue relative to native ASTRO/GSAP sections by pulling modal out of the tree directly to the body
+      if (modal.parentElement !== document.body) {
+        document.body.appendChild(modal);
+      }
+      
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      
+      requestAnimationFrame(() => {
+        modalBackdrop.classList.remove('opacity-0');
+        modalBackdrop.classList.add('opacity-100');
+        
+        modalContent.classList.remove('opacity-0', 'scale-95');
+        modalContent.classList.add('opacity-100', 'scale-100');
+      });
+      document.body.style.overflow = 'hidden';
+    }
+  };
+  
+  const closeModal = () => {
+    if (modalSlideInterval) {
+      clearInterval(modalSlideInterval);
+      modalSlideInterval = null;
+    }
+    if (modal && modalBackdrop && modalContent) {
+      modalBackdrop.classList.remove('opacity-100');
+      modalBackdrop.classList.add('opacity-0');
+      
+      modalContent.classList.remove('opacity-100', 'scale-100');
+      modalContent.classList.add('opacity-0', 'scale-95');
+      
+      setTimeout(() => {
+        modal.classList.remove('flex');
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }, 300); // Wait for transition
+    }
+  };
+
+  // Event Delegation to handle dynamic HMR button replacements gracefully
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    const btn = target.closest('.project-detail-btn');
+    
+    if (btn) {
+      try {
+        const projectData = JSON.parse(btn.getAttribute('data-project') || '{}');
+        openModal(projectData);
+      } catch (err) {
+        console.error("Failed to parse project data", err);
+      }
+    }
+    
+    // Modal closing delegates
+    if (target.closest('#modal-close') || target.id === 'modal-backdrop') {
+      closeModal();
+    }
+    
+    // Main Projects Carousel navigation delegates
+    const mainCarousel = document.getElementById('projects-carousel');
+    if (mainCarousel) {
+      if (target.closest('#next-project')) {
+        const itemWidth = window.innerWidth > 768 ? 632 : window.innerWidth * 0.85 + 32;
+        mainCarousel.scrollBy({ left: itemWidth, behavior: "smooth" });
+      } else if (target.closest('#prev-project')) {
+        const itemWidth = window.innerWidth > 768 ? 632 : window.innerWidth * 0.85 + 32;
+        mainCarousel.scrollBy({ left: -itemWidth, behavior: "smooth" });
+      }
+    }
+  });
+
+  // Close with Esc key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+      closeModal();
+    }
+  });
+
+  const section = document.getElementById("proyectos");
+
+  if (section) {
+    // Entrance Animation
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        scroller: "#projects-scroll-container",
+        start: "top center",
+      },
+    });
+
+    tl.to(".project-header", {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power3.out",
+    }).to(
+      ".project-card",
+      {
+        opacity: 1,
+        scale: 1,
+        duration: 0.6,
+        stagger: 0.1,
+        ease: "back.out(1.2)",
+      },
+      "-=0.4",
+    );
+  }
+  // Main Projects Carousel Auto-Piloting (Infinite Loop without killing swipe momentum)
+  const mainCarouselInstance = document.getElementById("projects-carousel");
+  if (mainCarouselInstance) {
+    let mainSlideInterval: number | null = null;
+    const autoPlayDelay = 5000;
+
+    // Fast-forward silently to exactly the 10th set initially (deep into the infinite sea)
+    setTimeout(() => {
+      mainCarouselInstance.scrollLeft = getMainCarouselSetWidth(mainCarouselInstance) * 10;
+    }, 150);
+
+    const startMainAutoPlay = () => {
+      if (mainSlideInterval) clearInterval(mainSlideInterval);
+      mainSlideInterval = window.setInterval(() => {
+        const setWidth = getMainCarouselSetWidth(mainCarouselInstance);
+        const itemWidth = window.innerWidth > 768 ? 632 : window.innerWidth * 0.85 + 32;
+        
+        // Loop boundary check safely while idle
+        const currentScroll = mainCarouselInstance.scrollLeft;
+        if (currentScroll >= setWidth * 16) {
+          mainCarouselInstance.scrollLeft = setWidth * 10; // Relocate to middle without user noticing
+        } else if (currentScroll <= setWidth * 4) {
+          mainCarouselInstance.scrollLeft = setWidth * 10;
+        }
+        
+        requestAnimationFrame(() => {
+          mainCarouselInstance.scrollBy({ left: itemWidth, behavior: "smooth" });
+        });
+      }, autoPlayDelay);
+    };
+
+    const stopMainAutoPlay = () => {
+      if (mainSlideInterval) {
+        clearInterval(mainSlideInterval);
+        mainSlideInterval = null;
+      }
+    };
+
+    // Pause on interaction
+    mainCarouselInstance.addEventListener("mouseenter", stopMainAutoPlay);
+    mainCarouselInstance.addEventListener("mouseleave", startMainAutoPlay);
+    mainCarouselInstance.addEventListener("touchstart", stopMainAutoPlay, { passive: true });
+    mainCarouselInstance.addEventListener("touchend", () => setTimeout(startMainAutoPlay, 5000), { passive: true });
+    
+    // Start it automatically on load //
+    startMainAutoPlay();
+  }
+
+  // Inner Project Images Carousel Logic
+  const innerCarousels = document.querySelectorAll(".inner-carousel-container");
+  innerCarousels.forEach(container => {
+    const scrollArea = container.querySelector(".inner-scroll-area") as HTMLElement;
+    const prevArrow = container.querySelector(".inner-prev") as HTMLButtonElement;
+    const nextArrow = container.querySelector(".inner-next") as HTMLButtonElement;
+    const indicators = container.querySelectorAll(".bottom-4.left-1\\/2 div"); // Dots indicator
+
+    if (scrollArea && prevArrow && nextArrow) {
+      let slideInterval: number | null = null;
+      const autoPlayDelay = 3500; // 3.5 seconds per slide
+
+      const startAutoPlay = () => {
+        if (slideInterval) clearInterval(slideInterval);
+        slideInterval = window.setInterval(() => {
+          const width = scrollArea.clientWidth;
+          const maxScroll = scrollArea.scrollWidth - scrollArea.clientWidth;
+          
+          // If we reach the end, scroll back to the start smoothly, else go forward
+          if (scrollArea.scrollLeft + width + 10 >= maxScroll) {
+            scrollArea.scrollTo({ left: 0, behavior: "smooth" });
+          } else {
+            scrollArea.scrollBy({ left: width, behavior: "smooth" });
+          }
+        }, autoPlayDelay);
+      };
+
+      const stopAutoPlay = () => {
+        if (slideInterval) {
+          clearInterval(slideInterval);
+          slideInterval = null;
+        }
+      };
+
+      // Control manual navigation
+      nextArrow.addEventListener("click", (e) => {
+        e.preventDefault();
+        const width = scrollArea.clientWidth;
+        const maxScroll = scrollArea.scrollWidth - scrollArea.clientWidth;
+        if (scrollArea.scrollLeft + width + 10 >= maxScroll) {
+          scrollArea.scrollTo({ left: 0, behavior: "smooth" });
+        } else {
+          scrollArea.scrollBy({ left: width, behavior: "smooth" });
+        }
+      });
+
+      prevArrow.addEventListener("click", (e) => {
+        e.preventDefault();
+        const width = scrollArea.clientWidth;
+        if (scrollArea.scrollLeft <= 5) {
+          scrollArea.scrollTo({ left: scrollArea.scrollWidth, behavior: "smooth" });
+        } else {
+          scrollArea.scrollBy({ left: -width, behavior: "smooth" });
+        }
+      });
+
+      // Pause/resume automatically on user interaction
+      container.addEventListener("mouseenter", stopAutoPlay);
+      container.addEventListener("mouseleave", startAutoPlay);
+      // Fallback for touch screens: pause on touch
+      container.addEventListener("touchstart", stopAutoPlay, { passive: true });
+      container.addEventListener("touchend", () => setTimeout(startAutoPlay, 5000), { passive: true });
+      
+      // Start auto progression initially
+      startAutoPlay();
+
+      // Update dots based on scroll position
+      scrollArea.addEventListener("scroll", () => {
+        requestAnimationFrame(() => {
+          const scrollLeft = scrollArea.scrollLeft;
+          const width = scrollArea.clientWidth;
+          const activeIndex = Math.round(scrollLeft / width);
+          
+          indicators.forEach((dot, index) => {
+            if (index === activeIndex) {
+              dot.classList.remove("bg-white/30");
+              dot.classList.add("bg-white");
+            } else {
+              dot.classList.remove("bg-white");
+              dot.classList.add("bg-white/30");
+            }
+          });
+        });
+      });
+    }
+  });
+</script>
+
+<style>
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+</style>

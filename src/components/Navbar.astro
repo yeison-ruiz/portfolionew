@@ -1,0 +1,136 @@
+---
+import { db } from "../utils/db";
+
+interface Props {
+  lang?: "es" | "en";
+}
+
+const { lang = "es" } = Astro.props;
+const { personalInfo, ui } = db[lang];
+const initials = `${personalInfo.name[0]}${personalInfo.lastName[0]}`;
+
+const otherLang = lang === "es" ? "en" : "es";
+const langLabel = lang === "es" ? "EN" : "ES";
+const langPath = `/${otherLang}`;
+---
+
+<header
+  class="fixed top-0 md:top-6 left-0 md:left-1/2 md:-translate-x-1/2 w-full md:w-[95%] lg:w-[80%] max-w-5xl z-50 flex items-center justify-between px-6 md:px-8 py-4 md:py-3 bg-bg-dark/60 backdrop-blur-xl border-b md:border border-white/10 md:rounded-full shadow-lg md:shadow-[0_8px_32px_rgba(0,0,0,0.4)] transition-all duration-500"
+>
+  <!-- Logo -->
+  <a
+    href={`/${lang}`}
+    class="text-3xl md:text-4xl font-black text-white flex items-center gap-1.5 group tracking-tighter"
+  >
+    <span class="text-primary group-hover:text-white transition-colors duration-400">&lt;</span>
+    <span class="group-hover:text-primary transition-colors duration-400">{initials}</span>
+    <span class="text-primary group-hover:text-white transition-colors duration-400">/&gt;</span>
+  </a>
+
+  <!-- Navigation Links -->
+  <nav class="hidden md:block">
+    <ul class="flex items-center gap-2 list-none m-0 p-0">
+      <li>
+        <a
+          href={`#${ui.slugs.timeline}`}
+          class="nav-link relative z-10 px-5 py-2.5 text-text-secondary hover:text-white transition-all duration-300 font-medium text-sm inline-flex items-center justify-center rounded-full"
+          data-slug={ui.slugs.timeline}
+        >
+          {ui.nav.timeline}
+        </a>
+      </li>
+      <li>
+        <a
+          href={`#${ui.slugs.services}`}
+          class="nav-link relative z-10 px-5 py-2.5 text-text-secondary hover:text-white transition-all duration-300 font-medium text-sm inline-flex items-center justify-center rounded-full"
+          data-slug={ui.slugs.services}
+        >
+          {ui.nav.services}
+        </a>
+      </li>
+      <li>
+        <a
+          href={`#${ui.slugs.projects}`}
+          class="nav-link relative z-10 px-5 py-2.5 text-text-secondary hover:text-white transition-all duration-300 font-medium text-sm inline-flex items-center justify-center rounded-full"
+          data-slug={ui.slugs.projects}
+        >
+          {ui.nav.projects}
+        </a>
+      </li>
+      <li>
+        <a
+          href={`#${ui.slugs.contact}`}
+          class="nav-link relative z-10 px-5 py-2.5 text-text-secondary hover:text-white transition-all duration-300 font-medium text-sm inline-flex items-center justify-center rounded-full"
+          data-slug={ui.slugs.contact}
+        >
+          {ui.nav.contact}
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Actions -->
+  <div class="flex items-center gap-4">
+    <!-- Language Switcher -->
+    <a
+      href={langPath}
+      class="text-xs font-bold text-text-secondary hover:text-white transition-colors px-3 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm"
+      aria-label="Switch language"
+    >
+      {langLabel}
+    </a>
+
+    <!-- CTA Button -->
+    <a
+      href={`#${ui.slugs.contact}`}
+      class="hidden md:inline-flex items-center justify-center px-6 py-2 border border-white/20 rounded-full text-sm font-semibold text-white bg-white/5 hover:bg-white/10 hover:border-white/40 hover:scale-105 active:scale-95 transition-all duration-300"
+    >
+      {lang === 'es' ? 'Hablemos' : "Let's Talk"}
+    </a>
+  </div>
+</header>
+
+<style>
+  /* Active link styles with a subtle glowing pill effect */
+  .nav-link.active {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  }
+  
+  /* Hover effect for inactive links */
+  .nav-link:not(.active):hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+</style>
+
+<script>
+  const navLinks = document.querySelectorAll<HTMLAnchorElement>(".nav-link");
+
+  const resetLinks = () => {
+    navLinks.forEach((link) => {
+      link.classList.remove("active", "text-white");
+      link.classList.add("text-text-secondary");
+    });
+  };
+
+  const activateLink = (index: number) => {
+    resetLinks();
+    // Index mapping: 0=Home, 1=Trayectoria/Experience, 2=Servicios/Services, 3=Proyectos/Projects, 4=Contactenos/Contact
+    if (index > 0 && index <= navLinks.length) {
+      const activeLink = navLinks[index - 1];
+      if (activeLink) {
+        activeLink.classList.remove("text-text-secondary");
+        activeLink.classList.add("text-white", "active");
+      }
+    }
+  };
+
+  // Listen for section changes from index.astro
+  window.addEventListener("sectionChange", ((e: CustomEvent) => {
+    activateLink(e.detail.index);
+  }) as EventListener);
+
+  // Initial check
+  activateLink(0);
+</script>
