@@ -78,6 +78,14 @@ export const db: Translations = {
           date: "Mar 2026",
           link: "https://coursera.org/verify/TN417ZJNP70B",
           shortName: "Team AI"
+        },
+        {
+          id: "dl-system-design",
+          title: "AI-Powered Software and System Design",
+          issuer: "DeepLearning.AI",
+          date: "Mar 2026",
+          link: "https://coursera.org/verify/FZ2UGHPWCKKV",
+          shortName: "System Design AI"
         }
       ]
     },
@@ -447,6 +455,14 @@ export const db: Translations = {
           date: "Mar 2026",
           link: "https://coursera.org/verify/TN417ZJNP70B",
           shortName: "Team AI"
+        },
+        {
+          id: "dl-system-design",
+          title: "AI-Powered Software and System Design",
+          issuer: "DeepLearning.AI",
+          date: "Mar 2026",
+          link: "https://coursera.org/verify/FZ2UGHPWCKKV",
+          shortName: "System Design AI"
         }
       ]
     },
