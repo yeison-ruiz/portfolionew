@@ -74,7 +74,7 @@ export interface SiteData {
     nav: {
       home: string;
       timeline: string;
-      autoridad: string;
+      certificaciones: string;
       services: string;
       projects: string;
       contact: string;
@@ -133,7 +133,7 @@ export interface SiteData {
     slugs: {
       home: string;
       timeline: string;
-      autoridad: string;
+      certificaciones: string;
       services: string;
       projects: string;
       contact: string;

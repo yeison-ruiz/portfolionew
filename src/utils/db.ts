@@ -19,7 +19,7 @@ export const db: Translations = {
       },
       social: {
         github: "https://github.com/yeisonruiz",
-        email: "contact@yeisonruiz.com",
+        email: "yeisonruizdev@gmail.com",
         linkedin: "#",
       },
       certifications: [
@@ -86,6 +86,54 @@ export const db: Translations = {
           date: "Mar 2026",
           link: "https://coursera.org/verify/FZ2UGHPWCKKV",
           shortName: "System Design AI"
+        },
+        {
+          id: "react-ts",
+          title: "React y TypeScript - La Guía Completa Creando +10 Proyectos",
+          issuer: "Udemy",
+          date: "2023",
+          link: "#",
+          shortName: "React & TS"
+        },
+        {
+          id: "nextjs-15",
+          title: "Next.js 15 y React 19 | Clon de Linktree Fullstack completo",
+          issuer: "Curso Online",
+          date: "2024",
+          link: "#",
+          shortName: "Next.js 15"
+        },
+        {
+          id: "react-native-expo",
+          title: "React Native Expo: Aplicaciones nativas para IOS y Android",
+          issuer: "Curso Online",
+          date: "2023",
+          link: "#",
+          shortName: "React Native"
+        },
+        {
+          id: "design-ts",
+          title: "Diseño de Plataformas con Typescript",
+          issuer: "Curso Online",
+          date: "2022",
+          link: "#",
+          shortName: "TS Platforms"
+        },
+        {
+          id: "modern-js",
+          title: "Modern JavaScript for React JS - ES6",
+          issuer: "Curso Online",
+          date: "2021",
+          link: "#",
+          shortName: "Modern JS"
+        },
+        {
+          id: "laravel-12",
+          title: "Laravel 12 Tutorial For Beginners to Advance",
+          issuer: "Curso Online",
+          date: "2020",
+          link: "#",
+          shortName: "Laravel 12"
         }
       ]
     },
@@ -93,7 +141,7 @@ export const db: Translations = {
       nav: {
         home: "Inicio",
         timeline: "Trayectoria",
-        autoridad: "Autoridad",
+        certificaciones: "Certificaciones",
         services: "Servicios",
         projects: "Proyectos",
         contact: "Contactenos",
@@ -152,7 +200,7 @@ export const db: Translations = {
       slugs: {
         home: "",
         timeline: "trayectoria",
-        autoridad: "autoridad",
+        certificaciones: "certificaciones",
         services: "servicios",
         projects: "proyectos",
         contact: "contactenos",
@@ -206,7 +254,7 @@ export const db: Translations = {
         title: "Desarrollo Web Frontend",
         description:
           "Especialista en la construcción de interfaces de usuario de alto impacto bajo la metodología SDD (Speed Driven Development). Diseño arquitecturas frontend resilientes y ultrarrápidas utilizando Astro, Next.js y React, priorizando siempre un puntaje perfecto en Core Web Vitals y una experiencia de usuario (UX) fluida y cinematográfica mediante animaciones avanzadas.",
-        tags: ["SDD", "Astro", "Next.js", "React", "TypeScript", "Tailwind CSS", "Framer Motion", "Three.js"],
+        tags: ["Vue.js", "React", "Node", "Express", "Next.js", "Astro", "TypeScript", "Tailwind CSS"],
         gradient: "from-green-500/20 to-blue-500/20",
       },
       {
@@ -215,7 +263,7 @@ export const db: Translations = {
         title: "Sitios Web Empresariales",
         description:
           "Desarrollo ecosistemas digitales corporativos robustos y aplicaciones web de gran escala. Mi enfoque combina la potencia de Laravel en el backend con la interactividad de Next.js o Vue.js en el frontend. Soluciones orientadas a resultados B2B/B2C que integran flujos de trabajo complejos, seguridad de grado bancario y escalabilidad horizontal para soportar el crecimiento constante de tu negocio.",
-        tags: ["Laravel", "React", "Next.js", "Astro", "Vue.js", "B2B / B2C"],
+        tags: ["Node", "Express", "Vue.js", "Laravel", "Next.js", "Astro"],
         gradient: "from-purple-500/20 to-pink-500/20",
       },
       {
@@ -242,7 +290,7 @@ export const db: Translations = {
         title: "Infraestructura e Integraciones",
         description:
           "Arquitecto e implemento infraestructuras Cloud Native en AWS y Google Cloud, garantizando despliegues automatizados y alta disponibilidad. Soy experto en la orquestación de APIs REST y GraphQL masivas, integración de pasarelas de pago como Stripe y automatización de canales de comunicación mediante la API de WhatsApp, creando un ecosistema digital conectado y eficiente.",
-        tags: ["AWS", "Google Cloud", "Stripe", "WhatsApp API", "APIs Rest / GraphQL"],
+        tags: ["API REST", "Node", "Express", "AWS", "Google Cloud", "WhatsApp API"],
         gradient: "from-indigo-500/20 to-purple-500/20",
         badge: {
           text: "Cloud Ops",
@@ -405,7 +453,7 @@ export const db: Translations = {
       },
       social: {
         github: "https://github.com/yeisonruiz",
-        email: "contact@yeisonruiz.com",
+        email: "yeisonruizdev@gmail.com",
         linkedin: "#",
       },
       certifications: [
@@ -472,6 +520,54 @@ export const db: Translations = {
           date: "Mar 2026",
           link: "https://coursera.org/verify/FZ2UGHPWCKKV",
           shortName: "System Design AI"
+        },
+        {
+          id: "react-ts",
+          title: "React & TypeScript - The Complete Guide Creating +10 Projects",
+          issuer: "Udemy",
+          date: "2023",
+          link: "#",
+          shortName: "React & TS"
+        },
+        {
+          id: "nextjs-15",
+          title: "Next.js 15 & React 19 | Fullstack Linktree Clone",
+          issuer: "Online Course",
+          date: "2024",
+          link: "#",
+          shortName: "Next.js 15"
+        },
+        {
+          id: "react-native-expo",
+          title: "React Native Expo: Native applications for IOS and Android",
+          issuer: "Online Course",
+          date: "2023",
+          link: "#",
+          shortName: "React Native"
+        },
+        {
+          id: "design-ts",
+          title: "Platform Design with Typescript",
+          issuer: "Online Course",
+          date: "2022",
+          link: "#",
+          shortName: "TS Platforms"
+        },
+        {
+          id: "modern-js",
+          title: "Modern JavaScript for React JS - ES6",
+          issuer: "Online Course",
+          date: "2021",
+          link: "#",
+          shortName: "Modern JS"
+        },
+        {
+          id: "laravel-12",
+          title: "Laravel 12 Tutorial For Beginners to Advance",
+          issuer: "Online Course",
+          date: "2020",
+          link: "#",
+          shortName: "Laravel 12"
         }
       ]
     },
@@ -479,7 +575,7 @@ export const db: Translations = {
       nav: {
         home: "Home",
         timeline: "Experience",
-        autoridad: "Authority",
+        certificaciones: "Certifications",
         services: "Services",
         projects: "Projects",
         contact: "Contact",
@@ -538,7 +634,7 @@ export const db: Translations = {
       slugs: {
         home: "",
         timeline: "experience",
-        autoridad: "authority",
+        certificaciones: "certificaciones",
         services: "services",
         projects: "projects",
         contact: "contact",
@@ -592,7 +688,7 @@ export const db: Translations = {
         title: "Frontend Web Development",
         description:
           "Specialist in building high-impact user interfaces under the SDD (Speed Driven Development) methodology. I design resilient and ultra-fast frontend architectures using Astro, Next.js, and React, always prioritizing perfect Core Web Vitals scores and a cinematic user experience (UX) through advanced animations.",
-        tags: ["SDD", "Astro", "Next.js", "React", "TypeScript", "Tailwind CSS", "Framer Motion", "Three.js"],
+        tags: ["Vue.js", "React", "Node", "Express", "Next.js", "Astro", "TypeScript", "Tailwind CSS"],
         gradient: "from-green-500/20 to-blue-500/20",
       },
       {
@@ -601,7 +697,7 @@ export const db: Translations = {
         title: "Enterprise Web Sites",
         description:
           "Developing robust corporate digital ecosystems and large-scale web applications. My approach combines the power of Laravel on the backend with the interactivity of Next.js or Vue.js on the frontend. B2B/B2C result-oriented solutions that integrate complex workflows, bank-grade security, and horizontal scalability.",
-        tags: ["Laravel", "React", "Next.js", "Astro", "Vue.js", "B2B / B2C"],
+        tags: ["Node", "Express", "Vue.js", "Laravel", "Next.js", "Astro"],
         gradient: "from-purple-500/20 to-pink-500/20",
       },
       {
@@ -628,7 +724,7 @@ export const db: Translations = {
         title: "Infrastructure & Integrations",
         description:
           "Architecting and implementing Cloud Native infrastructures on AWS and Google Cloud, ensuring automated deployments and high availability. Expert in mass REST and GraphQL API orchestration, Stripe payment gateway integration, and WhatsApp API automation.",
-        tags: ["AWS", "Google Cloud", "Stripe", "WhatsApp API", "REST / GraphQL APIs"],
+        tags: ["API REST", "Node", "Express", "AWS", "Google Cloud", "WhatsApp API"],
         gradient: "from-indigo-500/20 to-purple-500/20",
         badge: {
           text: "Cloud Ops",

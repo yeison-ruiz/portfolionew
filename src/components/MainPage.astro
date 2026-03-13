@@ -29,7 +29,7 @@ const description = lang === "es"
   : "Professional portfolio of Yeison Ruiz, Software Architect and Creative Developer specialized in immersive web experiences.";
 
 const { slugs } = data.ui;
-const sectionSlugs = [slugs.home, slugs.timeline, slugs.autoridad, slugs.services, slugs.projects, slugs.contact];
+const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.services, slugs.projects, slugs.contact];
 ---
 
 <Layout title={title} description={description} lang={lang}>
@@ -70,7 +70,7 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.autoridad, slugs.service
       class="full-page-section z-0 opacity-0 pointer-events-none"
     >
       <div
-        id="authority-scroll-container"
+        id="certificaciones-scroll-container"
         class="w-full h-full overflow-y-auto no-scrollbar"
       >
         <Authority lang={lang} />

@@ -41,11 +41,11 @@ const langPath = lang === "es" ? "/en" : "/";
       </li>
       <li>
         <a
-          href={`#${ui.slugs.autoridad}`}
+          href={`#${ui.slugs.certificaciones}`}
           class="nav-link relative z-10 px-5 py-2.5 text-text-secondary hover:text-white transition-all duration-300 font-medium text-sm inline-flex items-center justify-center rounded-full"
-          data-slug={ui.slugs.autoridad}
+          data-slug={ui.slugs.certificaciones}
         >
-          {ui.nav.autoridad}
+          {ui.nav.certificaciones}
         </a>
       </li>
       <li>
@@ -118,10 +118,10 @@ const langPath = lang === "es" ? "/en" : "/";
       </li>
       <li class="w-full text-center">
         <a
-          href={`#${ui.slugs.autoridad}`}
+          href={`#${ui.slugs.certificaciones}`}
           class="mobile-nav-link text-2xl font-bold text-gray-400 hover:text-white transition-colors py-2 block w-full"
         >
-          {ui.nav.autoridad}
+          {ui.nav.certificaciones}
         </a>
       </li>
       <li class="w-full text-center">
@@ -190,7 +190,7 @@ const langPath = lang === "es" ? "/en" : "/";
 
   const activateLink = (index: number) => {
     resetLinks();
-    // Index mapping: 0=Home, 1=Trayectoria/Experience, 2=Autoridad/Authority, 3=Servicios/Services, 4=Proyectos/Projects, 5=Contactenos/Contact
+    // Index mapping: 0=Home, 1=Trayectoria/Experience, 2=Certificaciones/Certifications, 3=Servicios/Services, 4=Proyectos/Projects, 5=Contactenos/Contact
     if (index > 0 && index <= navLinks.length) {
       const activeLink = navLinks[index - 1];
       if (activeLink) {
