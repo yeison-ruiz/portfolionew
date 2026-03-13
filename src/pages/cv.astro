@@ -1,5 +1,6 @@
 ---
 import { db } from "../utils/db";
+import "../styles/global.css";
 
 const lang = "es";
 const { personalInfo, ui, services, timeline, projects } = db[lang];
@@ -68,19 +69,7 @@ const { personalInfo, ui, services, timeline, projects } = db[lang];
       }
     }
   </style>
-  <!-- Usamos CDN para estilos fuera del framework principal para mantenerlo súper limpio -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#7627be',
-          }
-        }
-      }
-    }
-  </script>
+
 </head>
 <body class="antialiased text-gray-800">
 
@@ -200,7 +189,7 @@ const { personalInfo, ui, services, timeline, projects } = db[lang];
         <section>
           <h3 class="text-sm font-black text-gray-900 uppercase tracking-widest border-b-2 border-primary pb-2 mb-4 mt-2">Certificaciones IAM</h3>
           <ul class="space-y-3">
-            {personalInfo.certifications.slice(0, 5).map(cert => (
+            {personalInfo.certifications?.slice(0, 5).map(cert => (
               <li class="text-xs flex items-start gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary mt-0.5 shrink-0"><path d="M12 15l-2 5l9-5l-9-5l2 5z"/><circle cx="12" cy="8" r="5"/></svg>
                 <div>
@@ -228,7 +217,7 @@ const { personalInfo, ui, services, timeline, projects } = db[lang];
         <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 flex flex-col shadow-sm">
           <div class="h-40 bg-gray-100 relative overflow-hidden border-b border-gray-100">
             <!-- Project Image Thumbnail -->
-            <img src={p.images[0]} alt={p.title} class="object-cover w-full h-full object-top" />
+            {p.images && p.images.length > 0 && <img src={p.images[0]} alt={p.title} class="object-cover w-full h-full object-top" />}
           </div>
           <div class="p-5 flex-1 flex flex-col">
             <span class="text-[8px] text-primary font-black tracking-widest uppercase mb-1.5">{p.category}</span>
