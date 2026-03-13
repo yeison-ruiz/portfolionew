@@ -1,0 +1,70 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { db } from "../utils/db";
+
+const lang = "es"; // Default to Spanish for the main 404
+const t = db[lang].ui.notFound;
+---
+
+<Layout title={`404 | ${t.title}`} description={t.description} lang={lang}>
+  <main class="min-h-screen w-full bg-[#030303] flex items-center justify-center p-6 relative overflow-hidden">
+    <!-- Animated background elements -->
+    <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-[120px] animate-pulse"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-[120px] animate-pulse" style="animation-delay: 2s;"></div>
+
+    <div class="max-w-2xl w-full text-center relative z-10">
+      <div class="relative inline-block mb-8">
+        <h1 class="text-[12rem] md:text-[16rem] font-bold leading-none tracking-tighter text-white/5 select-none">
+          404
+        </h1>
+        <div class="absolute inset-0 flex items-center justify-center">
+          <span class="text-4xl md:text-6xl font-bold bg-gradient-to-r from-white to-white/50 bg-clip-text text-transparent">
+            {t.title}
+          </span>
+        </div>
+      </div>
+
+      <p class="text-lg md:text-xl text-white/60 mb-12 max-w-md mx-auto leading-relaxed">
+        {t.description}
+      </p>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
+        <a
+          href="/"
+          class="group relative px-8 py-4 bg-white text-black font-bold rounded-2xl overflow-hidden transition-all hover:scale-105 active:scale-95"
+        >
+          <span class="relative z-10">{t.backHome}</span>
+          <div class="absolute inset-0 bg-gradient-to-r from-purple-400 to-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        </a>
+        
+        <button
+          onclick="history.back()"
+          class="px-8 py-4 bg-white/5 text-white/80 font-semibold rounded-2xl border border-white/10 hover:bg-white/10 transition-all hover:border-white/20"
+        >
+          Volver atrás
+        </button>
+      </div>
+
+      <div class="mt-20 flex justify-center gap-8 text-white/20">
+         <div class="w-8 h-px bg-current"></div>
+         <div class="text-xs tracking-widest uppercase">Yeison Ruiz • Creative Dev</div>
+         <div class="w-8 h-px bg-current"></div>
+      </div>
+    </div>
+
+    <!-- Grid lines -->
+    <div class="absolute inset-0 z-0 opacity-20 pointer-events-none" 
+         style="background-image: linear-gradient(#ffffff05 1px, transparent 1px), linear-gradient(90deg, #ffffff05 1px, transparent 1px); background-size: 50px 50px;">
+    </div>
+  </main>
+</Layout>
+
+<style>
+  @keyframes pulse {
+    0%, 100% { opacity: 0.1; transform: scale(1); }
+    50% { opacity: 0.2; transform: scale(1.1); }
+  }
+  .animate-pulse {
+    animation: pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+</style>

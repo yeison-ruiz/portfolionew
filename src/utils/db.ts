@@ -157,6 +157,11 @@ export const db: Translations = {
         projects: "proyectos",
         contact: "contactenos",
       },
+      notFound: {
+        title: "Página no encontrada",
+        description: "Parece que te has aventurado en una ruta que aún no ha sido construida o ha sido movida.",
+        backHome: "Volver al Inicio",
+      },
       chat: {
         assistantName: "Asistente IA de Yeison",
         onlineStatus: "En línea",
@@ -537,6 +542,11 @@ export const db: Translations = {
         services: "services",
         projects: "projects",
         contact: "contact",
+      },
+      notFound: {
+        title: "Page Not Found",
+        description: "It seems you have strayed into a route that hasn't been built yet or has been moved.",
+        backHome: "Back to Home",
       },
       chat: {
         assistantName: "Yeison AI Assistant",

@@ -138,6 +138,11 @@ export interface SiteData {
       projects: string;
       contact: string;
     };
+    notFound: {
+      title: string;
+      description: string;
+      backHome: string;
+    };
     chat: {
       assistantName: string;
       onlineStatus: string;
