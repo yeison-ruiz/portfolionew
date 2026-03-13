@@ -446,7 +446,7 @@ const techCards = [
         const angle = (index / techCards.length) * Math.PI * 2;
         const totalAngle = angle + rotationY;
 
-        const radius = isMobile ? 180 : 320;
+        const radius = isMobile ? 220 : 320;
         const x = radius * Math.cos(totalAngle);
         const z = radius * Math.sin(totalAngle);
 
@@ -458,7 +458,7 @@ const techCards = [
         const scale = (focalLength / (focalLength - z)) * baseScale;
 
         const screenX = x * scale;
-        const screenY = y * scale;
+        const screenY = (y * scale) + (isMobile ? 80 : 0);
 
         el.style.transform = `translate3d(${screenX}px, ${screenY}px, 0) scale(${scale})`;
         el.style.zIndex = z > 0 ? "30" : "10";
