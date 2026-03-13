@@ -201,7 +201,7 @@ const techCards = [
     <!-- Video Content with Stacking Context Fix -->
     <div
       id="hero-scene-container"
-      class="relative h-[450px] sm:h-[550px] md:h-[600px] lg:h-[750px] w-full flex justify-center items-center order-first lg:order-last bg-transparent lg:bg-bg-dark lg:rounded-3xl lg:shadow-2xl overscroll-x-none touch-pan-y"
+      class="relative h-[550px] sm:h-[650px] md:h-[600px] lg:h-[750px] w-full flex justify-center items-center order-first lg:order-last bg-transparent lg:bg-bg-dark lg:rounded-3xl lg:shadow-2xl overscroll-x-none touch-pan-y"
     >
       <!-- Glow effect (behind video) - Hidden on mobile to ensure pure black background for video blending -->
       <div
@@ -219,7 +219,7 @@ const techCards = [
         playsinline
         preload="auto"
         draggable="false"
-        class="w-full max-w-[400px] md:max-w-[580px] lg:max-w-[700px] h-full object-contain mx-auto mix-blend-screen pointer-events-none select-none relative z-20"
+        class="w-full max-w-[450px] md:max-w-[580px] lg:max-w-[700px] h-full object-contain mx-auto mix-blend-screen pointer-events-none select-none relative z-20"
       ></video>
 
       <!-- Tech Floating Cards overlay -->
@@ -436,7 +436,7 @@ const techCards = [
         const angle = (index / techCards.length) * Math.PI * 2;
         const totalAngle = angle + rotationY;
 
-        const radius = isMobile ? 160 : 320;
+        const radius = isMobile ? 180 : 320;
         const x = radius * Math.cos(totalAngle);
         const z = radius * Math.sin(totalAngle);
 
