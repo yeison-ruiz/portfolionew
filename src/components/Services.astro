@@ -16,7 +16,7 @@ const { services, ui } = db[lang];
     <div class="absolute top-[20%] -right-[5%] w-[35%] h-[35%] bg-purple-600/5 blur-[150px] rounded-full animate-pulse-slow delay-1000"></div>
     
     <!-- Subtle Grid Pattern -->
-    <div class="absolute inset-0 opacity-[0.02] bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:60px_60px]"></div>
+    <div class="absolute inset-0 opacity-[0.02] bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-size-[60px_60px]"></div>
   </div>
 
   <div class="container mx-auto px-6 relative z-10">
@@ -39,11 +39,10 @@ const { services, ui } = db[lang];
     </div>
 
     <!-- The Staggered Bento Grid (Initial Shape) -->
-    <div class="grid grid-cols-1 md:grid-cols-6 gap-6 mb-24">
+    <!-- Centered Services Container -->
+    <div class="flex flex-wrap justify-center gap-8 mb-24 max-w-7xl mx-auto">
       {
         services.map((service, index) => {
-          // Disposition: 1st and 5th span 3 cols, others span 2
-          const colSpan = (index === 0 || index === 4) ? "md:col-span-3" : "md:col-span-2";
           const bgColor = service.gradient.includes('green') ? 'rgba(34,197,94,0.05)' : 
                          service.gradient.includes('purple') ? 'rgba(168,85,247,0.05)' :
                          service.gradient.includes('yellow') ? 'rgba(234,179,8,0.05)' :
@@ -51,7 +50,7 @@ const { services, ui } = db[lang];
           
           return (
             <div
-              class={`group relative bg-white/[0.03] border border-white/10 rounded-[2rem] p-8 md:p-10 hover:bg-white/[0.06] transition-all duration-700 hover:-translate-y-2 hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.7)] flex flex-col justify-between h-full service-card opacity-0 translate-y-20 ${colSpan} backdrop-blur-3xl overflow-hidden`}
+              class={`group relative bg-white/3 border border-white/10 rounded-[2.5rem] p-8 md:p-10 hover:bg-white/6 transition-all duration-700 hover:-translate-y-2 hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.7)] flex flex-col w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)] min-w-[320px] max-w-md service-card opacity-0 translate-y-20 backdrop-blur-3xl overflow-hidden h-auto`}
               style={`transition-delay: ${index * 100}ms; --card-glow: ${bgColor}`}
             >
               <!-- Ambient Glow -->
@@ -62,7 +61,7 @@ const { services, ui } = db[lang];
                 <div class="mb-8 w-16 h-16 relative">
                    <div class={`absolute inset-0 bg-linear-to-br ${service.gradient} blur-xl opacity-30 group-hover:opacity-70 transition-opacity duration-700`}></div>
                    <div class="absolute inset-0 bg-[#0A0A0F] rounded-2xl border border-white/10 flex items-center justify-center shadow-2xl z-10 overflow-hidden">
-                      <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:8px_8px]"></div>
+                      <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-size-[8px_8px]"></div>
                       <div class="relative z-20 transition-transform duration-700 group-hover:scale-110 group-hover:rotate-3">
                         {service.icon === 'code' && (
                           <svg viewBox="0 0 24 24" class="w-8 h-8 text-white" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -164,7 +163,7 @@ const { services, ui } = db[lang];
             stagger: 0.1,
             ease: "power3.out",
             scrollTrigger: {
-              trigger: "#servicios .grid",
+              trigger: "#servicios .flex-wrap",
               scroller: scrollContainer,
               start: "top 90%",
             },

@@ -16,7 +16,7 @@ const { slugs } = ui;
       <!-- Brand Logo (Left on Desktop) -->
       <div class="flex-1 flex justify-center md:justify-start">
         <a
-          href={`/${lang}`}
+          href={lang === 'es' ? "/" : `/${lang}`}
           class="text-2xl font-black text-white flex items-center gap-1 group tracking-tighter"
         >
           <span class="text-primary group-hover:text-white transition-colors duration-400">&lt;</span>

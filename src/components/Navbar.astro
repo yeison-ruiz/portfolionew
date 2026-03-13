@@ -19,7 +19,7 @@ const langPath = lang === "es" ? "/en" : "/";
 >
   <!-- Logo -->
   <a
-    href={`/${lang}`}
+    href={lang === 'es' ? "/" : `/${lang}`}
     class="text-3xl md:text-4xl font-black text-white flex items-center gap-1.5 group tracking-tighter"
   >
     <span class="text-primary group-hover:text-white transition-colors duration-400">&lt;</span>
