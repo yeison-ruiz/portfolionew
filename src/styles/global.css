@@ -24,6 +24,13 @@ html, body {
   scroll-behavior: smooth;
 }
 
+/* Ensure absolute black background on mobile for perfect video blending */
+@media (max-width: 1023px) {
+  html, body {
+    background-color: #000000 !important;
+  }
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
