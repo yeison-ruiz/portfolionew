@@ -35,13 +35,22 @@ const { slugs } = ui;
         class="relative h-[500px] md:h-[750px] flex items-center justify-center contact-visual opacity-0 -translate-x-10 w-full"
       >
         <div class="w-full h-full relative">
+            <!-- Mobile Only Title for Visual Section -->
+            <div class="lg:hidden absolute -top-12 left-0 w-full text-center z-30 animate-fade-in">
+              <h2 class="text-3xl font-black text-white leading-tight uppercase tracking-tighter">
+                {ui.contact.title} <br/>
+                <span class="text-transparent bg-clip-text bg-linear-to-r from-purple-500 to-blue-500">
+                  Yeison
+                </span>
+              </h2>
+            </div>
             <ContactVisual />
         </div>
       </div>
 
       <!-- Right Side: Contact Form -->
       <div class="contact-form opacity-0 translate-x-10 flex flex-col items-center text-center w-full">
-        <h2 class="text-5xl font-bold text-white mb-2">
+        <h2 class="hidden lg:block text-5xl font-bold text-white mb-2 text-left">
           {ui.contact.title} <br />
           <span
             class="text-transparent bg-clip-text bg-linear-to-r from-purple-500 to-blue-500"
