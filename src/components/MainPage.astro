@@ -180,6 +180,7 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.autoridad, slugs.service
           currentIndex = index;
           gsap.set(currentSection, { autoAlpha: 0, pointerEvents: "none" });
           gsap.set(nextSection, { pointerEvents: "auto" });
+          ScrollTrigger.refresh();
         },
       });
 

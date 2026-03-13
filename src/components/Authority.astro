@@ -135,5 +135,11 @@ const texts = {
         });
     }
 
-    document.addEventListener("astro:page-load", initAuthority);
+    document.addEventListener("astro:page-load", () => {
+        initAuthority();
+        ScrollTrigger.refresh();
+    });
+
+    // Also run on first load
+    initAuthority();
 </script>
