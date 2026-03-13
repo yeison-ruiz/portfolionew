@@ -301,17 +301,25 @@ const techCards = [
   }
 
   .card-icon-wrapper {
-    width: 28px;
-    height: 28px;
-    border-radius: 8px;
+    width: 20px;
+    height: 20px;
+    @media (min-width: 1024px) {
+      width: 28px;
+      height: 28px;
+    }
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
   .card-icon {
-    width: 16px;
-    height: 16px;
+    width: 12px;
+    height: 12px;
+    @media (min-width: 1024px) {
+      width: 16px;
+      height: 16px;
+    }
     display: flex;
   }
 
@@ -328,7 +336,10 @@ const techCards = [
   }
 
   .card-title {
-    font-size: 0.55rem;
+    font-size: 0.45rem;
+    @media (min-width: 1024px) {
+      font-size: 0.55rem;
+    }
     color: #888;
     text-transform: uppercase;
     font-weight: 600;
@@ -454,19 +465,19 @@ const techCards = [
         const angle = (index / techCards.length) * Math.PI * 2;
         const totalAngle = angle + rotationY;
 
-        const radius = isMobile ? 220 : 320;
+        const radius = isMobile ? 180 : 320;
         const x = radius * Math.cos(totalAngle);
         const z = radius * Math.sin(totalAngle);
 
         const level = (index % 3) - 1;
         const y = level * (isMobile ? 55 : 80);
 
-        const focalLength = isMobile ? 300 : 650;
-        const baseScale = isMobile ? 0.6 : 0.8;
+        const focalLength = isMobile ? 400 : 650;
+        const baseScale = isMobile ? 0.4 : 0.8;
         const scale = (focalLength / (focalLength - z)) * baseScale;
 
         const screenX = x * scale;
-        const screenY = (y * scale) + (isMobile ? 80 : 0);
+        const screenY = (y * scale) + (isMobile ? 110 : 0);
 
         el.style.transform = `translate3d(${screenX}px, ${screenY}px, 0) scale(${scale})`;
         el.style.zIndex = z > 0 ? "30" : "10";
