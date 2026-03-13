@@ -82,11 +82,14 @@ export default function ChatWidget({ lang = "es", discordWebhook }: ChatWidgetPr
     const savedChat = sessionStorage.getItem("chat_state");
     if (savedChat) {
       try {
-        const { messages: savedMessages, currentStep: savedStep, userData: savedData } = JSON.parse(savedChat);
+        const { messages: savedMessages, currentStep: savedStep, userData: savedData, isOpen: savedIsOpen } = JSON.parse(savedChat);
         setMessages(savedMessages.map((m: any) => ({ ...m, timestamp: new Date(m.timestamp) })));
         setCurrentStep(savedStep);
         setUserData(savedData);
-        setIsOpen(true); // Re-open if they had progress
+        // Only re-open if it was explicitly open before
+        if (savedIsOpen) {
+          setIsOpen(true);
+        }
       } catch (e) {
         console.error("Error restoring chat state:", e);
       }
@@ -101,10 +104,11 @@ export default function ChatWidget({ lang = "es", discordWebhook }: ChatWidgetPr
     const chatState = {
       messages,
       currentStep,
-      userData
+      userData,
+      isOpen // Now we save the intentional visibility state
     };
     sessionStorage.setItem("chat_state", JSON.stringify(chatState));
-  }, [messages, currentStep, userData]);
+  }, [messages, currentStep, userData, isOpen]);
 
   // Initial Greeting if empty
   useEffect(() => {
@@ -113,22 +117,27 @@ export default function ChatWidget({ lang = "es", discordWebhook }: ChatWidgetPr
     }
   }, [isOpen]);
 
-  // Start the prompt cycle after 3s
+  // Start the prompt cycle after 10s (increased from 3s to be less invasive)
   useEffect(() => {
     const timer = setTimeout(() => {
-      setShowPrompt(true);
-      setIsBubbleVisible(true);
-    }, 3000);
+      // Only show prompts if the chat is closed and hasn't been opened yet
+      if (!isOpen) {
+        setShowPrompt(true);
+        setIsBubbleVisible(true);
+      }
+    }, 10000);
     return () => clearTimeout(timer);
   }, []);
 
-  // Auto-open chat after 8s
+  // Auto-open chat removed to avoid being invasive
+  /* 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsOpen(true);
     }, 8000);
     return () => clearTimeout(timer);
   }, []);
+  */
 
   // Unlock audio
   useEffect(() => {
