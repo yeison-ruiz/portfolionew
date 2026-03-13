@@ -132,7 +132,7 @@ const techCards = [
       </div>
 
       <h1
-        class="text-6xl lg:text-8xl font-extrabold leading-[0.9] tracking-tighter mb-2"
+        class="hidden lg:block text-6xl lg:text-8xl font-extrabold leading-[0.9] tracking-tighter mb-2"
       >
         {personalInfo.name}
         {personalInfo.lastName}
@@ -140,7 +140,7 @@ const techCards = [
       </h1>
 
       <h2
-        class="text-3xl lg:text-4xl font-semibold mb-6 text-gradient"
+        class="hidden lg:block text-3xl lg:text-4xl font-semibold mb-6 text-gradient"
         set:html={personalInfo.title}
       />
 
@@ -203,6 +203,16 @@ const techCards = [
       id="hero-scene-container"
       class="relative h-[550px] sm:h-[650px] md:h-[600px] lg:h-[750px] w-full flex justify-center items-center order-first lg:order-last bg-transparent lg:bg-bg-dark lg:rounded-3xl lg:shadow-2xl overscroll-x-none touch-pan-y"
     >
+      <!-- Mobile Greeting - Visible only on mobile/tablet -->
+      <div class="absolute top-[5%] lg:hidden z-30 text-center w-full px-4 animate-fade-in">
+        <h2 class="text-4xl xs:text-5xl font-extrabold tracking-tighter mb-1 select-none">
+          {personalInfo.name} <span class="text-gradient">{personalInfo.lastName}</span>
+        </h2>
+        <p class="text-text-secondary text-[10px] xs:text-xs uppercase tracking-[0.3em] font-bold opacity-80 select-none">
+          {personalInfo.title.replace('<br/>', '')}
+        </p>
+      </div>
+
       <!-- Glow effect (behind video) - Hidden on mobile to ensure pure black background for video blending -->
       <div
         class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] h-[250px] md:w-[400px] md:h-[400px] bg-[radial-gradient(circle,rgba(118,39,190,0.4)_0%,rgba(15,5,24,0)_70%)] blur-[40px] md:blur-[60px] pointer-events-none hidden md:block"
