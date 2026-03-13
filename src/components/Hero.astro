@@ -301,21 +301,21 @@ const techCards = [
   }
 
   .card-icon-wrapper {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     @media (min-width: 1024px) {
       width: 28px;
       height: 28px;
     }
-    border-radius: 6px;
+    border-radius: 7px;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
   .card-icon {
-    width: 12px;
-    height: 12px;
+    width: 14px;
+    height: 14px;
     @media (min-width: 1024px) {
       width: 16px;
       height: 16px;
@@ -336,7 +336,7 @@ const techCards = [
   }
 
   .card-title {
-    font-size: 0.45rem;
+    font-size: 0.5rem;
     @media (min-width: 1024px) {
       font-size: 0.55rem;
     }
@@ -347,7 +347,7 @@ const techCards = [
   }
 
   .card-tech {
-    font-size: 0.65rem;
+    font-size: 0.7rem;
     @media (min-width: 1024px) {
       font-size: 0.75rem;
     }
@@ -473,7 +473,7 @@ const techCards = [
         const y = level * (isMobile ? 55 : 80);
 
         const focalLength = isMobile ? 400 : 650;
-        const baseScale = isMobile ? 0.4 : 0.8;
+        const baseScale = isMobile ? 0.5 : 0.8;
         const scale = (focalLength / (focalLength - z)) * baseScale;
 
         const screenX = x * scale;
