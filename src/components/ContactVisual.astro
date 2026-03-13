@@ -69,10 +69,11 @@ const cards: CardData[] = [
 
 <div class="relative w-full h-full flex items-center justify-center py-20 overflow-visible">
   <!-- Central Video Character -->
-  <div class="relative w-full max-w-[450px] md:max-w-[550px] flex items-center justify-center">
+  <div class="relative w-full max-w-[450px] md:max-w-[550px] flex items-center justify-center video-glow-container">
     
-    <!-- Background blackout layer just for the character to hide the grid box -->
-    <div class="absolute inset-0 bg-black rounded-full blur-[60px] scale-90 z-0"></div>
+    <!-- Deep backing layer to keep character solid even with screen blend -->
+    <div class="absolute inset-0 bg-black rounded-full blur-[40px] scale-[0.65] z-0 opacity-80"></div>
+    <div class="absolute inset-0 bg-purple-900/20 rounded-full blur-[80px] scale-90 z-0"></div>
 
     <div class="relative z-10 w-full overflow-hidden mask-container">
         <video
@@ -86,8 +87,8 @@ const cards: CardData[] = [
           class="w-full h-auto object-cover character-video"
         ></video>
         <!-- Fade overlays for even softer edges -->
-        <div class="absolute inset-0 bg-linear-to-t from-black via-transparent to-black pointer-events-none opacity-60"></div>
-        <div class="absolute inset-0 bg-linear-to-r from-black via-transparent to-black pointer-events-none opacity-60"></div>
+        <div class="absolute inset-0 bg-linear-to-t from-black via-transparent to-black pointer-events-none opacity-40"></div>
+        <div class="absolute inset-0 bg-linear-to-r from-black via-transparent to-black pointer-events-none opacity-40"></div>
     </div>
     
     <!-- Tech Cards -->
@@ -122,18 +123,22 @@ const cards: CardData[] = [
   const cards = document.querySelectorAll('.tech-card-html');
   const video = document.getElementById('characterVideo') as HTMLVideoElement;
   
-  // Ensure video keeps playing and loops correctly
+  // Unified video control
   if (video) {
-      video.play().catch(() => {
-          // Fallback if autoplay is blocked
-          window.addEventListener('click', () => video.play(), { once: true });
-          window.addEventListener('scroll', () => video.play(), { once: true });
+      // Force playback even if browser is stubborn
+      const ensurePlay = () => {
+          if (video.paused) video.play().catch(() => {});
+      };
+
+      video.addEventListener('loadedmetadata', () => {
+          video.playbackRate = 0.95; // Slightly slower for more natural feel
       });
 
-      // Robust loop
-      video.addEventListener('ended', () => {
-          video.currentTime = 0;
-          video.play();
+      // Periodic check to ensure it hasn't stopped
+      setInterval(ensurePlay, 2000);
+      
+      ['click', 'touchstart', 'scroll', 'wheel', 'mousemove'].forEach(event => {
+          window.addEventListener(event, ensurePlay, { once: false });
       });
   }
 
@@ -159,6 +164,15 @@ const cards: CardData[] = [
       delay: i * 0.15
     });
   });
+
+  // Pulse animation for the central area to mask loop stutters
+  gsap.to('.video-glow-container', {
+      scale: 1.015,
+      duration: 5,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut"
+  });
 </script>
 
 <style>
@@ -167,18 +181,25 @@ const cards: CardData[] = [
   }
   
   .character-video {
-    /* Use screen blend mode only if the video background is very close to black */
+    /* Mix blend screen makes blacks transparent, showing the grid behind IF not covered by backing */
     mix-blend-mode: screen;
-    /* Apply a radial mask to vanish the rectangular edges */
-    /* Increased central opacity area to 60% and transition to 95% to avoid cutting the character */
-    -webkit-mask-image: radial-gradient(circle, black 60%, transparent 95%);
-    mask-image: radial-gradient(circle, black 60%, transparent 95%);
-    filter: brightness(1.1) contrast(1.1);
+    /* Radial mask to feather edges into transparency */
+    -webkit-mask-image: radial-gradient(circle at center, black 45%, transparent 88%);
+    mask-image: radial-gradient(circle at center, black 45%, transparent 88%);
+    /* Deepen contrast to kill off compression grey in blacks */
+    filter: contrast(1.2) brightness(1.05);
+    transition: opacity 0.5s ease;
   }
 
   .mask-container {
-      /* Ensure no overflow from the mask */
       contain: paint;
+      /* subtle breathing effect */
+      animation: breathe 10s infinite ease-in-out;
+  }
+
+  @keyframes breathe {
+      0%, 100% { transform: scale(1); filter: blur(0px); }
+      50% { transform: scale(1.005); filter: blur(0.2px); }
   }
 
   @media (hover: hover) {
