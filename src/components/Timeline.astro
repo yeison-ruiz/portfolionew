@@ -69,19 +69,19 @@ const { timeline, ui } = db[lang];
             <!-- Content Card -->
             <div class={`w-full md:w-5/12 ${item.align === 'left' ? 'order-2 md:order-1' : 'order-3'}`}>
                   <div
-                  class={`bg-[#0D0D11] border border-white/5 p-8 md:p-10 rounded-[2.5rem] backdrop-blur-xl transition-all duration-700 hover:bg-[#121218] hover:-translate-y-3 hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.6)] hover:border-white/10 z-10 relative overflow-hidden ${item.align === 'left' ? 'timeline-card-left' : 'timeline-card-right'}`}
+                  class={`bg-[#0D0D11] border p-8 md:p-10 rounded-[2.5rem] backdrop-blur-xl transition-all duration-700 hover:bg-[#121218] hover:-translate-y-3 hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.6)] z-10 relative overflow-hidden ${item.align === 'left' ? 'timeline-card-left' : 'timeline-card-right'} ${item.isSpecial ? 'border-yellow-500/30' : 'border-white/5 hover:border-white/10'}`}
                   >
                     <!-- Small Glow -->
-                    <div class="absolute top-0 left-0 w-32 h-32 bg-primary/10 blur-[60px] -z-10 group-hover:bg-primary/20 transition-colors"></div>
+                    <div class={`absolute top-0 left-0 w-32 h-32 blur-[60px] -z-10 transition-colors ${item.isSpecial ? 'bg-yellow-500/20' : 'bg-primary/10 group-hover:bg-primary/20'}`}></div>
 
                     <div class="flex items-center justify-between mb-8">
                        <div class="flex flex-col">
-                          <span class="text-primary-glow text-xs font-bold tracking-widest uppercase mb-2 block">{item.year}</span>
+                          <span class={`text-xs font-bold tracking-widest uppercase mb-2 block ${item.isSpecial ? 'text-yellow-400' : 'text-primary-glow'}`}>{item.year}</span>
                           <h3 class="text-2xl md:text-3xl font-extrabold text-white leading-tight">
                               {item.title}
                           </h3>
                        </div>
-                       <div class="p-4 rounded-2xl bg-white/5 border border-white/5 text-white/80 shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+                       <div class={`p-4 rounded-2xl bg-white/5 border border-white/5 transition-transform duration-500 shrink-0 group-hover:scale-110 group-hover:rotate-3 ${item.isSpecial ? 'text-yellow-400 border-yellow-500/20' : 'text-white/80'}`}>
                           <svg
                               xmlns="http://www.w3.org/2000/svg"
                               class="w-6 h-6"
@@ -99,7 +99,7 @@ const { timeline, ui } = db[lang];
                        </div>
                     </div>
 
-                    <p class="text-primary font-bold text-lg mb-4">{item.company}</p>
+                    <p class={`font-bold text-lg mb-4 ${item.isSpecial ? 'text-yellow-500' : 'text-primary'}`}>{item.company}</p>
 
                     <p class="text-gray-400 mb-8 leading-relaxed text-sm md:text-base">
                         {item.description}
@@ -108,14 +108,14 @@ const { timeline, ui } = db[lang];
                     <div class="flex flex-wrap gap-2">
                         {item.tags.map((tag: string) => (
                             <span
-                            class="px-4 py-1.5 text-[10px] sm:text-xs font-bold tracking-widest uppercase rounded-xl bg-white/5 border border-white/5 text-gray-450 hover:bg-white/10 hover:text-white transition-all cursor-default"
+                            class={`px-4 py-1.5 text-[10px] sm:text-xs font-bold tracking-widest uppercase rounded-xl border transition-all cursor-default ${item.isSpecial ? 'bg-yellow-500/10 border-yellow-500/20 text-yellow-500/70 hover:bg-yellow-500/20 hover:text-yellow-500' : 'bg-white/5 border-white/5 text-gray-450 hover:bg-white/10 hover:text-white'}`}
                             >{tag}</span
                             >
                         ))}
                     </div>
 
                     <!-- Subtle corner icon -->
-                    <div class="absolute bottom-6 right-6 opacity-0 group-hover:opacity-10 transition-opacity">
+                    <div class={`absolute bottom-6 right-6 transition-opacity ${item.isSpecial ? 'opacity-20' : 'opacity-0 group-hover:opacity-10'}`}>
                        <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
                           <path d={item.icon} />
                        </svg>
@@ -125,9 +125,9 @@ const { timeline, ui } = db[lang];
 
             <!-- Center Dot (Interactive Node) -->
             <div
-                class="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-[#0D0D11] border-4 border-white/10 md:flex items-center justify-center hidden z-20 group-hover:border-primary transition-all duration-500 shadow-[0_0_20px_rgba(0,0,0,0.8)]"
+                class={`absolute left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-[#0D0D11] border-4 md:flex items-center justify-center hidden z-20 group-hover:border-primary transition-all duration-500 shadow-[0_0_20px_rgba(0,0,0,0.8)] ${item.isSpecial ? 'border-yellow-500' : 'border-white/10'}`}
             >
-                <div class="w-2 h-2 rounded-full bg-primary-glow group-hover:scale-[2.5] transition-transform duration-500 shadow-[0_0_15px_var(--color-primary)]"></div>
+                <div class={`w-2 h-2 rounded-full group-hover:scale-[2.5] transition-transform duration-500 ${item.isSpecial ? 'bg-yellow-400 shadow-[0_0_15px_rgba(255,215,0,0.8)]' : 'bg-primary-glow shadow-[0_0_15px_var(--color-primary)]'}`}></div>
             </div>
 
             <!-- Empty spacer for the other side on desktop -->

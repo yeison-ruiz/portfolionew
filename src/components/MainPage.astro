@@ -9,6 +9,7 @@ import Contact from "./Contact.astro";
 import ChatWidget from "./ChatWidget";
 import VisitorAlert from "./VisitorAlert";
 import { db } from "../utils/db";
+import Authority from "./Authority.astro";
 
 interface Props {
   lang: "es" | "en";
@@ -27,7 +28,7 @@ const description = lang === "es"
   : "Professional portfolio of Yeison Ruiz, Software Architect and Creative Developer specialized in immersive web experiences.";
 
 const { slugs } = data.ui;
-const sectionSlugs = [slugs.home, slugs.timeline, slugs.services, slugs.projects, slugs.contact];
+const sectionSlugs = [slugs.home, slugs.timeline, slugs.autoridad, slugs.services, slugs.projects, slugs.contact];
 ---
 
 <Layout title={title} description={description} lang={lang}>
@@ -55,9 +56,22 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.services, slugs.projects
       </div>
     </section>
 
-    <!-- Section 2: Services -->
+    <!-- Section 2: Authority -->
     <section
       id="section-2"
+      class="full-page-section z-0 opacity-0 pointer-events-none"
+    >
+      <div
+        id="authority-scroll-container"
+        class="w-full h-full overflow-y-auto no-scrollbar"
+      >
+        <Authority lang={lang} />
+      </div>
+    </section>
+
+    <!-- Section 3: Services -->
+    <section
+      id="section-3"
       class="full-page-section z-0 opacity-0 pointer-events-none"
     >
       <div
@@ -68,9 +82,9 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.services, slugs.projects
       </div>
     </section>
 
-    <!-- Section 3: Projects -->
+    <!-- Section 4: Projects -->
     <section
-      id="section-3"
+      id="section-4"
       class="full-page-section z-0 opacity-0 pointer-events-none"
     >
       <div
@@ -81,9 +95,9 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.services, slugs.projects
       </div>
     </section>
 
-    <!-- Section 4: Contact -->
+    <!-- Section 5: Contact -->
     <section
-      id="section-4"
+      id="section-5"
       class="full-page-section z-0 opacity-0 pointer-events-none"
     >
       <div

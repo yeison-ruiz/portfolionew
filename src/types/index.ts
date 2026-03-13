@@ -18,6 +18,14 @@ export interface PersonalInfo {
     twitter?: string;
     email: string;
   };
+  certifications?: Array<{
+    id: string;
+    title: string;
+    issuer: string;
+    date: string;
+    link: string;
+    shortName: string;
+  }>;
 }
 
 export interface Service {
@@ -43,6 +51,7 @@ export interface TimelineItem {
   icon: string; // SVG path or identifier
   align: "left" | "right";
   colorClass: string; // e.g. "text-blue-400" or "bg-blue-500"
+  isSpecial?: boolean;
 }
 
 export interface Project {
@@ -65,6 +74,7 @@ export interface SiteData {
     nav: {
       home: string;
       timeline: string;
+      autoridad: string;
       services: string;
       projects: string;
       contact: string;
@@ -121,6 +131,7 @@ export interface SiteData {
     slugs: {
       home: string;
       timeline: string;
+      autoridad: string;
       services: string;
       projects: string;
       contact: string;

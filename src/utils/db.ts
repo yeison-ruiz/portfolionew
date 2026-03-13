@@ -22,11 +22,30 @@ export const db: Translations = {
         email: "contact@yeisonruiz.com",
         linkedin: "#",
       },
+      certifications: [
+        {
+          id: "google-ai",
+          title: "Google AI Professional",
+          issuer: "Google",
+          date: "Feb 2026",
+          link: "https://coursera.org/verify/professional-cert/6WYB2PMJEE1P",
+          shortName: "Google AI"
+        },
+        {
+          id: "gen-ai",
+          title: "Generative AI for Software Development",
+          issuer: "DeepLearning.AI",
+          date: "Mar 2026",
+          link: "https://coursera.org/verify/professional-cert/7ENB1XE719H6",
+          shortName: "GenAI"
+        }
+      ]
     },
     ui: {
       nav: {
         home: "Inicio",
         timeline: "Trayectoria",
+        autoridad: "Autoridad",
         services: "Servicios",
         projects: "Proyectos",
         contact: "Contactenos",
@@ -83,6 +102,7 @@ export const db: Translations = {
       slugs: {
         home: "",
         timeline: "trayectoria",
+        autoridad: "autoridad",
         services: "servicios",
         projects: "proyectos",
         contact: "contactenos",
@@ -174,6 +194,30 @@ export const db: Translations = {
       },
     ],
     timeline: [
+      {
+        id: "cert-genai",
+        year: "2026",
+        title: "Generative AI for Software Development",
+        company: "DeepLearning.AI",
+        description: "Certificación profesional enfocada en la integración de LLMs en el flujo de desarrollo, diseño de sistemas potenciados por IA y automatización inteligente.",
+        tags: ["Integración de LLM", "Prompt Engineering", "AI System Design"],
+        align: "right",
+        colorClass: "primary",
+        icon: "M13 10V3L4 14h7v7l9-11h-7z",
+        isSpecial: true
+      },
+      {
+        id: "cert-google",
+        year: "2026",
+        title: "Google AI Professional",
+        company: "Google",
+        description: "Dominio de los fundamentos de IA, aprendizaje automático y herramientas de Google para la creación de soluciones digitales inteligentes a escala global.",
+        tags: ["Machine Learning", "Google Cloud AI", "Fundamentos de IA"],
+        align: "left",
+        colorClass: "blue-500",
+        icon: "M13 10V3L4 14h7v7l9-11h-7z",
+        isSpecial: true
+      },
       {
         id: "2025",
         year: "2022 - 2025",
@@ -307,11 +351,30 @@ export const db: Translations = {
         email: "contact@yeisonruiz.com",
         linkedin: "#",
       },
+      certifications: [
+        {
+          id: "google-ai",
+          title: "Google AI Professional",
+          issuer: "Google",
+          date: "Feb 2026",
+          link: "https://coursera.org/verify/professional-cert/6WYB2PMJEE1P",
+          shortName: "Google AI"
+        },
+        {
+          id: "gen-ai",
+          title: "Generative AI for Software Development",
+          issuer: "DeepLearning.AI",
+          date: "Mar 2026",
+          link: "https://coursera.org/verify/professional-cert/7ENB1XE719H6",
+          shortName: "GenAI"
+        }
+      ]
     },
     ui: {
       nav: {
         home: "Home",
         timeline: "Experience",
+        autoridad: "Authority",
         services: "Services",
         projects: "Projects",
         contact: "Contact",
@@ -368,6 +431,7 @@ export const db: Translations = {
       slugs: {
         home: "",
         timeline: "experience",
+        autoridad: "authority",
         services: "services",
         projects: "projects",
         contact: "contact",
@@ -459,6 +523,30 @@ export const db: Translations = {
       },
     ],
     timeline: [
+      {
+        id: "cert-genai",
+        year: "2026",
+        title: "Generative AI for Software Development",
+        company: "DeepLearning.AI",
+        description: "Professional certification focused on integrating LLMs into development workflows, AI-powered system design, and intelligent automation.",
+        tags: ["LLM Integration", "Prompt Engineering", "AI System Design"],
+        align: "right",
+        colorClass: "primary",
+        icon: "M13 10V3L4 14h7v7l9-11h-7z",
+        isSpecial: true
+      },
+      {
+        id: "cert-google",
+        year: "2026",
+        title: "Google AI Professional",
+        company: "Google",
+        description: "Mastery of AI fundamentals, machine learning, and Google tools for creating intelligent digital solutions at a global scale.",
+        tags: ["Machine Learning", "Google Cloud AI", "AI Fundamentals"],
+        align: "left",
+        colorClass: "blue-500",
+        icon: "M13 10V3L4 14h7v7l9-11h-7z",
+        isSpecial: true
+      },
       {
         id: "2025",
         year: "2022 - 2025",
