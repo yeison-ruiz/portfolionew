@@ -319,6 +319,32 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.autoridad, slugs.service
 
     document.addEventListener("click", handleAnchorClick);
 
+    // Optimized Video Management for Mobile
+    const videos = document.querySelectorAll('video');
+    const videoObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const video = entry.target as HTMLVideoElement;
+        if (entry.isIntersecting) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      });
+    }, { threshold: 0.1 });
+
+    videos.forEach(v => videoObserver.observe(v));
+
+    // Listen for section changes to specifically wake up videos in the active section
+    window.addEventListener("sectionChange", (e: any) => {
+      const activeSection = sections[e.detail.index];
+      if (activeSection) {
+        const sectionVideos = activeSection.querySelectorAll('video');
+        sectionVideos.forEach((v: any) => {
+          v.play().catch(() => {});
+        });
+      }
+    });
+
     // Handle initial hash on load
     const hash = window.location.hash.substring(1);
     if (hash) {

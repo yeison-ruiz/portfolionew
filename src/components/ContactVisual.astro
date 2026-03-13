@@ -84,6 +84,7 @@ const cards: CardData[] = [
           muted
           playsinline
           webkit-playsinline
+          preload="auto"
           class="w-full h-auto object-cover character-video"
         ></video>
         <!-- Fade overlays for even softer edges -->
@@ -125,21 +126,16 @@ const cards: CardData[] = [
   
   // Unified video control
   if (video) {
-      // Force playback even if browser is stubborn
+      // Force playback even if browser is stubborn - optimized for performance
       const ensurePlay = () => {
-          if (video.paused) video.play().catch(() => {});
+          if (video.paused) {
+            video.play().catch(() => {});
+          }
       };
 
-      video.addEventListener('loadedmetadata', () => {
-          video.playbackRate = 0.95; // Slightly slower for more natural feel
-      });
-
-      // Periodic check to ensure it hasn't stopped
-      setInterval(ensurePlay, 2000);
-      
-      ['click', 'touchstart', 'scroll', 'wheel', 'mousemove'].forEach(event => {
-          window.addEventListener(event, ensurePlay, { once: false });
-      });
+      // Ensure it starts playing on first interaction
+      window.addEventListener('touchstart', ensurePlay, { once: true });
+      window.addEventListener('click', ensurePlay, { once: true });
   }
 
   // Floating animation for each card
