@@ -249,7 +249,7 @@ const techCards = [
               >
                 <div class="card-icon" set:html={card.icon} />
               </div>
-              <div class="card-info hidden lg:flex">
+              <div class="card-info flex">
                 <span class="card-title">{card.title}</span>
                 <span class="card-tech">{card.tech}</span>
               </div>
@@ -269,10 +269,14 @@ const techCards = [
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 12px;
-    padding: 8px 12px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    padding: 6px 8px;
+    gap: 6px;
+    @media (min-width: 1024px) {
+      padding: 8px 12px;
+      gap: 10px;
+    }
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     user-select: none;
     -webkit-user-drag: none;
@@ -318,6 +322,7 @@ const techCards = [
   }
 
   .card-info {
+    display: flex;
     flex-direction: column;
     min-width: max-content;
   }
@@ -331,7 +336,10 @@ const techCards = [
   }
 
   .card-tech {
-    font-size: 0.75rem;
+    font-size: 0.65rem;
+    @media (min-width: 1024px) {
+      font-size: 0.75rem;
+    }
     font-weight: 700;
     color: #fff;
   }
