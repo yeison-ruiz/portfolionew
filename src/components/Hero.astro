@@ -448,12 +448,12 @@ const techCards = [
         const screenX = x * scale;
         const screenY = y * scale;
 
-        el.style.transform = `translate(${screenX}px, ${screenY}px) scale(${scale})`;
+        el.style.transform = `translate3d(${screenX}px, ${screenY}px, 0) scale(${scale})`;
         el.style.zIndex = z > 0 ? "30" : "10";
 
         const opacity = z > 0 ? 1 : 0.4 + ((z + radius) / (radius * 2)) * 0.6;
         el.style.opacity = opacity.toString();
-        el.style.filter = z < 0 ? `blur(${2 - scale * 2}px)` : "none";
+        // Removed blur filter for better performance
       });
     };
 
