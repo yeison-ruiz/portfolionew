@@ -25,34 +25,40 @@ const { slugs } = ui;
         </a>
       </div>
 
-      <!-- Navigation Menu (Centered) -->
-      <nav class="flex-2 flex flex-wrap justify-center items-center gap-x-8 gap-y-3">
-        <a
-          href={`#${slugs.timeline}`}
-          class="text-sm text-gray-400 hover:text-white transition-colors font-medium whitespace-nowrap"
-          >{ui.nav.timeline}</a
-        >
-        <a
-          href={`#${slugs.autoridad}`}
-          class="text-sm text-gray-400 hover:text-white transition-colors font-medium whitespace-nowrap"
-          >{ui.nav.autoridad}</a
-        >
-        <a
-          href={`#${slugs.services}`}
-          class="text-sm text-gray-400 hover:text-white transition-colors font-medium whitespace-nowrap"
-          >{ui.nav.services}</a
-        >
-        <a
-          href={`#${slugs.projects}`}
-          class="text-sm text-gray-400 hover:text-white transition-colors font-medium whitespace-nowrap"
-          >{ui.nav.projects}</a
-        >
-        <a
-          href={`#${slugs.contact}`}
-          class="text-sm text-white hover:text-primary-glow transition-colors font-bold whitespace-nowrap"
-          >{ui.nav.contact}</a
-        >
-      </nav>
+      <!-- Navigation Menu & Copyright (Centered) -->
+      <div class="flex-2 flex flex-col items-center gap-6">
+        <nav class="flex flex-wrap justify-center items-center gap-x-8 gap-y-3">
+          <a
+            href={`#${slugs.timeline}`}
+            class="text-sm text-gray-400 hover:text-white transition-colors font-medium whitespace-nowrap"
+            >{ui.nav.timeline}</a
+          >
+          <a
+            href={`#${slugs.autoridad}`}
+            class="text-sm text-gray-400 hover:text-white transition-colors font-medium whitespace-nowrap"
+            >{ui.nav.autoridad}</a
+          >
+          <a
+            href={`#${slugs.services}`}
+            class="text-sm text-gray-400 hover:text-white transition-colors font-medium whitespace-nowrap"
+            >{ui.nav.services}</a
+          >
+          <a
+            href={`#${slugs.projects}`}
+            class="text-sm text-gray-400 hover:text-white transition-colors font-medium whitespace-nowrap"
+            >{ui.nav.projects}</a
+          >
+          <a
+            href={`#${slugs.contact}`}
+            class="text-sm text-white hover:text-primary-glow transition-colors font-bold whitespace-nowrap"
+            >{ui.nav.contact}</a
+          >
+        </nav>
+        
+        <p class="text-xs text-gray-500">
+          © {new Date().getFullYear()} {personalInfo.name} {personalInfo.lastName}. {ui.footer.rights}
+        </p>
+      </div>
 
       <!-- Social Icons (Right on Desktop) -->
       <div class="flex-1 flex justify-center md:justify-end gap-5">
@@ -77,13 +83,6 @@ const { slugs } = ui;
           </a>
         )}
       </div>
-    </div>
-
-    <!-- Copyright (Strictly Centered) -->
-    <div class="pt-8 border-t border-white/5 text-center">
-      <p class="text-xs text-gray-500">
-        © {new Date().getFullYear()} {personalInfo.name} {personalInfo.lastName}. {ui.footer.rights}
-      </p>
     </div>
   </div>
 </footer>
