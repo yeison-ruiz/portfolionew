@@ -301,8 +301,8 @@ const techCards = [
   }
 
   .card-icon-wrapper {
-    width: 24px;
-    height: 24px;
+    width: 26px;
+    height: 26px;
     @media (min-width: 1024px) {
       width: 28px;
       height: 28px;
@@ -314,8 +314,8 @@ const techCards = [
   }
 
   .card-icon {
-    width: 14px;
-    height: 14px;
+    width: 15px;
+    height: 15px;
     @media (min-width: 1024px) {
       width: 16px;
       height: 16px;
@@ -336,7 +336,7 @@ const techCards = [
   }
 
   .card-title {
-    font-size: 0.5rem;
+    font-size: 0.52rem;
     @media (min-width: 1024px) {
       font-size: 0.55rem;
     }
@@ -347,7 +347,7 @@ const techCards = [
   }
 
   .card-tech {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     @media (min-width: 1024px) {
       font-size: 0.75rem;
     }
@@ -465,15 +465,15 @@ const techCards = [
         const angle = (index / techCards.length) * Math.PI * 2;
         const totalAngle = angle + rotationY;
 
-        const radius = isMobile ? 180 : 320;
+        const radius = isMobile ? 200 : 320;
         const x = radius * Math.cos(totalAngle);
         const z = radius * Math.sin(totalAngle);
 
         const level = (index % 3) - 1;
         const y = level * (isMobile ? 55 : 80);
 
-        const focalLength = isMobile ? 400 : 650;
-        const baseScale = isMobile ? 0.5 : 0.8;
+        const focalLength = isMobile ? 350 : 650;
+        const baseScale = isMobile ? 0.7 : 0.8;
         const scale = (focalLength / (focalLength - z)) * baseScale;
 
         const screenX = x * scale;
