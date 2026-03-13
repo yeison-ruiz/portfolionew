@@ -24,7 +24,7 @@ export const db: Translations = {
       },
       certifications: [
         {
-          id: "google-ai",
+          id: "google-ai-prof",
           title: "Google AI Professional",
           issuer: "Google",
           date: "Feb 2026",
@@ -32,12 +32,52 @@ export const db: Translations = {
           shortName: "Google AI"
         },
         {
-          id: "gen-ai",
+          id: "deeplearning-prof",
           title: "Generative AI for Software Development",
           issuer: "DeepLearning.AI",
           date: "Mar 2026",
           link: "https://coursera.org/verify/professional-cert/7ENB1XE719H6",
           shortName: "GenAI"
+        },
+        {
+          id: "google-content",
+          title: "AI for Content Creation",
+          issuer: "Google",
+          date: "Feb 2026",
+          link: "https://coursera.org/verify/MRJW10YR1WVL",
+          shortName: "Content AI"
+        },
+        {
+          id: "google-apps",
+          title: "AI for App Building",
+          issuer: "Google",
+          date: "Feb 2026",
+          link: "https://coursera.org/verify/4E2PL1IWGLE2",
+          shortName: "App AI"
+        },
+        {
+          id: "google-data",
+          title: "AI for Data Analysis",
+          issuer: "Google",
+          date: "Feb 2026",
+          link: "https://coursera.org/verify/NU2N2RIOJTY1",
+          shortName: "Data AI"
+        },
+        {
+          id: "google-research",
+          title: "AI for Research and Insights",
+          issuer: "Google",
+          date: "Feb 2026",
+          link: "https://coursera.org/verify/VUTDWE9GLPES",
+          shortName: "Research AI"
+        },
+        {
+          id: "dl-team",
+          title: "Team Software Engineering with AI",
+          issuer: "DeepLearning.AI",
+          date: "Mar 2026",
+          link: "https://coursera.org/verify/TN417ZJNP70B",
+          shortName: "Team AI"
         }
       ]
     },
@@ -353,7 +393,7 @@ export const db: Translations = {
       },
       certifications: [
         {
-          id: "google-ai",
+          id: "google-ai-prof",
           title: "Google AI Professional",
           issuer: "Google",
           date: "Feb 2026",
@@ -361,12 +401,52 @@ export const db: Translations = {
           shortName: "Google AI"
         },
         {
-          id: "gen-ai",
+          id: "deeplearning-prof",
           title: "Generative AI for Software Development",
           issuer: "DeepLearning.AI",
           date: "Mar 2026",
           link: "https://coursera.org/verify/professional-cert/7ENB1XE719H6",
           shortName: "GenAI"
+        },
+        {
+          id: "google-content",
+          title: "AI for Content Creation",
+          issuer: "Google",
+          date: "Feb 2026",
+          link: "https://coursera.org/verify/MRJW10YR1WVL",
+          shortName: "Content AI"
+        },
+        {
+          id: "google-apps",
+          title: "AI for App Building",
+          issuer: "Google",
+          date: "Feb 2026",
+          link: "https://coursera.org/verify/4E2PL1IWGLE2",
+          shortName: "App AI"
+        },
+        {
+          id: "google-data",
+          title: "AI for Data Analysis",
+          issuer: "Google",
+          date: "Feb 2026",
+          link: "https://coursera.org/verify/NU2N2RIOJTY1",
+          shortName: "Data AI"
+        },
+        {
+          id: "google-research",
+          title: "AI for Research and Insights",
+          issuer: "Google",
+          date: "Feb 2026",
+          link: "https://coursera.org/verify/VUTDWE9GLPES",
+          shortName: "Research AI"
+        },
+        {
+          id: "dl-team",
+          title: "Team Software Engineering with AI",
+          issuer: "DeepLearning.AI",
+          date: "Mar 2026",
+          link: "https://coursera.org/verify/TN417ZJNP70B",
+          shortName: "Team AI"
         }
       ]
     },
