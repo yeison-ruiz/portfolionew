@@ -117,27 +117,33 @@ export default function ChatWidget({ lang = "es", discordWebhook }: ChatWidgetPr
     }
   }, [isOpen]);
 
-  // Start the prompt cycle after 10s (increased from 3s to be less invasive)
+  // Auto-open logic specifically for Home page
+  useEffect(() => {
+    // We only auto-open on the Home page ( root or /en )
+    const isHome = window.location.pathname === "/" || window.location.pathname === "/en" || window.location.pathname === "/en/";
+    
+    // Check if we've already handled the initial auto-open for this session
+    const hasAlreadyAutoOpened = sessionStorage.getItem("chat_auto_triggered");
+
+    if (isHome && !hasAlreadyAutoOpened && !isOpen && messages.length === 0) {
+      const timer = setTimeout(() => {
+        setIsOpen(true);
+        sessionStorage.setItem("chat_auto_triggered", "true");
+      }, 5000); // 5s wait time on Home for a premium feel
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  // Start the prompt cycle after 4s (restored to be more proactive)
   useEffect(() => {
     const timer = setTimeout(() => {
-      // Only show prompts if the chat is closed and hasn't been opened yet
       if (!isOpen) {
         setShowPrompt(true);
         setIsBubbleVisible(true);
       }
-    }, 10000);
+    }, 4000);
     return () => clearTimeout(timer);
-  }, []);
-
-  // Auto-open chat removed to avoid being invasive
-  /* 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsOpen(true);
-    }, 8000);
-    return () => clearTimeout(timer);
-  }, []);
-  */
+  }, [isOpen]);
 
   // Unlock audio
   useEffect(() => {
