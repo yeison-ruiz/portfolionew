@@ -11,7 +11,7 @@ const initials = `${personalInfo.name[0]}${personalInfo.lastName[0]}`;
 
 const otherLang = lang === "es" ? "en" : "es";
 const langLabel = lang === "es" ? "EN" : "ES";
-const langPath = `/${otherLang}`;
+const langPath = lang === "es" ? "/en" : "/";
 ---
 
 <header
@@ -55,15 +55,6 @@ const langPath = `/${otherLang}`;
           data-slug={ui.slugs.projects}
         >
           {ui.nav.projects}
-        </a>
-      </li>
-      <li>
-        <a
-          href={`#${ui.slugs.contact}`}
-          class="nav-link relative z-10 px-5 py-2.5 text-text-secondary hover:text-white transition-all duration-300 font-medium text-sm inline-flex items-center justify-center rounded-full"
-          data-slug={ui.slugs.contact}
-        >
-          {ui.nav.contact}
         </a>
       </li>
     </ul>
