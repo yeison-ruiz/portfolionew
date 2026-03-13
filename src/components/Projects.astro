@@ -9,7 +9,7 @@ const { lang = "es" } = Astro.props;
 const { projects, personalInfo, ui } = db[lang];
 ---
 
-<section id="proyectos" class="relative min-h-full flex flex-col pt-32 pb-24">
+<section id={ui.slugs.projects} class="relative min-h-full flex flex-col pt-24 md:pt-32 pb-24 projects-section-container">
   <!-- Background Elements -->
   <div class="absolute inset-0 bg-bg-dark -z-20">
     <!-- Grid Pattern -->
@@ -21,30 +21,20 @@ const { projects, personalInfo, ui } = db[lang];
   </div>
   <div class="container mx-auto px-6 grow flex flex-col relative z-10">
     <!-- Header -->
-    <div
-      class="flex flex-col md:flex-row md:items-end justify-between mb-16 project-header opacity-0 translate-y-10"
-    >
-      <div class="max-w-3xl">
-        <div
-          class="inline-flex items-center px-4 py-1.5 rounded-full border border-purple-500/30 bg-purple-500/10 backdrop-blur-sm mb-6"
-        >
-          <span class="w-2 h-2 rounded-full bg-purple-500 animate-pulse mr-2"
-          ></span>
-          <span
-            class="text-xs font-semibold tracking-widest text-purple-300 uppercase"
-            >{ui.projects.badge}</span
-          >
-        </div>
-        <h2 class="text-5xl md:text-6xl font-bold text-white tracking-tight mb-4">
-          {ui.projects.title} <span
-            class="text-transparent bg-clip-text bg-linear-to-r from-purple-500 to-blue-500"
-            >{ui.projects.titleHighlight}</span
-          >
-        </h2>
-        <p class="text-text-secondary text-lg max-w-2xl">
-          {ui.projects.description}
-        </p>
+    <div class="project-header mb-10 md:mb-16 opacity-0 translate-y-10 text-center lg:text-left">
+      <div class="inline-flex items-center px-4 py-1.5 rounded-full border border-purple-500/30 bg-purple-500/10 backdrop-blur-sm mb-6">
+        <span class="w-2 h-2 rounded-full bg-purple-500 animate-pulse mr-2"></span>
+        <span class="text-xs font-semibold tracking-widest text-purple-300 uppercase">{ui.projects.badge}</span>
       </div>
+      <h2 class="text-4xl md:text-7xl font-black text-white mb-4 md:mb-6 uppercase tracking-tighter">
+        {ui.projects.title} <span class="text-transparent bg-clip-text bg-linear-to-r from-purple-500 via-blue-500 to-cyan-400">
+          {ui.projects.titleHighlight}
+        </span>
+      </h2>
+      <p class="text-gray-400 text-base md:text-xl max-w-2xl mx-auto lg:mx-0 leading-relaxed font-medium">
+        {ui.projects.description}
+      </p>
+    </div>
 
       <!-- Navigation Buttons -->
       <div class="hidden md:flex gap-4 mt-8 md:mt-0">
@@ -88,18 +78,19 @@ const { projects, personalInfo, ui } = db[lang];
 
     <!-- Projects Carousel -->
     <div
-      class="relative overflow-x-auto overflow-y-hidden pb-12 no-scrollbar"
+      class="relative md:overflow-x-auto md:overflow-y-hidden pb-12 no-scrollbar"
       id="projects-carousel"
     >
-      <div class="flex gap-8 w-max px-2 md:px-[5vw]">
+      <div class="flex flex-col md:flex-row gap-8 w-full md:w-max px-2 md:px-[5vw] items-center md:items-start">
         {
           Array(20).fill(projects).flat().map((project, index) => (
             <article
-              class="project-card opacity-0 scale-95 w-[85vw] md:w-[600px] shrink-0 bg-[#0A0A0A] border border-white/5 rounded-3xl overflow-hidden group hover:border-white/10 transition-all duration-300"
+              class="project-card opacity-0 scale-95 w-full max-w-[400px] md:w-[600px] shrink-0 bg-[#0A0A0A] border border-white/5 rounded-3xl overflow-hidden group hover:border-white/10 transition-all duration-300"
             >
               <!-- Window/Device Mockup Area -->
               <div
-                class="inner-carousel-container h-[380px] md:h-[420px] relative bg-[#0f0f11] border-b border-white/5 overflow-hidden group/slider"
+                class="inner-carousel-container h-[240px] md:h-[420px] relative bg-[#0f0f11] border-b border-white/5 overflow-hidden group/slider project-detail-btn cursor-pointer"
+                data-project={JSON.stringify(project)}
               >
                 <!-- Project Images Carousel -->
                 {project.images && project.images.length > 0 ? (
@@ -249,7 +240,7 @@ const { projects, personalInfo, ui } = db[lang];
                   </button>
                 </div>
 
-                <p class="text-gray-400 text-sm leading-relaxed mb-6 h-12 line-clamp-2">
+                <p class="text-gray-400 text-sm leading-relaxed mb-6 h-auto md:h-12 line-clamp-3 md:line-clamp-2">
                   {project.description}
                 </p>
 
@@ -292,65 +283,6 @@ const { projects, personalInfo, ui } = db[lang];
       </div>
     </div>
 
-<!-- Footer -->
-<footer
-  class="mt-auto border-t border-white/5 bg-[#0A0A0A]/50 backdrop-blur-md"
->
-  <div class="container mx-auto px-6 py-12">
-    <div class="flex flex-col md:flex-row justify-between items-center gap-6">
-      <div class="text-center md:text-left">
-        <h4 class="text-2xl font-bold text-white mb-1">{personalInfo.name[0]}{personalInfo.lastName[0]}</h4>
-        <p class="text-gray-500 text-sm">{ui.footer.tagline}</p>
-      </div>
-
-      <nav class="flex gap-8">
-        <a
-          href="#trayectoria"
-          class="text-sm text-gray-400 hover:text-white transition-colors"
-          >{ui.nav.timeline}</a
-        >
-        <a
-          href="#servicios"
-          class="text-sm text-gray-400 hover:text-white transition-colors"
-          >{ui.nav.services}</a
-        >
-        <a href="#proyectos" class="text-sm text-white transition-colors"
-          >{ui.nav.projects}</a
-        >
-        <a
-          href="#contactenos"
-          class="text-sm text-gray-400 hover:text-white transition-colors"
-          >{ui.nav.contact}</a
-        >
-      </nav>
-
-      <div class="flex gap-4">
-        <a
-          href={personalInfo.social.github}
-          target="_blank"
-          class="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-white transition-colors"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="w-4 h-4"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            ><path
-              d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
-            ></path></svg
-          >
-        </a>
-      </div>
-    </div>
-    <div class="text-center mt-12 text-xs text-gray-600">
-      © {new Date().getFullYear()} {personalInfo.name} {personalInfo.lastName}. {ui.footer.rights}
-    </div>
-  </div>
-</footer>
 
 <!-- Global Project Details Modal -->
 <div id="project-modal" class="fixed inset-0 z-100 hidden items-center justify-center p-4 md:p-8" aria-labelledby="modal-title" role="dialog" aria-modal="true">
@@ -600,6 +532,9 @@ const { projects, personalInfo, ui } = db[lang];
     const btn = target.closest('.project-detail-btn');
     
     if (btn) {
+      // If the user clicked on the inner navigation arrows, don't open the modal
+      if (target.closest('.inner-prev') || target.closest('.inner-next')) return;
+      
       try {
         const projectData = JSON.parse(btn.getAttribute('data-project') || '{}');
         openModal(projectData);
@@ -633,7 +568,7 @@ const { projects, personalInfo, ui } = db[lang];
     }
   });
 
-  const section = document.getElementById("proyectos");
+  const section = document.querySelector(".projects-section-container");
 
   if (section) {
     // Entrance Animation
@@ -674,6 +609,7 @@ const { projects, personalInfo, ui } = db[lang];
     }, 150);
 
     const startMainAutoPlay = () => {
+      if (window.innerWidth <= 768) return; // Disable on mobile
       if (mainSlideInterval) clearInterval(mainSlideInterval);
       mainSlideInterval = window.setInterval(() => {
         const setWidth = getMainCarouselSetWidth(mainCarouselInstance);

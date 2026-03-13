@@ -3,8 +3,7 @@ import { useEffect } from "react";
 // ----------------------------------------------------------------------
 // 🔔 CONFIGURACIÓN DE ALERTAS
 // ----------------------------------------------------------------------
-const DISCORD_WEBHOOK_URL =
-  "https://discord.com/api/webhooks/1468324309436203185/aguTFg9dhaFi5zqlD21eacUF5II8DC01GU-D75tIHGbWTdoKytB6RgyRy2peX90_sbcb";
+const DISCORD_WEBHOOK_URL = import.meta.env.PUBLIC_DISCORD_WEBHOOK_URL;
 
 interface VisitorAlertProps {
   lang?: "es" | "en";

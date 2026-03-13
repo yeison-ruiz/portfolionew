@@ -35,7 +35,7 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.autoridad, slugs.service
 <Layout title={title} description={description} lang={lang}>
   <Navbar lang={lang} />
 
-  <ChatWidget client:load lang={lang} />
+  <ChatWidget client:load lang={lang} discordWebhook={import.meta.env.PUBLIC_DISCORD_WEBHOOK_URL} />
   <VisitorAlert client:only="react" lang={lang} />
 
   <main class="relative w-full h-screen overflow-hidden bg-bg-dark">
@@ -116,7 +116,6 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.autoridad, slugs.service
         class="w-full h-full overflow-y-auto no-scrollbar"
       >
         <Contact lang={lang} />
-        <Footer lang={lang} />
       </div>
     </section>
   </main>
@@ -156,7 +155,7 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.autoridad, slugs.service
       document.querySelectorAll(".full-page-section"),
     ) as HTMLElement[];
     const slugsData = document.getElementById("slugs-data");
-    const sectionSlugs: string[] = slugsData ? JSON.parse(slugsData.getAttribute("data-slugs") || "[]") : ["", "trayectoria", "servicios", "proyectos", "contactenos"];
+    const sectionSlugs: string[] = slugsData ? JSON.parse(slugsData.getAttribute("data-slugs") || "[]") : [];
 
     let currentIndex = 0;
     let isAnimating = false;

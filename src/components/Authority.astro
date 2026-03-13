@@ -6,7 +6,7 @@ interface Props {
 }
 
 const { lang = "es" } = Astro.props;
-const { personalInfo } = db[lang];
+const { personalInfo, ui } = db[lang];
 
 const texts = {
     es: {
@@ -26,7 +26,7 @@ const texts = {
 }[lang];
 ---
 
-<section id="autoridad" class="relative py-32 overflow-hidden bg-[#050505]">
+<section id={ui.slugs.autoridad} class="relative py-32 overflow-hidden bg-[#050505]">
   <!-- Background Accents -->
   <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px] -z-10"></div>
   <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-purple-900/10 rounded-full blur-[100px] -z-10"></div>

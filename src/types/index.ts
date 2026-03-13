@@ -123,6 +123,8 @@ export interface SiteData {
         namePlaceholder: string;
         emailLabel: string;
         emailPlaceholder: string;
+        phoneLabel: string;
+        phonePlaceholder: string;
         messageLabel: string;
         messagePlaceholder: string;
         send: string;
@@ -144,6 +146,8 @@ export interface SiteData {
       startChatting: string;
       greeting: string;
       questions: {
+        name: string;
+        phone: string;
         qualification: string;
         scope: string;
         details: string;
