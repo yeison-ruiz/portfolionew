@@ -374,7 +374,7 @@ export const db: Translations = {
     ],
     projects: [
       {
-        title: "Johana Villabon Psícologa",
+        title: "Psicóloga Johana Villabon",
         category: "WEB PLATFORM • HEALTH & AI",
         description:
           "Innovadora plataforma de citas psicológicas automatizadas. Destaca por integrar una pre-sesión con Inteligencia Artificial que sondea al paciente, proporcionando a la psicóloga contexto vital y resumen clínico detallado antes de iniciar cada consulta.",
@@ -388,7 +388,7 @@ export const db: Translations = {
           "/proyectos/johana/admin-psicologa.png",
           "/proyectos/johana/iPhone-12-PRO-localhost.png"
         ],
-        link: "https://www.psicologajohana.com",
+        link: "https://psicologajohanavillabon.com/",
       },
       {
         title: "MediTrack",
@@ -404,7 +404,7 @@ export const db: Translations = {
           "/proyectos/meditrack/4.jpeg",
           "/proyectos/meditrack/5.jpeg"
         ],
-        link: "https://meditrackapp.com",
+        link: "#",
       },
       {
         title: "Cahuita Valley",
@@ -419,7 +419,7 @@ export const db: Translations = {
           "/proyectos/cahuita/cliente.png",
           "/proyectos/cahuita/iPhone-12-PRO-127.0.0.1.png"
         ],
-        link: "https://cahuitavalley.com",
+        link: "https://sistema.cahuitavalley.com",
       },
       {
         title: "Anarchy Burgers",
@@ -431,7 +431,7 @@ export const db: Translations = {
         images: [
           "/proyectos/Anarchy-Burgers/anarchy-burgers.png"
         ],
-        link: "https://anarchyburgers.com",
+        link: "#",
       },
     ],
   },
@@ -808,7 +808,7 @@ export const db: Translations = {
     ],
     projects: [
       {
-        title: "Johana Villabon Psychologist",
+        title: "Psychologist Johana Villabon",
         category: "WEB PLATFORM • HEALTH & AI",
         description:
           "Innovative automated psychological appointment platform. Features an AI-powered pre-session that surveys the patient, providing clinical context to the psychologist before each consultation.",
@@ -822,7 +822,7 @@ export const db: Translations = {
           "/proyectos/johana/admin-psicologa.png",
           "/proyectos/johana/iPhone-12-PRO-localhost.png"
         ],
-        link: "https://www.psicologajohana.com",
+        link: "https://psicologajohanavillabon.com/",
       },
       {
         title: "MediTrack",
@@ -838,7 +838,7 @@ export const db: Translations = {
           "/proyectos/meditrack/4.jpeg",
           "/proyectos/meditrack/5.jpeg"
         ],
-        link: "https://meditrackapp.com",
+        link: "#",
       },
       {
         title: "Cahuita Valley",
@@ -853,7 +853,7 @@ export const db: Translations = {
           "/proyectos/cahuita/cliente.png",
           "/proyectos/cahuita/iPhone-12-PRO-127.0.0.1.png"
         ],
-        link: "https://cahuitavalley.com",
+        link: "https://sistema.cahuitavalley.com",
       },
       {
         title: "Anarchy Burgers",
@@ -865,7 +865,7 @@ export const db: Translations = {
         images: [
           "/proyectos/Anarchy-Burgers/anarchy-burgers.png"
         ],
-        link: "https://anarchyburgers.com",
+        link: "#",
       },
     ],
   },
