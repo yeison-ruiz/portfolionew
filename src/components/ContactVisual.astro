@@ -122,54 +122,69 @@ const cards: CardData[] = [
 <script>
   import gsap from "gsap";
 
-  const cards = document.querySelectorAll('.tech-card-html');
-  const video = document.getElementById('characterVideo') as HTMLVideoElement;
-  
-  // Unified video control
-  if (video) {
-      // Force playback even if browser is stubborn - optimized for performance
-      const ensurePlay = () => {
-          if (video.paused) {
-            video.play().catch(() => {});
-          }
-      };
+  const initContactVisual = () => {
+    const cards = document.querySelectorAll('.tech-card-html');
+    const container = document.querySelector('.video-glow-container');
+    const tweens: gsap.core.Tween[] = [];
 
-      // Ensure it starts playing on first interaction
-      window.addEventListener('touchstart', ensurePlay, { once: true });
-      window.addEventListener('click', ensurePlay, { once: true });
-  }
+    // Floating animation for each card
+    cards.forEach((card, i) => {
+      // Initial entrance
+      gsap.to(card, {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        delay: 0.5 + (i * 0.1),
+        ease: "power3.out"
+      });
 
-  // Floating animation for each card
-  cards.forEach((card, i) => {
-    // Initial entrance
-    gsap.to(card, {
-      opacity: 1,
-      y: 0,
-      duration: 1,
-      delay: 0.5 + (i * 0.1),
-      ease: "power3.out"
+      // Continuous floating
+      const t = gsap.to(card, {
+        y: `-=${15 + Math.random() * 15}`,
+        x: i % 2 === 0 ? "+=10" : "-=10",
+        duration: 2.5 + Math.random() * 2,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+        delay: i * 0.15,
+        paused: true // Start paused
+      });
+      tweens.push(t);
     });
 
-    // Continuous floating with different rhythms
-    gsap.to(card, {
-      y: `-=${15 + Math.random() * 15}`,
-      x: i % 2 === 0 ? "+=10" : "-=10",
-      duration: 2.5 + Math.random() * 2,
-      repeat: -1,
-      yoyo: true,
-      ease: "sine.inOut",
-      delay: i * 0.15
+    // Pulse animation
+    const pulse = gsap.to('.video-glow-container', {
+        scale: 1.01,
+        duration: 3,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+        paused: true
     });
-  });
+    tweens.push(pulse);
 
-  // Pulse animation for the central area - simplified for performance
-  gsap.to('.video-glow-container', {
-      scale: 1.01,
-      duration: 3,
-      repeat: -1,
-      yoyo: true,
-      ease: "sine.inOut"
-  });
+    const playAnims = () => tweens.forEach(t => t.play());
+    const pauseAnims = () => tweens.forEach(t => t.pause());
+
+    window.addEventListener("sectionChange", (e: any) => {
+      if (e.detail.index === 5) {
+        playAnims();
+      } else {
+        pauseAnims();
+      }
+    });
+
+    // Cleanup on page move
+    document.addEventListener("astro:before-preparation", () => {
+      tweens.forEach(t => t.kill());
+    }, { once: true });
+
+    // Initial check (if we load directly on section 5)
+    // We'll rely on the sectionChange event mostly
+  };
+
+  initContactVisual();
+  document.addEventListener("astro:page-load", initContactVisual);
 </script>
 
 <style>

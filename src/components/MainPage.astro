@@ -150,7 +150,16 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
 
   gsap.registerPlugin(ScrollTrigger, Observer);
 
+  let observerInstance: any;
+
   const initAnimations = () => {
+    // Cleanup previous instance if any (HMR or direct calls)
+    if (observerInstance) {
+      observerInstance.kill();
+    }
+    
+    ScrollTrigger.getAll().forEach(t => t.kill());
+
     const sections = Array.from(
       document.querySelectorAll(".full-page-section"),
     ) as HTMLElement[];
@@ -199,8 +208,8 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
         currentSection,
         {
           opacity: 0,
-          scale: 0.98, // Smaller scale shift for performance
-          duration: 0.6, // Slightly faster for responsiveness
+          scale: 0.98,
+          duration: 0.6,
           ease: "power2.inOut",
         },
         0,
@@ -219,7 +228,7 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
       );
     }
 
-    Observer.create({
+    observerInstance = Observer.create({
       target: window,
       type: "wheel,touch,pointer",
       wheelSpeed: -1,
@@ -319,7 +328,7 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
 
     document.addEventListener("click", handleAnchorClick);
 
-    // Optimized Video Management for Mobile
+    // Optimized Video Management
     const videos = document.querySelectorAll('video');
     const videoObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -334,8 +343,7 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
 
     videos.forEach(v => videoObserver.observe(v));
 
-    // Listen for section changes to specifically wake up videos in the active section
-    window.addEventListener("sectionChange", (e: any) => {
+    const handleSectionChange = (e: any) => {
       const activeSection = sections[e.detail.index];
       if (activeSection) {
         const sectionVideos = activeSection.querySelectorAll('video');
@@ -343,7 +351,8 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
           v.play().catch(() => {});
         });
       }
-    });
+    };
+    window.addEventListener("sectionChange", handleSectionChange);
 
     // Handle initial hash on load
     const hash = window.location.hash.substring(1);
@@ -353,13 +362,23 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
         gotoSection(targetIndex, 1);
       }
     }
+
+    // Cleanup on navigation or prepare
+    document.addEventListener("astro:before-preparation", () => {
+      if (observerInstance) observerInstance.kill();
+      videoObserver.disconnect();
+      document.removeEventListener("click", handleAnchorClick);
+      window.removeEventListener("sectionChange", handleSectionChange);
+      ScrollTrigger.getAll().forEach(t => t.kill());
+    }, { once: true });
   };
 
   document.addEventListener("astro:page-load", initAnimations);
-  // Also run on initial load if not using view transitions or if they are already handled
+  
+  // Single execution point
   if (document.readyState === 'complete') {
     initAnimations();
   } else {
-    window.addEventListener('load', initAnimations);
+    window.addEventListener('load', initAnimations, { once: true });
   }
 </script>
