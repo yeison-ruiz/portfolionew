@@ -374,9 +374,10 @@ const { projects, personalInfo, ui } = db[lang];
   const getMainCarouselSetWidth = (carousel: HTMLElement) => {
     const cards = carousel.querySelectorAll('.project-card');
     if (cards.length === 0) return 0;
-    const originalCount = 4; // Total original projects
+    // Cards are rendered 3x (Array(3).fill(projects)), so one set = total / 3
+    const originalCount = Math.round(cards.length / 3);
     const cardWidth = (cards[0] as HTMLElement).offsetWidth;
-    return originalCount * (cardWidth + 32); // 32px is the 2rem (gap-8)
+    return originalCount * (cardWidth + 32); // 32px gap
   };
 
   // Modal logic
