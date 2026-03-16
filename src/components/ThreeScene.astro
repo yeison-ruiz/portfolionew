@@ -243,68 +243,105 @@
       });
     });
 
-    // 6. Animation
+    // 6. Animation Loop with Smart Pause
     const clock = new THREE.Clock();
     let rafId: number;
     let isPageVisible = true;
+    let isContainerVisible = true;
+    let isUserIdle = false;
+    let idleTimer: ReturnType<typeof setTimeout>;
 
-    // Pause rendering if the tab is hidden → saves massive CPU/GPU
+    // --- Visibility Control ---
+    // Pause when the scene container scrolls out of view (e.g., user goes to Projects section)
+    const intersectionObserver = new IntersectionObserver(
+      (entries) => {
+        isContainerVisible = entries[0].isIntersecting;
+        if (isContainerVisible && isPageVisible && !isUserIdle) {
+          clock.start();
+          scheduleFrame();
+        }
+      },
+      { threshold: 0.01 }
+    );
+    intersectionObserver.observe(container);
+
+    // Pause when browser tab is hidden (user switches to another tab)
     document.addEventListener("visibilitychange", () => {
       isPageVisible = !document.hidden;
-      if (isPageVisible) {
+      if (isPageVisible && isContainerVisible && !isUserIdle) {
         clock.start();
-        animate();
+        scheduleFrame();
       }
     });
 
-    let mouseX = 0;
-    let mouseY = 0;
-
-    const onMouseMove = (event: MouseEvent) => {
-      mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-      mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+    // Pause after 10s of no mouse/touch interaction → saves CPU when user reads content
+    const resetIdleTimer = () => {
+      isUserIdle = false;
+      clearTimeout(idleTimer);
+      // Schedule a render immediately on activity
+      if (isPageVisible && isContainerVisible) scheduleFrame();
+      idleTimer = setTimeout(() => {
+        isUserIdle = true;
+      }, 10000); // 10 seconds of idle
     };
-    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mousemove", resetIdleTimer, { passive: true });
+    window.addEventListener("touchstart", resetIdleTimer, { passive: true });
+    window.addEventListener("scroll", resetIdleTimer, { passive: true });
+    resetIdleTimer(); // Start the timer
 
-    function animate() {
-      if (!isPageVisible) return;
-      rafId = requestAnimationFrame(animate);
+    // Mouse parallax
+    const onMouseMove = (event: MouseEvent) => {
+      // mouseX/mouseY unused currently but kept for future use
+    };
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
+
+    let frameScheduled = false;
+    function scheduleFrame() {
+      if (frameScheduled) return;
+      frameScheduled = true;
+      rafId = requestAnimationFrame(renderFrame);
+    }
+
+    function renderFrame() {
+      frameScheduled = false;
+      // Skip render if any pause condition is active
+      if (!isPageVisible || !isContainerVisible || isUserIdle) return;
       controls.update();
       renderer.render(scene, camera);
       labelRenderer.render(scene, camera);
+      scheduleFrame(); // Keep the loop going
     }
 
-    animate();
+    scheduleFrame();
 
-    // Cleanup on page navigation (prevents memory leaks)
+    // --- Cleanup on page navigation ---
     const cleanup = () => {
       cancelAnimationFrame(rafId);
+      clearTimeout(idleTimer);
+      intersectionObserver.disconnect();
       window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mousemove", resetIdleTimer);
+      window.removeEventListener("touchstart", resetIdleTimer);
+      window.removeEventListener("scroll", resetIdleTimer);
       controls.dispose();
       renderer.dispose();
       scene.traverse((obj: any) => {
         if (obj.geometry) obj.geometry.dispose();
         if (obj.material) {
-          if (Array.isArray(obj.material)) {
-            obj.material.forEach((m: any) => m.dispose());
-          } else {
-            obj.material.dispose();
-          }
+          if (Array.isArray(obj.material)) obj.material.forEach((m: any) => m.dispose());
+          else obj.material.dispose();
         }
       });
     };
-
-    // Using 'pagehide' which is more reliable across browsers than 'beforeunload'
     window.addEventListener("pagehide", cleanup, { once: true });
     document.addEventListener("astro:before-preparation", cleanup, { once: true });
 
-    // Resize
+    // --- Resize ---
     const onResize = () => {
       if (!container) return;
       camera.aspect = container.clientWidth / container.clientHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(container.clientWidth, container.clientHeight);
-      // Cap pixel ratio at 2 for performance
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       labelRenderer.setSize(container.clientWidth, container.clientHeight);
     };
