@@ -245,54 +245,70 @@
 
     // 6. Animation
     const clock = new THREE.Clock();
+    let rafId: number;
+    let isPageVisible = true;
+
+    // Pause rendering if the tab is hidden → saves massive CPU/GPU
+    document.addEventListener("visibilitychange", () => {
+      isPageVisible = !document.hidden;
+      if (isPageVisible) {
+        clock.start();
+        animate();
+      }
+    });
 
     let mouseX = 0;
     let mouseY = 0;
 
-    window.addEventListener("mousemove", (event) => {
+    const onMouseMove = (event: MouseEvent) => {
       mouseX = (event.clientX / window.innerWidth) * 2 - 1;
       mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-    });
+    };
+    window.addEventListener("mousemove", onMouseMove);
 
     function animate() {
-      requestAnimationFrame(animate);
-
-      const time = clock.getElapsedTime();
-
-      // Idle Animation (Floating Group)
-      // avatarGroup.position.y = Math.sin(time * 0.8) * 0.1;
-
+      if (!isPageVisible) return;
+      rafId = requestAnimationFrame(animate);
       controls.update();
-
-      // Mouse Parallax on Group - DISABLED to allow OrbitControls interaction
-      /*
-      gsap.to(avatarGroup.rotation, {
-        y: mouseX * 0.1,
-        x: -mouseY * 0.05,
-        duration: 1,
-        ease: "power2.out",
-      });
-      */
-
-      // If we want head tracking, we need to find the bone in the model,
-      // which is model specific. For now, we rotate the whole group slightly.
-
       renderer.render(scene, camera);
       labelRenderer.render(scene, camera);
     }
 
     animate();
 
-    // Resize
-    window.addEventListener("resize", () => {
-      if (!container) return;
+    // Cleanup on page navigation (prevents memory leaks)
+    const cleanup = () => {
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("mousemove", onMouseMove);
+      controls.dispose();
+      renderer.dispose();
+      scene.traverse((obj: any) => {
+        if (obj.geometry) obj.geometry.dispose();
+        if (obj.material) {
+          if (Array.isArray(obj.material)) {
+            obj.material.forEach((m: any) => m.dispose());
+          } else {
+            obj.material.dispose();
+          }
+        }
+      });
+    };
 
+    // Using 'pagehide' which is more reliable across browsers than 'beforeunload'
+    window.addEventListener("pagehide", cleanup, { once: true });
+    document.addEventListener("astro:before-preparation", cleanup, { once: true });
+
+    // Resize
+    const onResize = () => {
+      if (!container) return;
       camera.aspect = container.clientWidth / container.clientHeight;
       camera.updateProjectionMatrix();
-
       renderer.setSize(container.clientWidth, container.clientHeight);
+      // Cap pixel ratio at 2 for performance
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       labelRenderer.setSize(container.clientWidth, container.clientHeight);
-    });
+    };
+    window.addEventListener("resize", onResize);
   }
 </script>
 

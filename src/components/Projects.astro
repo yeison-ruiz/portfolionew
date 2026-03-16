@@ -642,6 +642,15 @@ const { projects, personalInfo, ui } = db[lang];
     mainCarouselInstance.addEventListener("touchstart", stopMainAutoPlay, { passive: true });
     mainCarouselInstance.addEventListener("touchend", () => setTimeout(startMainAutoPlay, 5000), { passive: true });
     
+    // Pause/resume when tab becomes hidden/visible
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) stopMainAutoPlay();
+      else startMainAutoPlay();
+    });
+    // Cleanup on page unload
+    window.addEventListener("pagehide", stopMainAutoPlay, { once: true });
+    document.addEventListener("astro:before-preparation", stopMainAutoPlay, { once: true });
+
     // Start it automatically on load //
     startMainAutoPlay();
   }
@@ -709,6 +718,15 @@ const { projects, personalInfo, ui } = db[lang];
       container.addEventListener("touchstart", stopAutoPlay, { passive: true });
       container.addEventListener("touchend", () => setTimeout(startAutoPlay, 5000), { passive: true });
       
+      // Pause/resume when tab becomes hidden/visible
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) stopAutoPlay();
+        else startAutoPlay();
+      });
+      // Cleanup on page unload
+      window.addEventListener("pagehide", stopAutoPlay, { once: true });
+      document.addEventListener("astro:before-preparation", stopAutoPlay, { once: true });
+
       // Start auto progression initially
       startAutoPlay();
 
