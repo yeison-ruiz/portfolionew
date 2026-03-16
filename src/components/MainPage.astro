@@ -153,10 +153,16 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
   let observerInstance: any;
 
   const initAnimations = () => {
-    if (observerInstance) observerInstance.kill();
+    // Cleanup previous instance if any (HMR or direct calls)
+    if (observerInstance) {
+      observerInstance.kill();
+    }
+    
     ScrollTrigger.getAll().forEach(t => t.kill());
 
-    const sections = Array.from(document.querySelectorAll(".full-page-section")) as HTMLElement[];
+    const sections = Array.from(
+      document.querySelectorAll(".full-page-section"),
+    ) as HTMLElement[];
     const slugsData = document.getElementById("slugs-data");
     const sectionSlugs: string[] = slugsData ? JSON.parse(slugsData.getAttribute("data-slugs") || "[]") : [];
 
@@ -164,131 +170,215 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
     let isAnimating = false;
     let lastTransitionTime = 0;
 
-    // Helper to manage videos
-    const manageVideos = (sectionIndex: number) => {
-      document.querySelectorAll('video').forEach(v => v.pause());
-      const activeSection = sections[sectionIndex];
-      if (activeSection) {
-        activeSection.querySelectorAll('video').forEach(v => {
-          v.play().catch(() => {});
-        });
-      }
-    };
-
     function gotoSection(index: number, direction: number) {
-      if (isAnimating || index < 0 || index >= sections.length) return;
-      
+      if (isAnimating) return;
       isAnimating = true;
       lastTransitionTime = Date.now();
 
       const currentSection = sections[currentIndex];
       const nextSection = sections[index];
 
-      // Dispatch event before starting for components to prepare
-      window.dispatchEvent(new CustomEvent("sectionChange", { detail: { index } }));
+      if (!currentSection || !nextSection) {
+        isAnimating = false;
+        return;
+      }
 
-      // Prepare visibility
-      gsap.set(nextSection, { zIndex: 10, display: "block", opacity: 0, scale: 1.02, pointerEvents: "auto" });
+      gsap.set(nextSection, { zIndex: 10, autoAlpha: 1 });
       gsap.set(currentSection, { zIndex: 0 });
 
+      window.dispatchEvent(
+        new CustomEvent("sectionChange", { detail: { index } }),
+      );
+
       const slug = sectionSlugs[index];
-      window.history.replaceState(null, "", slug ? `#${slug}` : window.location.pathname);
+      const newHash = slug ? `#${slug}` : window.location.pathname;
+      window.history.replaceState(null, "", newHash);
 
       const tl = gsap.timeline({
         onComplete: () => {
           isAnimating = false;
           currentIndex = index;
-          sections.forEach((sec, i) => {
-            if (i !== index) {
-              gsap.set(sec, { display: "none", pointerEvents: "none" });
-            }
-          });
-          manageVideos(index);
+          gsap.set(currentSection, { autoAlpha: 0, pointerEvents: "none" });
+          gsap.set(nextSection, { pointerEvents: "auto" });
           ScrollTrigger.refresh();
         },
       });
 
-      tl.to(currentSection, { opacity: 0, scale: 0.98, duration: 0.5, ease: "power2.inOut" }, 0);
-      tl.to(nextSection, { opacity: 1, scale: 1, duration: 0.5, ease: "power2.inOut" }, 0);
+      tl.to(
+        currentSection,
+        {
+          opacity: 0,
+          scale: 0.98,
+          duration: 0.6,
+          ease: "power2.inOut",
+        },
+        0,
+      );
+
+      tl.fromTo(
+        nextSection,
+        { opacity: 0, scale: 1.02 },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 0.6,
+          ease: "power2.inOut",
+        },
+        0,
+      );
     }
 
     observerInstance = Observer.create({
       target: window,
       type: "wheel,touch,pointer",
       wheelSpeed: -1,
-      onUp: () => handleScroll(-1),
-      onDown: () => handleScroll(1),
-      tolerance: 15,
+      onUp: (self) => handleScroll(-1, self.event),
+      onDown: (self) => handleScroll(1, self.event),
+      tolerance: 20, 
       preventDefault: false,
     });
 
-    function handleScroll(direction: number) {
-      if (isAnimating || Date.now() - lastTransitionTime < 800) return;
+    let lastWheelEventTime = 0;
+    let edgeReachedTime = 0;
+    let wasAtEdge = false;
+
+    function handleScroll(direction: number, event?: Event) {
+      if (isAnimating) return;
+
+      if (Date.now() - lastTransitionTime < 1500) return;
+
+      if (event && event.target) {
+        const target = event.target as HTMLElement;
+        if (target.closest("#scene-container")) {
+          if (event.type !== "wheel") return;
+        }
+      }
 
       const currentSection = sections[currentIndex];
-      const scrollContainer = currentSection?.querySelector(".overflow-y-auto") as HTMLElement;
+      if (!currentSection) return;
+
+      const scrollContainer = currentSection.querySelector(
+        ".overflow-y-auto",
+      ) as HTMLElement;
+
+      const now = Date.now();
+      const timeSinceLastWheel = now - lastWheelEventTime;
+      lastWheelEventTime = now;
 
       if (scrollContainer) {
         const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
-        if (direction > 0 && scrollTop + clientHeight >= scrollHeight - 5) {
-          gotoSection(currentIndex + 1, 1);
-        } else if (direction < 0 && scrollTop <= 5) {
-          gotoSection(currentIndex - 1, -1);
+        const tolerance = 5;
+        const isAtTop = scrollTop <= tolerance;
+        const isAtBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight - tolerance;
+
+        const isAtEdgeInput = (direction > 0 && isAtBottom) || (direction < 0 && isAtTop);
+
+        if (!isAtEdgeInput) {
+          wasAtEdge = false;
+          return;
+        }
+
+        if (!wasAtEdge) {
+          wasAtEdge = true;
+          edgeReachedTime = now;
+          return;
+        }
+
+        if (timeSinceLastWheel < 100) {
+          if (now - edgeReachedTime < 1000) return;
+        }
+
+        if (direction > 0) {
+          if (currentIndex < sections.length - 1) {
+            gotoSection(currentIndex + 1, 1);
+            wasAtEdge = false;
+          }
+        } else {
+          if (currentIndex > 0) {
+            gotoSection(currentIndex - 1, -1);
+            wasAtEdge = false;
+          }
         }
       } else {
-        gotoSection(currentIndex + (direction > 0 ? 1 : -1), direction);
+        if (direction > 0 && currentIndex < sections.length - 1) {
+          gotoSection(currentIndex + 1, 1);
+          wasAtEdge = false;
+        } else if (direction < 0 && currentIndex > 0) {
+          gotoSection(currentIndex - 1, -1);
+          wasAtEdge = false;
+        }
       }
     }
 
+    // Handle all anchor clicks dynamically
     const handleAnchorClick = (e: MouseEvent) => {
       const anchor = (e.target as HTMLElement).closest('a[href^="#"]');
       if (!anchor) return;
+      
       e.preventDefault();
-      const href = anchor.getAttribute("href")?.substring(1);
-      const targetIndex = href === "" ? 0 : sectionSlugs.indexOf(href!);
+      const href = anchor.getAttribute("href")?.substring(1) || "";
+      const targetIndex = sectionSlugs.findIndex(s => s === href);
+
       if (targetIndex !== -1 && targetIndex !== currentIndex) {
         gotoSection(targetIndex, targetIndex > currentIndex ? 1 : -1);
+      } else if (href === "" && currentIndex !== 0) {
+          gotoSection(0, -1);
       }
     };
 
     document.addEventListener("click", handleAnchorClick);
 
-    // Initial setup: Ensure only the first section (or hash section) is visible
-    sections.forEach((sec, i) => {
-      if (i === 0) {
-        gsap.set(sec, { display: "block", opacity: 1, zIndex: 10, pointerEvents: "auto" });
-      } else {
-        gsap.set(sec, { display: "none", opacity: 0, zIndex: 0, pointerEvents: "none" });
-      }
-    });
+    // Optimized Video Management
+    const videos = document.querySelectorAll('video');
+    const videoObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const video = entry.target as HTMLVideoElement;
+        if (entry.isIntersecting) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      });
+    }, { threshold: 0.1 });
 
-    // Initial load from hash
-    const hash = window.location.hash.slice(1);
-    if (hash) {
-      const idx = sectionSlugs.indexOf(hash);
-      if (idx !== -1 && idx !== 0) {
-        sections.forEach((sec, i) => {
-          if (i === idx) {
-            gsap.set(sec, { display: "block", opacity: 1, zIndex: 10, pointerEvents: "auto" });
-            currentIndex = idx;
-          } else {
-            gsap.set(sec, { display: "none", opacity: 0, zIndex: 0, pointerEvents: "none" });
-          }
+    videos.forEach(v => videoObserver.observe(v));
+
+    const handleSectionChange = (e: any) => {
+      const activeSection = sections[e.detail.index];
+      if (activeSection) {
+        const sectionVideos = activeSection.querySelectorAll('video');
+        sectionVideos.forEach((v: any) => {
+          v.play().catch(() => {});
         });
-        manageVideos(idx);
       }
-    } else {
-        manageVideos(0);
+    };
+    window.addEventListener("sectionChange", handleSectionChange);
+
+    // Handle initial hash on load
+    const hash = window.location.hash.substring(1);
+    if (hash) {
+      const targetIndex = sectionSlugs.findIndex(s => s === hash);
+      if (targetIndex !== -1 && targetIndex !== currentIndex) {
+        gotoSection(targetIndex, 1);
+      }
     }
 
+    // Cleanup on navigation or prepare
     document.addEventListener("astro:before-preparation", () => {
       if (observerInstance) observerInstance.kill();
+      videoObserver.disconnect();
       document.removeEventListener("click", handleAnchorClick);
+      window.removeEventListener("sectionChange", handleSectionChange);
       ScrollTrigger.getAll().forEach(t => t.kill());
     }, { once: true });
   };
 
   document.addEventListener("astro:page-load", initAnimations);
-  if (document.readyState === 'complete') initAnimations();
-  else window.addEventListener('load', () => { if (!observerInstance) initAnimations(); }, { once: true });
+  
+  // Single execution point
+  if (document.readyState === 'complete') {
+    initAnimations();
+  } else {
+    window.addEventListener('load', initAnimations, { once: true });
+  }
 </script>
