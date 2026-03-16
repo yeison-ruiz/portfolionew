@@ -78,7 +78,6 @@ const cards: CardData[] = [
     <div class="relative z-10 w-full overflow-hidden mask-container">
         <video
           id="characterVideo"
-          src="/videoyeison.mp4"
           autoplay
           loop
           muted
@@ -86,7 +85,9 @@ const cards: CardData[] = [
           webkit-playsinline
           preload="auto"
           class="w-full h-auto object-cover character-video"
-        ></video>
+        >
+          <source src="/videoyeison.mp4" type="video/mp4" />
+        </video>
         <!-- Fade overlays for even softer edges -->
         <div class="absolute inset-0 bg-linear-to-t from-black via-transparent to-black pointer-events-none opacity-40"></div>
         <div class="absolute inset-0 bg-linear-to-r from-black via-transparent to-black pointer-events-none opacity-40"></div>

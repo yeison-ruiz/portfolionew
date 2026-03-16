@@ -222,15 +222,17 @@ const techCards = [
       <!-- Video Element -->
       <video
         id="hero-video"
-        src="/yeison.mp4"
         autoplay
         loop
         muted
         playsinline
+        webkit-playsinline
         preload="auto"
         draggable="false"
         class="w-full max-w-[450px] md:max-w-[580px] lg:max-w-[700px] h-full object-contain mx-auto mt-12 lg:mt-0 mix-blend-screen pointer-events-none select-none relative z-20"
-      ></video>
+      >
+        <source src="/yeison.mp4" type="video/mp4" />
+      </video>
 
       <!-- Tech Floating Cards overlay -->
       <div id="cards-container" class="absolute inset-0 pointer-events-none">
@@ -378,6 +380,22 @@ const techCards = [
   const initEngine = () => {
     const container = document.getElementById("hero-scene-container");
     const techCards = document.querySelectorAll(".tech-card-floating");
+    const video = document.getElementById("hero-video") as HTMLVideoElement;
+
+    if (video) {
+      const ensurePlay = () => {
+        if (video.paused) {
+          video.play().catch(() => {});
+        }
+      };
+      window.addEventListener("touchstart", ensurePlay, { once: true });
+      window.addEventListener("click", ensurePlay, { once: true });
+      
+      // Also try to play immediately
+      video.play().catch(() => {
+        console.log("Autoplay blocked, waiting for interaction");
+      });
+    }
 
     if (!container || techCards.length === 0) return;
 
