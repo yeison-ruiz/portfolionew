@@ -526,183 +526,212 @@ const { projects, personalInfo, ui } = db[lang];
     }
   };
 
-  const initProjects = () => {
-    const section = document.querySelector(".projects-section-container");
-    const mainCarouselInstance = document.getElementById("projects-carousel");
-    const innerCarousels = document.querySelectorAll(".inner-carousel-container");
+  // Event Delegation to handle dynamic HMR button replacements gracefully
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    const btn = target.closest('.project-detail-btn');
     
-    let mainSlideInterval: number | null = null;
-    let innerIntervals: number[] = [];
-    let isSectionActive = false;
+    if (btn) {
+      // If the user clicked on the inner navigation arrows, don't open the modal
+      if (target.closest('.inner-prev') || target.closest('.inner-next')) return;
+      
+      try {
+        const projectData = JSON.parse(btn.getAttribute('data-project') || '{}');
+        openModal(projectData);
+      } catch (err) {
+        console.error("Failed to parse project data", err);
+      }
+    }
+    
+    // Modal closing delegates
+    if (target.closest('#modal-close') || target.id === 'modal-backdrop') {
+      closeModal();
+    }
+    
+    // Main Projects Carousel navigation delegates
+    const mainCarousel = document.getElementById('projects-carousel');
+    if (mainCarousel) {
+      if (target.closest('#next-project')) {
+        const itemWidth = window.innerWidth > 768 ? 632 : window.innerWidth * 0.85 + 32;
+        mainCarousel.scrollBy({ left: itemWidth, behavior: "smooth" });
+      } else if (target.closest('#prev-project')) {
+        const itemWidth = window.innerWidth > 768 ? 632 : window.innerWidth * 0.85 + 32;
+        mainCarousel.scrollBy({ left: -itemWidth, behavior: "smooth" });
+      }
+    }
+  });
 
-    const stopAllAnimations = () => {
-      if (mainSlideInterval) clearInterval(mainSlideInterval);
-      mainSlideInterval = null;
-      innerIntervals.forEach(id => clearInterval(id));
-      innerIntervals = [];
-    };
+  // Close with Esc key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+      closeModal();
+    }
+  });
+
+  const section = document.querySelector(".projects-section-container");
+
+  if (section) {
+    // Entrance Animation
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        scroller: "#projects-scroll-container",
+        start: "top center",
+      },
+    });
+
+    tl.to(".project-header", {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power3.out",
+    }).to(
+      ".project-card",
+      {
+        opacity: 1,
+        scale: 1,
+        duration: 0.6,
+        stagger: 0.1,
+        ease: "back.out(1.2)",
+      },
+      "-=0.4",
+    );
+  }
+  // Main Projects Carousel Auto-Piloting (Infinite Loop without killing swipe momentum)
+  const mainCarouselInstance = document.getElementById("projects-carousel");
+  if (mainCarouselInstance) {
+    let mainSlideInterval: number | null = null;
+    const autoPlayDelay = 5000;
+
+    // Fast-forward silently to exactly the 2nd set (middle of 3 sets)
+    setTimeout(() => {
+      mainCarouselInstance.scrollLeft = getMainCarouselSetWidth(mainCarouselInstance) * 1;
+    }, 150);
 
     const startMainAutoPlay = () => {
-      if (!isSectionActive || window.innerWidth <= 768 || !mainCarouselInstance) return;
+      if (window.innerWidth <= 768) return; // Disable on mobile
       if (mainSlideInterval) clearInterval(mainSlideInterval);
-      
       mainSlideInterval = window.setInterval(() => {
         const setWidth = getMainCarouselSetWidth(mainCarouselInstance);
         const itemWidth = window.innerWidth > 768 ? 632 : window.innerWidth * 0.85 + 32;
         
+        // Loop boundary check safely while idle
         const currentScroll = mainCarouselInstance.scrollLeft;
         if (currentScroll >= setWidth * 2) {
-          mainCarouselInstance.scrollLeft = setWidth * 1;
+          mainCarouselInstance.scrollLeft = setWidth * 1; // Relocate to middle
         } else if (currentScroll <= setWidth * 0.1) {
           mainCarouselInstance.scrollLeft = setWidth * 1;
         }
         
-        mainCarouselInstance.scrollBy({ left: itemWidth, behavior: "smooth" });
-      }, 5000);
+        requestAnimationFrame(() => {
+          mainCarouselInstance.scrollBy({ left: itemWidth, behavior: "smooth" });
+        });
+      }, autoPlayDelay);
     };
 
-    const startInnerAutoPlays = () => {
-      if (!isSectionActive) return;
-      innerIntervals.forEach(id => clearInterval(id));
-      innerIntervals = [];
+    const stopMainAutoPlay = () => {
+      if (mainSlideInterval) {
+        clearInterval(mainSlideInterval);
+        mainSlideInterval = null;
+      }
+    };
 
-      innerCarousels.forEach(container => {
-        const scrollArea = container.querySelector(".inner-scroll-area") as HTMLElement;
-        if (!scrollArea) return;
+    // Pause on interaction
+    mainCarouselInstance.addEventListener("mouseenter", stopMainAutoPlay);
+    mainCarouselInstance.addEventListener("mouseleave", startMainAutoPlay);
+    mainCarouselInstance.addEventListener("touchstart", stopMainAutoPlay, { passive: true });
+    mainCarouselInstance.addEventListener("touchend", () => setTimeout(startMainAutoPlay, 5000), { passive: true });
+    
+    // Start it automatically on load //
+    startMainAutoPlay();
+  }
 
-        const intervalId = window.setInterval(() => {
+  // Inner Project Images Carousel Logic
+  const innerCarousels = document.querySelectorAll(".inner-carousel-container");
+  innerCarousels.forEach(container => {
+    const scrollArea = container.querySelector(".inner-scroll-area") as HTMLElement;
+    const prevArrow = container.querySelector(".inner-prev") as HTMLButtonElement;
+    const nextArrow = container.querySelector(".inner-next") as HTMLButtonElement;
+    const indicators = container.querySelectorAll(".bottom-4.left-1\\/2 div"); // Dots indicator
+
+    if (scrollArea && prevArrow && nextArrow) {
+      let slideInterval: number | null = null;
+      const autoPlayDelay = 3500; // 3.5 seconds per slide
+
+      const startAutoPlay = () => {
+        if (slideInterval) clearInterval(slideInterval);
+        slideInterval = window.setInterval(() => {
           const width = scrollArea.clientWidth;
           const maxScroll = scrollArea.scrollWidth - scrollArea.clientWidth;
           
+          // If we reach the end, scroll back to the start smoothly, else go forward
           if (scrollArea.scrollLeft + width + 10 >= maxScroll) {
             scrollArea.scrollTo({ left: 0, behavior: "smooth" });
           } else {
             scrollArea.scrollBy({ left: width, behavior: "smooth" });
           }
-        }, 3500);
-        innerIntervals.push(intervalId);
+        }, autoPlayDelay);
+      };
+
+      const stopAutoPlay = () => {
+        if (slideInterval) {
+          clearInterval(slideInterval);
+          slideInterval = null;
+        }
+      };
+
+      // Control manual navigation
+      nextArrow.addEventListener("click", (e) => {
+        e.preventDefault();
+        const width = scrollArea.clientWidth;
+        const maxScroll = scrollArea.scrollWidth - scrollArea.clientWidth;
+        if (scrollArea.scrollLeft + width + 10 >= maxScroll) {
+          scrollArea.scrollTo({ left: 0, behavior: "smooth" });
+        } else {
+          scrollArea.scrollBy({ left: width, behavior: "smooth" });
+        }
       });
-    };
 
-    // Main section change listener
-    window.addEventListener("sectionChange", (e: any) => {
-      // Assuming Section 4 is Projects (based on MainPage.astro)
-      if (e.detail.index === 4) {
-        isSectionActive = true;
-        startMainAutoPlay();
-        startInnerAutoPlays();
-        ScrollTrigger.refresh();
-      } else {
-        isSectionActive = false;
-        stopAllAnimations();
-      }
-    });
+      prevArrow.addEventListener("click", (e) => {
+        e.preventDefault();
+        const width = scrollArea.clientWidth;
+        if (scrollArea.scrollLeft <= 5) {
+          scrollArea.scrollTo({ left: scrollArea.scrollWidth, behavior: "smooth" });
+        } else {
+          scrollArea.scrollBy({ left: -width, behavior: "smooth" });
+        }
+      });
 
-    // Handle manual navigation & interaction checks
-    if (mainCarouselInstance) {
-        mainCarouselInstance.addEventListener("mouseenter", () => {
-            if (mainSlideInterval) clearInterval(mainSlideInterval);
+      // Pause/resume automatically on user interaction
+      container.addEventListener("mouseenter", stopAutoPlay);
+      container.addEventListener("mouseleave", startAutoPlay);
+      // Fallback for touch screens: pause on touch
+      container.addEventListener("touchstart", stopAutoPlay, { passive: true });
+      container.addEventListener("touchend", () => setTimeout(startAutoPlay, 5000), { passive: true });
+      
+      // Start auto progression initially
+      startAutoPlay();
+
+      // Update dots based on scroll position
+      scrollArea.addEventListener("scroll", () => {
+        requestAnimationFrame(() => {
+          const scrollLeft = scrollArea.scrollLeft;
+          const width = scrollArea.clientWidth;
+          const activeIndex = Math.round(scrollLeft / width);
+          
+          indicators.forEach((dot, index) => {
+            if (index === activeIndex) {
+              dot.classList.remove("bg-white/30");
+              dot.classList.add("bg-white");
+            } else {
+              dot.classList.remove("bg-white");
+              dot.classList.add("bg-white/30");
+            }
+          });
         });
-        mainCarouselInstance.addEventListener("mouseleave", startMainAutoPlay);
-        
-        setTimeout(() => {
-          mainCarouselInstance.scrollLeft = getMainCarouselSetWidth(mainCarouselInstance) * 1;
-        }, 150);
-    }
-
-    innerCarousels.forEach(container => {
-       const prev = container.querySelector(".inner-prev");
-       const next = container.querySelector(".inner-next");
-       const scrollArea = container.querySelector(".inner-scroll-area") as HTMLElement;
-       const indicators = container.querySelectorAll(".bottom-4.left-1\\/2 div");
-
-       if (prev && next && scrollArea) {
-           next.addEventListener("click", (e) => {
-               e.preventDefault();
-               const width = scrollArea.clientWidth;
-               if (scrollArea.scrollLeft + width + 10 >= scrollArea.scrollWidth - width) {
-                   scrollArea.scrollTo({ left: 0, behavior: "smooth" });
-               } else {
-                   scrollArea.scrollBy({ left: width, behavior: "smooth" });
-               }
-           });
-           prev.addEventListener("click", (e) => {
-               e.preventDefault();
-               const width = scrollArea.clientWidth;
-               if (scrollArea.scrollLeft <= 5) {
-                   scrollArea.scrollTo({ left: scrollArea.scrollWidth, behavior: "smooth" });
-               } else {
-                   scrollArea.scrollBy({ left: -width, behavior: "smooth" });
-               }
-           });
-
-           scrollArea.addEventListener("scroll", () => {
-                requestAnimationFrame(() => {
-                    const activeIndex = Math.round(scrollArea.scrollLeft / scrollArea.clientWidth);
-                    indicators.forEach((dot, index) => {
-                        dot.className = `w-1.5 h-1.5 rounded-full ${index === activeIndex ? 'bg-white' : 'bg-white/30'}`;
-                    });
-                });
-           });
-       }
-    });
-
-    // Initial entrance animation
-    if (section) {
-        gsap.to(".project-header", {
-          opacity: 1, y: 0, duration: 0.8, ease: "power3.out",
-          scrollTrigger: {
-            trigger: section,
-            scroller: "#projects-scroll-container",
-            start: "top center",
-          }
-        });
-        gsap.to(".project-card", {
-          opacity: 1, scale: 1, duration: 0.6, stagger: 0.1, ease: "back.out(1.2)",
-          scrollTrigger: {
-            trigger: section,
-            scroller: "#projects-scroll-container",
-            start: "top center",
-          }
-        });
-    }
-
-    // Cleanup on page move
-    document.addEventListener("astro:before-preparation", () => {
-      stopAllAnimations();
-    }, { once: true });
-  };
-
-  // Event Delegation to handle dynamic buttons
-  document.addEventListener('click', (e) => {
-    const target = e.target as HTMLElement;
-    const btn = target.closest('.project-detail-btn');
-    if (btn) {
-      if (target.closest('.inner-prev') || target.closest('.inner-next')) return;
-      try {
-        const projectData = JSON.parse(btn.getAttribute('data-project') || '{}');
-        openModal(projectData);
-      } catch (err) {}
-    }
-    if (target.closest('#modal-close') || target.id === 'modal-backdrop') closeModal();
-    
-    // Main Projects Carousel navigation delegates
-    const mainCarousel = document.getElementById('projects-carousel');
-    if (mainCarousel) {
-      const itemWidth = window.innerWidth > 768 ? 632 : window.innerWidth * 0.85 + 32;
-      if (target.closest('#next-project')) mainCarousel.scrollBy({ left: itemWidth, behavior: "smooth" });
-      else if (target.closest('#prev-project')) mainCarousel.scrollBy({ left: -itemWidth, behavior: "smooth" });
+      });
     }
   });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeModal();
-  });
-
-  // Initialization
-  initProjects();
-  document.addEventListener("astro:page-load", initProjects);
-
 </script>
 
 <style>

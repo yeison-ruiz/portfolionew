@@ -469,12 +469,8 @@ const techCards = [
     );
 
     let reqId: number;
-    let isSectionActive = true; // Hero is active by default
-
     const animate = () => {
       reqId = requestAnimationFrame(animate);
-
-      if (!isSectionActive) return;
 
       if (!isDragging) {
         targetRotationY -= 0.003; 
@@ -512,20 +508,10 @@ const techCards = [
 
     animate();
 
-    const handleResize = () => {
-      isMobile = window.innerWidth < 768;
-    };
-    window.addEventListener("resize", handleResize);
-
-    window.addEventListener("sectionChange", (e: any) => {
-      isSectionActive = e.detail.index === 0;
-    });
-
     document.addEventListener(
       "astro:before-preparation",
       () => {
         cancelAnimationFrame(reqId);
-        window.removeEventListener("resize", handleResize);
       },
       { once: true },
     );
