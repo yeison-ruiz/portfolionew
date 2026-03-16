@@ -587,11 +587,12 @@ ${lang === 'es' ? 'Hola Yeison, soy ' + (data.name || '') + ' y estoy interesado
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.2, type: "tween" }}
+            style={{ willChange: "transform, opacity", transform: "translateZ(0)" }}
             className="fixed inset-0 md:inset-auto md:bottom-6 md:right-6 w-full md:w-[400px] md:h-[600px] h-full bg-[#0A0A0A] md:rounded-3xl border border-white/10 shadow-2xl overflow-hidden z-[100] flex flex-col font-sans"
           >
-            {/* Header */}
-            <div className="p-4 bg-linear-to-r from-purple-900/80 to-blue-900/80 backdrop-blur-md border-b border-white/10 flex items-center justify-between shrink-0">
+            {/* Header - no backdrop-blur on mobile for perf */}
+            <div className="p-4 bg-purple-900/90 md:backdrop-blur-md border-b border-white/10 flex items-center justify-between shrink-0">
               <div className="flex items-center gap-3">
                 <div className="relative">
                   <div className="w-10 h-10 rounded-full bg-linear-to-br from-purple-400 to-blue-500 flex items-center justify-center overflow-hidden border-2 border-white/20">
@@ -624,11 +625,9 @@ ${lang === 'es' ? 'Hola Yeison, soy ' + (data.name || '') + ' y estoy interesado
             {/* Chat Body */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
               {messages.map((msg) => (
-                <motion.div
+                <div
                   key={msg.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className={`flex ${
+                  className={`flex chat-msg-enter ${
                     msg.sender === "user" ? "justify-end" : "justify-start"
                   }`}
                 >
@@ -641,7 +640,7 @@ ${lang === 'es' ? 'Hola Yeison, soy ' + (data.name || '') + ' y estoy interesado
                   >
                     {msg.text}
                   </div>
-                </motion.div>
+                </div>
               ))}
 
               {isTyping && (
@@ -670,8 +669,8 @@ ${lang === 'es' ? 'Hola Yeison, soy ' + (data.name || '') + ' y estoy interesado
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Footer */}
-            <div className="p-4 border-t border-white/5 bg-[#050505]/50 backdrop-blur text-center shrink-0">
+            {/* Footer - simplified */}
+            <div className="p-4 border-t border-white/5 bg-[#050505]/80 text-center shrink-0">
               {currentStep !== "contact-input" && (
                 <p className="text-[10px] text-gray-600 flex items-center justify-center gap-1">
                   Powered by <Zap size={10} /> {t.assistantName}
@@ -689,6 +688,7 @@ ${lang === 'es' ? 'Hola Yeison, soy ' + (data.name || '') + ' y estoy interesado
             initial={{ opacity: 0, y: 10, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ type: "tween", duration: 0.15 }}
             className="fixed bottom-20 md:bottom-28 right-4 md:right-8 z-[100] max-w-[180px] md:max-w-[200px]"
           >
             <div className="bg-white border-2 border-black px-5 py-3 rounded-2xl shadow-[4px_4px_0px_rgba(0,0,0,1)] relative">
