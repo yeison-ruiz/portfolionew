@@ -25,16 +25,19 @@
     );
     camera.position.set(0, 0, 8.5);
 
+    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
     // 2. Renderers
     // WebGL Renderer (for 3D objects)
     const renderer = new THREE.WebGLRenderer({
       alpha: true,
-      antialias: true,
+      antialias: !isMobileDevice, // Disable on mobile for performance
       powerPreference: "high-performance",
     });
     renderer.setSize(container.clientWidth, container.clientHeight);
-    renderer.setPixelRatio(window.devicePixelRatio); // Full resolution
-    renderer.shadowMap.enabled = true;
+    // Lower pixel ratio on mobile (1.3 to 1.5) to keep smoothness on mid-range GPUs
+    renderer.setPixelRatio(isMobileDevice ? Math.min(window.devicePixelRatio, 1.5) : window.devicePixelRatio); 
+    renderer.shadowMap.enabled = !isMobileDevice; // Disable shadows on mobile
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     // container.appendChild(renderer.domElement);
     // We append relatively positioned
@@ -339,10 +342,11 @@
     // --- Resize ---
     const onResize = () => {
       if (!container) return;
+      const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       camera.aspect = container.clientWidth / container.clientHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(container.clientWidth, container.clientHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setPixelRatio(isMobileDevice ? Math.min(window.devicePixelRatio, 1.5) : Math.min(window.devicePixelRatio, 2));
       labelRenderer.setSize(container.clientWidth, container.clientHeight);
     };
     window.addEventListener("resize", onResize);
