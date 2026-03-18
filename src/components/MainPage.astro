@@ -345,12 +345,29 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
       }
     });
 
-    // Handle initial hash on load
+    // Handle initial hash on load - SILENT JUMP (no animation) to avoid the "flash"
     const hash = window.location.hash.substring(1);
     if (hash) {
       const targetIndex = sectionSlugs.findIndex(s => s === hash);
-      if (targetIndex !== -1 && targetIndex !== currentIndex) {
-        gotoSection(targetIndex, 1);
+      if (targetIndex !== -1 && targetIndex !== 0) {
+        const initialSection = sections[0];
+        const targetSection = sections[targetIndex];
+        
+        if (initialSection && targetSection) {
+            // Immediate state change without GSAP timeline/delay
+            gsap.set(initialSection, { autoAlpha: 0, zIndex: 0, pointerEvents: "none" });
+            gsap.set(targetSection, { autoAlpha: 1, zIndex: 10, pointerEvents: "auto", scale: 1 });
+            currentIndex = targetIndex;
+            
+            // Sync the Navbar immediately
+            window.dispatchEvent(
+                new CustomEvent("sectionChange", { detail: { index: targetIndex } })
+            );
+            
+            // Wake up videos in the target section
+            const sectionVideos = targetSection.querySelectorAll('video');
+            sectionVideos.forEach((v: any) => v.play().catch(() => {}));
+        }
       }
     }
   };
