@@ -9,9 +9,9 @@ const { lang = "es" } = Astro.props;
 const { projects, personalInfo, ui } = db[lang];
 ---
 
-<section id={ui.slugs.projects} class="relative min-h-full flex flex-col pt-24 md:pt-32 pb-24 projects-section-container">
+<section id={ui.slugs.projects} class="relative min-h-full flex flex-col pt-40 md:pt-52 pb-24 projects-section-container">
   <!-- Background Elements -->
-  <div class="absolute inset-0 bg-bg-dark -z-20">
+  <div class="absolute inset-0 bg-transparent -z-20">
     <!-- Grid Pattern -->
     <div
       class="absolute inset-0 opacity-[0.03]"
@@ -37,7 +37,7 @@ const { projects, personalInfo, ui } = db[lang];
     </div>
 
       <!-- Navigation Buttons -->
-      <div class="hidden md:flex gap-4 mt-8 md:mt-0">
+      <div class="flex gap-4 mt-8 md:mt-0 justify-center lg:justify-start">
         <button
           class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
           aria-label="Previous project"
@@ -78,14 +78,14 @@ const { projects, personalInfo, ui } = db[lang];
 
     <!-- Projects Carousel -->
     <div
-      class="relative md:overflow-x-auto md:overflow-y-hidden pb-12 no-scrollbar"
+      class="relative overflow-x-auto overflow-y-hidden pb-12 no-scrollbar"
       id="projects-carousel"
     >
-      <div class="flex flex-col md:flex-row gap-8 w-full md:w-max px-2 md:px-[5vw] items-center md:items-start">
+      <div class="flex flex-row gap-8 w-max px-6 md:px-[5vw] items-start">
         {
           Array(3).fill(projects).flat().map((project, index) => (
             <article
-              class="project-card opacity-0 scale-95 w-full max-w-[400px] md:w-[600px] shrink-0 bg-[#0A0A0A] border border-white/5 rounded-3xl overflow-hidden group hover:border-white/10 transition-all duration-300"
+              class="project-card opacity-0 scale-95 w-[85vw] max-w-[400px] md:w-[600px] shrink-0 bg-[#0A0A0A] border border-white/5 rounded-3xl overflow-hidden group hover:border-white/10 transition-all duration-300"
             >
               <!-- Window/Device Mockup Area -->
               <div
@@ -604,16 +604,25 @@ const { projects, personalInfo, ui } = db[lang];
     let mainSlideInterval: number | null = null;
     const autoPlayDelay = 5000;
 
-    // Fast-forward silently to exactly the 2nd set (middle of 3 sets)
-    setTimeout(() => {
-      mainCarouselInstance.scrollLeft = getMainCarouselSetWidth(mainCarouselInstance) * 1;
-    }, 150);
+    const initMainPosition = () => {
+      const setWidth = getMainCarouselSetWidth(mainCarouselInstance);
+      if (setWidth > 0) {
+        mainCarouselInstance.scrollLeft = setWidth;
+      } else {
+        // If hidden/not measured yet, retry in a bit
+        setTimeout(initMainPosition, 300);
+      }
+    };
+
+    // Initial attempt
+    initMainPosition();
 
     const startMainAutoPlay = () => {
-      if (window.innerWidth <= 768) return; // Disable on mobile
       if (mainSlideInterval) clearInterval(mainSlideInterval);
       mainSlideInterval = window.setInterval(() => {
         const setWidth = getMainCarouselSetWidth(mainCarouselInstance);
+        if (setWidth <= 0) return;
+
         const itemWidth = window.innerWidth > 768 ? 632 : window.innerWidth * 0.85 + 32;
         
         // Loop boundary check safely while idle
@@ -629,6 +638,16 @@ const { projects, personalInfo, ui } = db[lang];
         });
       }, autoPlayDelay);
     };
+
+    // Also listen for section change to ensure it's re-evaluated
+    window.addEventListener("sectionChange", (e: any) => {
+      if (e.detail.index === 4) { // Projects section
+        initMainPosition();
+        startMainAutoPlay();
+      } else {
+        stopMainAutoPlay();
+      }
+    });
 
     const stopMainAutoPlay = () => {
       if (mainSlideInterval) {

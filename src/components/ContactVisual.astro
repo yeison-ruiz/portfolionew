@@ -71,9 +71,9 @@ const cards: CardData[] = [
   <!-- Central Video Character -->
   <div class="relative w-full max-w-[450px] md:max-w-[550px] flex items-center justify-center video-glow-container mt-8 lg:mt-0">
     
-    <!-- Deep backing layer to keep character solid even with screen blend -->
-    <div class="absolute inset-0 bg-black rounded-full blur-[40px] scale-[0.65] z-0 opacity-80"></div>
-    <div class="absolute inset-0 bg-purple-900/20 rounded-full blur-[80px] scale-90 z-0"></div>
+    <!-- Even more subtle backing to blend with the global purple -->
+    <div class="absolute inset-0 bg-purple-600/5 rounded-full blur-[100px] scale-[0.6] z-0 opacity-40"></div>
+    <div class="absolute inset-0 bg-primary/2 rounded-full blur-[120px] scale-90 z-0"></div>
 
     <div class="relative z-10 w-full overflow-hidden mask-container">
         <video
@@ -89,8 +89,8 @@ const cards: CardData[] = [
           <source src="/videoyeison.mp4" type="video/mp4" />
         </video>
         <!-- Fade overlays for even softer edges -->
-        <div class="absolute inset-0 bg-linear-to-t from-black via-transparent to-black pointer-events-none opacity-40"></div>
-        <div class="absolute inset-0 bg-linear-to-r from-black via-transparent to-black pointer-events-none opacity-40"></div>
+        <div class="absolute inset-0 bg-linear-to-t from-transparent via-transparent to-transparent pointer-events-none"></div>
+        <div class="absolute inset-0 bg-linear-to-r from-transparent via-transparent to-transparent pointer-events-none"></div>
     </div>
     
     <!-- Tech Cards -->
@@ -180,11 +180,11 @@ const cards: CardData[] = [
   .character-video {
     /* Mix blend screen makes blacks transparent, showing the grid behind IF not covered by backing */
     mix-blend-mode: screen;
-    /* Radial mask to feather edges into transparency */
-    -webkit-mask-image: radial-gradient(circle at center, black 45%, transparent 88%);
-    mask-image: radial-gradient(circle at center, black 45%, transparent 88%);
-    /* Deepen contrast to kill off compression grey in blacks */
-    filter: contrast(1.1) brightness(1.05);
+    /* Radial mask to aggressively feather edges away */
+    -webkit-mask-image: radial-gradient(circle at center, black 20%, transparent 90%);
+    mask-image: radial-gradient(circle at center, black 20%, transparent 90%);
+    /* Strong contrast ensures blacks stay #000 for screen blending */
+    filter: contrast(1.3);
     transition: opacity 0.5s ease;
     transform: translateZ(0);
     backface-visibility: hidden;

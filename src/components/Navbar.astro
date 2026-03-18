@@ -20,11 +20,12 @@ const langPath = lang === "es" ? "/en" : "/";
   <!-- Logo -->
   <a
     href={lang === 'es' ? "/" : `/${lang}`}
-    class="text-3xl md:text-4xl font-black text-white flex items-center gap-1.5 group tracking-tighter"
+    class="text-3xl md:text-4xl font-black text-white flex items-center gap-1.5 group tracking-tighter logo-link"
+    data-slug={ui.slugs.home}
   >
-    <span class="text-primary group-hover:text-white transition-colors duration-400">&lt;</span>
-    <span class="group-hover:text-primary transition-colors duration-400">{initials}</span>
-    <span class="text-primary group-hover:text-white transition-colors duration-400">/&gt;</span>
+    <span class="text-primary group-hover:text-white transition-colors duration-400 bracket-left">&lt;</span>
+    <span class="initials group-hover:text-primary transition-colors duration-400">{initials}</span>
+    <span class="text-primary group-hover:text-white transition-colors duration-400 bracket-right">/&gt;</span>
   </a>
 
   <!-- Navigation Links -->
@@ -73,6 +74,7 @@ const langPath = lang === "es" ? "/en" : "/";
   <div class="flex items-center gap-4">
     <!-- Language Switcher -->
     <a
+      id="language-toggle"
       href={langPath}
       class="text-xs font-bold text-text-secondary hover:text-white transition-colors px-3 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm"
       aria-label="Switch language"
@@ -152,17 +154,54 @@ const langPath = lang === "es" ? "/en" : "/";
   </nav>
 </div>
 
+<!-- Data for dynamic language switching -->
+<div 
+  id="lang-data" 
+  data-other-slugs={JSON.stringify([
+    db[otherLang].ui.slugs.home,
+    db[otherLang].ui.slugs.timeline,
+    db[otherLang].ui.slugs.certificaciones,
+    db[otherLang].ui.slugs.services,
+    db[otherLang].ui.slugs.projects,
+    db[otherLang].ui.slugs.contact
+  ])} 
+  data-base-path={langPath}
+  hidden
+></div>
+
 <style>
-  /* Active link styles with a subtle glowing pill effect */
+/* Extreme Logo Active State */
+  .logo-link {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    padding: 6px 16px;
+    border-radius: 9999px;
+    border: 1px solid transparent;
+  }
+
+  /* Vibrant Purple Gradient Active state for nav links */
   .nav-link.active {
-    color: #ffffff;
-    background-color: rgba(255, 255, 255, 0.1);
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    color: #ffffff !important;
+    background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+    font-weight: 800;
+    transform: translateY(-1px);
+  }
+
+  /* Mobile Active State with Gradient */
+  .mobile-nav-link.active {
+    color: #ffffff !important;
+    background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+    font-weight: 900;
+    padding: 10px 28px;
+    border-radius: 14px;
+    box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3);
   }
   
   /* Hover effect for inactive links */
   .nav-link:not(.active):hover {
-    background-color: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
   }
 
   /* Hamburger Animation */
@@ -184,23 +223,50 @@ const langPath = lang === "es" ? "/en" : "/";
   const resetLinks = () => {
     navLinks.forEach((link) => {
       link.classList.remove("active", "text-white");
-      link.classList.add("text-text-secondary");
     });
+    mobileLinks.forEach((link) => {
+      link.classList.remove("active", "text-white");
+    });
+    document.querySelector(".logo-link")?.classList.remove("active");
   };
 
   const activateLink = (index: number) => {
     resetLinks();
-    // Index mapping: 0=Home, 1=Trayectoria/Experience, 2=Certificaciones/Certifications, 3=Servicios/Services, 4=Proyectos/Projects, 5=Contactenos/Contact
-    if (index > 0 && index <= navLinks.length) {
-      const activeLink = navLinks[index - 1];
-      if (activeLink) {
-        activeLink.classList.remove("text-text-secondary");
-        activeLink.classList.add("text-white", "active");
-      }
+    
+    // Get all section slugs from MainPage
+    const slugsData = document.getElementById("slugs-data");
+    const sectionSlugs: string[] = slugsData ? JSON.parse(slugsData.getAttribute("data-slugs") || "[]") : [];
+    const currentSlug = sectionSlugs[index];
+
+    // Update language toggle URL
+    const langData = document.getElementById("lang-data");
+    const languageToggle = document.getElementById("language-toggle") as HTMLAnchorElement;
+    if (langData && languageToggle) {
+      const otherSlugs = JSON.parse(langData.getAttribute("data-other-slugs") || "[]");
+      const basePath = langData.getAttribute("data-base-path") || "/";
+      const otherSlug = otherSlugs[index];
+      languageToggle.href = otherSlug ? `${basePath}#${otherSlug}` : basePath;
+    }
+
+    if (currentSlug !== undefined) {
+      // Desktop links
+      navLinks.forEach(link => {
+        if (link.getAttribute("data-slug") === currentSlug) {
+          link.classList.add("active");
+        }
+      });
+
+      // Mobile links
+      mobileLinks.forEach(link => {
+        const href = link.getAttribute("href")?.split('#')[1];
+        if (href === currentSlug) {
+          link.classList.add("active");
+        }
+      });
     }
   };
 
-  // Listen for section changes from index.astro
+  // Listen for section changes from MainPage.astro
   window.addEventListener("sectionChange", ((e: CustomEvent) => {
     activateLink(e.detail.index);
   }) as EventListener);
@@ -233,6 +299,11 @@ const langPath = lang === "es" ? "/en" : "/";
     });
   });
 
-  // Initial check
-  activateLink(0);
+  // Initial check focused on current hash
+  const initialHash = window.location.hash.substring(1);
+  const slugsDataInitial = document.getElementById("slugs-data");
+  const sectionSlugsInitial: string[] = slugsDataInitial ? JSON.parse(slugsDataInitial.getAttribute("data-slugs") || "[]") : [];
+  const initialIndex = initialHash ? sectionSlugsInitial.findIndex(s => s === initialHash) : 0;
+  
+  activateLink(initialIndex !== -1 ? initialIndex : 0);
 </script>

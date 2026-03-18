@@ -30,27 +30,32 @@ const { slugs } = ui;
         <nav class="flex flex-wrap justify-center items-center gap-x-6 gap-y-4 md:gap-x-8 md:gap-y-3">
           <a
             href={`#${slugs.timeline}`}
-            class="text-sm text-gray-400 hover:text-white transition-colors font-medium whitespace-nowrap"
+            class="footer-nav-link text-sm text-gray-400 hover:text-white transition-all duration-300 font-medium whitespace-nowrap px-3 py-1 rounded-full"
+            data-slug={slugs.timeline}
             >{ui.nav.timeline}</a
           >
           <a
             href={`#${slugs.certificaciones}`}
-            class="text-sm text-gray-400 hover:text-white transition-colors font-medium whitespace-nowrap"
+            class="footer-nav-link text-sm text-gray-400 hover:text-white transition-all duration-300 font-medium whitespace-nowrap px-3 py-1 rounded-full"
+            data-slug={slugs.certificaciones}
             >{ui.nav.certificaciones}</a
           >
           <a
             href={`#${slugs.services}`}
-            class="text-sm text-gray-400 hover:text-white transition-colors font-medium whitespace-nowrap"
+            class="footer-nav-link text-sm text-gray-400 hover:text-white transition-all duration-300 font-medium whitespace-nowrap px-3 py-1 rounded-full"
+            data-slug={slugs.services}
             >{ui.nav.services}</a
           >
           <a
             href={`#${slugs.projects}`}
-            class="text-sm text-gray-400 hover:text-white transition-colors font-medium whitespace-nowrap"
+            class="footer-nav-link text-sm text-gray-400 hover:text-white transition-all duration-300 font-medium whitespace-nowrap px-3 py-1 rounded-full"
+            data-slug={slugs.projects}
             >{ui.nav.projects}</a
           >
           <a
             href={`#${slugs.contact}`}
-            class="text-sm text-white hover:text-primary-glow transition-colors font-bold whitespace-nowrap"
+            class="footer-nav-link text-sm text-gray-400 hover:text-white transition-all duration-300 font-medium whitespace-nowrap px-3 py-1 rounded-full"
+            data-slug={slugs.contact}
             >{ui.nav.contact}</a
           >
         </nav>
@@ -59,6 +64,33 @@ const { slugs } = ui;
           © {new Date().getFullYear()} {personalInfo.name} {personalInfo.lastName}. {ui.footer.rights}
         </p>
       </div>
+
+<style>
+  .footer-nav-link.active {
+    color: white !important;
+    background: rgba(124, 58, 237, 0.15);
+    box-shadow: 0 0 15px rgba(124, 58, 237, 0.2);
+    border: 1px solid rgba(124, 58, 237, 0.3);
+  }
+</style>
+
+<script>
+  const footerLinks = document.querySelectorAll<HTMLAnchorElement>(".footer-nav-link");
+
+  window.addEventListener("sectionChange", ((e: CustomEvent) => {
+    const activeIndex = e.detail.index;
+    const slugsData = document.getElementById("slugs-data");
+    const sectionSlugs: string[] = slugsData ? JSON.parse(slugsData.getAttribute("data-slugs") || "[]") : [];
+    const currentSlug = sectionSlugs[activeIndex];
+
+    footerLinks.forEach(link => {
+      link.classList.remove("active");
+      if (currentSlug && link.getAttribute("data-slug") === currentSlug) {
+        link.classList.add("active");
+      }
+    });
+  }) as EventListener);
+</script>
 
       <!-- Social Icons (Right on Desktop) -->
       <div class="flex-1 flex justify-center md:justify-end gap-5">

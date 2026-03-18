@@ -9,7 +9,7 @@ const { lang = "es" } = Astro.props;
 const { timeline, ui } = db[lang];
 ---
 
-<section id={ui.slugs.timeline} class="relative py-32 overflow-hidden">
+<section id={ui.slugs.timeline} class="relative pt-40 md:pt-52 pb-32 overflow-hidden">
   <!-- Dynamic Background Effects -->
   <div
     class="absolute top-1/4 left-0 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] -z-10 animate-pulse-slow"

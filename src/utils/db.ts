@@ -287,18 +287,19 @@ export const db: Translations = {
       {
         id: "integrations",
         icon: "cloud",
-        title: "Infraestructura e Integraciones",
+        title: "Automatización y DevOps",
         description:
-          "Arquitecto e implemento infraestructuras Cloud Native en AWS y Google Cloud, garantizando despliegues automatizados y alta disponibilidad. Soy experto en la orquestación de APIs REST y GraphQL masivas, integración de pasarelas de pago como Stripe y automatización de canales de comunicación mediante la API de WhatsApp, creando un ecosistema digital conectado y eficiente.",
-        tags: ["API REST", "Node", "Express", "AWS", "Google Cloud", "WhatsApp API"],
+          "Especialista en la creación de pipelines de CI/CD automatizados utilizando GitHub Actions para despliegues continuos y sin errores. Arquitecto e implemento infraestructuras Cloud Native en AWS y Google Cloud, garantizando alta disponibilidad. Experto en la orquestación de APIs masivas e integración de ecosistemas digitales eficientes.",
+        tags: ["GitHub Actions", "CI/CD", "AWS", "Google Cloud", "API REST", "Docker"],
         gradient: "from-indigo-500/20 to-purple-500/20",
         badge: {
-          text: "Cloud Ops",
-          color: "bg-blue-500",
+          text: "DevOps",
+          color: "bg-indigo-500",
         },
       },
     ],
     timeline: [
+
       {
         id: "cert-genai",
         year: "2026",
@@ -321,6 +322,18 @@ export const db: Translations = {
         align: "left",
         colorClass: "blue-500",
         icon: "M13 10V3L4 14h7v7l9-11h-7z",
+        isSpecial: true
+      },
+      {
+        id: "github-actions",
+        year: "2024 - Presente",
+        title: "Especialista en CI/CD & Automatización",
+        company: "Despliegue Global",
+        description: "Implementación de flujos de trabajo automatizados con GitHub Actions, optimizando el tiempo de despliegue en un 60% y garantizando la estabilidad de aplicaciones móviles y web mediante testing automatizado.",
+        tags: ["GitHub Actions", "CI/CD", "DevOps", "Automation"],
+        align: "right",
+        colorClass: "indigo-500",
+        icon: "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4",
         isSpecial: true
       },
       {
@@ -721,18 +734,19 @@ export const db: Translations = {
       {
         id: "integrations",
         icon: "cloud",
-        title: "Infrastructure & Integrations",
+        title: "Automation & DevOps",
         description:
-          "Architecting and implementing Cloud Native infrastructures on AWS and Google Cloud, ensuring automated deployments and high availability. Expert in mass REST and GraphQL API orchestration, Stripe payment gateway integration, and WhatsApp API automation.",
-        tags: ["API REST", "Node", "Express", "AWS", "Google Cloud", "WhatsApp API"],
+          "Specialist in creating automated CI/CD pipelines using GitHub Actions for continuous, error-free deployments. I architect and implement Cloud Native infrastructures on AWS and Google Cloud, ensuring high availability. Expert in mass API orchestration and building efficient digital ecosystems.",
+        tags: ["GitHub Actions", "CI/CD", "AWS", "Google Cloud", "REST API", "Docker"],
         gradient: "from-indigo-500/20 to-purple-500/20",
         badge: {
-          text: "Cloud Ops",
-          color: "bg-blue-500",
+          text: "DevOps",
+          color: "bg-indigo-500",
         },
       },
     ],
     timeline: [
+
       {
         id: "cert-genai",
         year: "2026",
@@ -755,6 +769,18 @@ export const db: Translations = {
         align: "left",
         colorClass: "blue-500",
         icon: "M13 10V3L4 14h7v7l9-11h-7z",
+        isSpecial: true
+      },
+      {
+        id: "github-actions",
+        year: "2024 - Present",
+        title: "CI/CD & Automation Specialist",
+        company: "Global Deployment",
+        description: "Implementation of automated workflows with GitHub Actions, optimizing deployment time by 60% and ensuring stability for mobile and web apps through automated testing.",
+        tags: ["GitHub Actions", "CI/CD", "DevOps", "Automation"],
+        align: "right",
+        colorClass: "indigo-500",
+        icon: "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4",
         isSpecial: true
       },
       {

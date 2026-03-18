@@ -14,10 +14,10 @@ const { slugs } = ui;
 
 <section
   id={slugs.contact}
-  class="relative min-h-full flex flex-col justify-center pt-32 overflow-hidden"
+  class="relative min-h-full flex flex-col justify-center pt-40 md:pt-52 overflow-hidden bg-[#000000]"
 >
   <!-- Background Elements -->
-  <div class="absolute inset-0 bg-black -z-20">
+  <div class="absolute inset-0 bg-transparent -z-20">
     <!-- Subtle Grid -->
     <div
       class="absolute inset-0 opacity-[0.02]"
@@ -51,8 +51,7 @@ const { slugs } = ui;
       <!-- Right Side: Contact Form -->
       <div class="contact-form opacity-0 translate-x-10 flex flex-col items-center text-center w-full">
         <h2 class="hidden lg:block text-5xl font-bold text-white mb-2 text-left">
-          {ui.contact.title} <br />
-          <span
+          {ui.contact.title} <span
             class="text-transparent bg-clip-text bg-linear-to-r from-purple-500 to-blue-500"
             >{ui.contact.titleHighlight}</span
           >

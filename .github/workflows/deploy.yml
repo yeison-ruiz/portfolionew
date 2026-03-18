@@ -1,0 +1,40 @@
+name: 🚀 CI/CD - Despliegue Global
+
+on:
+  push:
+    branches: [ main ] # Se dispara cada vez que haces 'git push' a la rama main
+  pull_request:
+    branches: [ main ] # También revisa si el código está bien antes de aceptar cambios
+
+jobs:
+  build-and-test:
+    name: 🏗️ Construcción y Verificación
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Clonando Repositorio
+        uses: actions/checkout@v4
+
+      - name: 🟢 Configurando Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: 📦 Instalando Dependencias
+        run: npm install
+
+      - name: 🧪 Ejecutando Linter y Tests
+        run: npm run lint # Evita que código feo o roto pase a producción
+
+      - name: 🛠️ Construyendo Proyecto para Producción
+        run: npm run build
+        env:
+          PUBLIC_DISCORD_WEBHOOK_URL: ${{ secrets.PUBLIC_DISCORD_WEBHOOK_URL }}
+
+      - name: 📢 Notificación de Éxito
+        if: success()
+        run: echo "¡El proyecto se ha construido correctamente y está listo para ser desplegado!"
+
+# El siguiente paso dependería de tu hosting (Vercel, Netlify, Cloudflare, AWS, etc.)
+# Por ejemplo, para desplegar en GitHub Pages se añadiría un job extra aquí.

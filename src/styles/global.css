@@ -16,7 +16,13 @@
 
 /* Base Styles */
 html, body {
-  background-color: var(--color-bg-dark);
+  background-color: #000000;
+  background-image: 
+    radial-gradient(circle at -3% 30%, rgba(118, 39, 190, 0.18) 0%, transparent 45%),
+    radial-gradient(circle at -3% 70%, rgba(118, 39, 190, 0.14) 0%, transparent 45%),
+    radial-gradient(circle at 105% 20%, rgba(118, 39, 190, 0.1) 0%, transparent 35%),
+    radial-gradient(circle at 105% 80%, rgba(118, 39, 190, 0.1) 0%, transparent 35%);
+  background-attachment: fixed;
   color: var(--color-text-main);
   font-family: var(--font-inter);
   overflow-x: hidden;
@@ -28,6 +34,10 @@ html, body {
 @media (max-width: 1023px) {
   html, body {
     background-color: #000000 !important;
+    background-image: 
+      radial-gradient(circle at -20% 50%, rgba(118, 39, 190, 0.25) 0%, transparent 60%),
+      radial-gradient(circle at 120% 50%, rgba(118, 39, 190, 0.25) 0%, transparent 60%) !important;
+    background-attachment: fixed !important;
   }
 }
 
