@@ -215,20 +215,22 @@ const techCards = [
 
       <!-- Omit central glow to keep background pure black behind video -->
 
-      <!-- Video Element -->
-      <video
-        id="hero-video"
-        autoplay
-        loop
-        muted
-        playsinline
-        webkit-playsinline
-        preload="auto"
-        draggable="false"
-        class="w-full max-w-[450px] md:max-w-[580px] lg:max-w-[700px] h-full object-contain mx-auto mt-12 lg:mt-0 mix-blend-screen pointer-events-none select-none relative z-20 video-mask"
-      >
-        <source src="/yeison.mp4" type="video/mp4" />
-      </video>
+      <!-- Video Element Wrapper for iOS Safari fix (separating mix-blend-mode from mask/filter) -->
+      <div class="relative z-20 w-full max-w-[450px] md:max-w-[580px] lg:max-w-[700px] h-full mx-auto mt-12 lg:mt-0 mix-blend-screen pointer-events-none select-none flex justify-center items-center">
+        <video
+          id="hero-video"
+          autoplay
+          loop
+          muted
+          playsinline
+          webkit-playsinline
+          preload="auto"
+          draggable="false"
+          class="w-full h-full object-contain video-mask"
+        >
+          <source src="/yeison.mp4" type="video/mp4" />
+        </video>
+      </div>
 
       <!-- Tech Floating Cards overlay -->
       <div id="cards-container" class="absolute inset-0 pointer-events-none">
@@ -378,7 +380,6 @@ const techCards = [
     mask-image: radial-gradient(circle at center, black 35%, transparent 75%);
     -webkit-mask-image: radial-gradient(circle at center, black 35%, transparent 75%);
     filter: contrast(1.2) brightness(1);
-    mix-blend-mode: screen;
   }
 </style>
 
