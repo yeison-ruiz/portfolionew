@@ -589,7 +589,7 @@ ${lang === 'es' ? 'Hola Yeison, soy ' + (data.name || '') + ' y estoy interesado
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2, type: "tween" }}
             style={{ willChange: "transform, opacity", transform: "translateZ(0)" }}
-            className="fixed inset-0 md:inset-auto md:bottom-6 md:right-6 w-full md:w-[400px] md:h-[600px] h-full bg-[#0A0A0A] md:rounded-3xl border border-white/10 shadow-2xl overflow-hidden z-[100] flex flex-col font-sans"
+            className="fixed inset-x-4 top-6 bottom-6 md:inset-auto md:bottom-6 md:right-6 w-auto md:w-[400px] md:h-[600px] h-auto bg-[#0A0A0A] rounded-3xl border border-white/10 shadow-2xl overflow-hidden z-[100] flex flex-col font-sans"
           >
             {/* Header - no backdrop-blur on mobile for perf */}
             <div className="p-4 bg-purple-900/90 md:backdrop-blur-md border-b border-white/10 flex items-center justify-between shrink-0">
