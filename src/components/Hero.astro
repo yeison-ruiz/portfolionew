@@ -216,7 +216,7 @@ const techCards = [
       <!-- Omit central glow to keep background pure black behind video -->
 
       <!-- Video Element Wrapper for iOS Safari fix (separating mix-blend-mode from mask/filter) -->
-      <div class="relative z-20 w-full max-w-[450px] md:max-w-[580px] lg:max-w-[700px] h-full mx-auto mt-12 lg:mt-0 mix-blend-screen pointer-events-none select-none flex justify-center items-center">
+      <div class="relative z-20 w-full max-w-[450px] md:max-w-[580px] lg:max-w-[700px] h-full mx-auto mt-12 lg:mt-0 pointer-events-none select-none flex justify-center items-center bg-[#000000] lg:bg-transparent">
         <video
           id="hero-video"
           autoplay
@@ -226,7 +226,7 @@ const techCards = [
           webkit-playsinline
           preload="auto"
           draggable="false"
-          class="w-full h-full object-contain video-mask"
+          class="w-full h-full object-contain video-mask forced-gpu"
         >
           <source src="/yeison.mp4" type="video/mp4" />
         </video>
@@ -377,9 +377,25 @@ const techCards = [
   }
 
   .video-mask {
-    mask-image: radial-gradient(circle at center, black 35%, transparent 75%);
-    -webkit-mask-image: radial-gradient(circle at center, black 35%, transparent 75%);
-    filter: contrast(1.2) brightness(1);
+    mask-image: radial-gradient(circle at center, black 45%, transparent 75%);
+    -webkit-mask-image: radial-gradient(circle at center, black 45%, transparent 75%);
+    filter: contrast(1.2) brightness(1.2) saturate(1.1);
+    background-color: transparent !important;
+    mix-blend-mode: screen;
+  }
+
+  .forced-gpu {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000;
+    will-change: transform, opacity, mix-blend-mode;
+  }
+
+  /* Support for browsers with poor mix-blend-mode support on video */
+  @supports not (mix-blend-mode: screen) {
+    .video-mask {
+      filter: grayscale(1) invert(0);
+    }
   }
 </style>
 

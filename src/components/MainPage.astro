@@ -38,7 +38,7 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
   <ChatWidget client:load lang={lang} discordWebhook={import.meta.env.PUBLIC_DISCORD_WEBHOOK_URL} />
   <VisitorAlert client:only="react" lang={lang} />
 
-  <main class="relative w-full h-screen overflow-hidden bg-transparent">
+  <main class="relative w-full h-screen overflow-hidden bg-[#000000]">
     <!-- Section 0: Hero -->
     <section
       id="section-0"
@@ -226,8 +226,8 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
       target: window,
       type: "wheel,touch,pointer",
       wheelSpeed: -1,
-      onUp: (self) => handleScroll(-1, self.event),
-      onDown: (self) => handleScroll(1, self.event),
+      onUp: (self: any) => handleScroll(-1, self.event),
+      onDown: (self: any) => handleScroll(1, self.event),
       tolerance: 20, 
       preventDefault: false,
     });
@@ -333,7 +333,7 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
           video.pause();
         }
       });
-    }, { threshold: 0.1 });
+    }, { threshold: [0.01, 0.1] });
 
     videos.forEach(v => videoObserver.observe(v));
 
