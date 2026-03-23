@@ -216,7 +216,7 @@ const techCards = [
       <!-- Omit central glow to keep background pure black behind video -->
 
       <!-- Video Element Wrapper for iOS Safari fix (separating mix-blend-mode from mask/filter) -->
-      <div class="relative z-20 w-full max-w-[450px] md:max-w-[580px] lg:max-w-[700px] h-full mx-auto mt-12 lg:mt-0 pointer-events-none select-none flex justify-center items-center bg-[#000000] lg:bg-transparent">
+      <div class="relative z-20 w-full max-w-[450px] md:max-w-[580px] lg:max-w-[700px] h-full mx-auto mt-12 lg:mt-0 pointer-events-none select-none flex justify-center items-center bg-transparent">
         <video
           id="hero-video"
           autoplay
@@ -377,11 +377,14 @@ const techCards = [
   }
 
   .video-mask {
-    mask-image: radial-gradient(circle at center, black 45%, transparent 75%);
-    -webkit-mask-image: radial-gradient(circle at center, black 45%, transparent 75%);
-    filter: contrast(1.2) brightness(1.2) saturate(1.1);
+    mask-image: radial-gradient(circle at center, black 50%, transparent 78%);
+    -webkit-mask-image: radial-gradient(circle at center, black 50%, transparent 78%);
     background-color: transparent !important;
     mix-blend-mode: screen;
+    /* Removed heavy filters on mobile for max fluidity */
+    @media (min-width: 1024px) {
+      filter: contrast(1.1) brightness(1.1) saturate(1.1);
+    }
   }
 
   .forced-gpu {
