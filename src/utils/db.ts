@@ -5,16 +5,16 @@ export const db: Translations = {
     personalInfo: {
       name: "Yeison",
       lastName: "Ruiz",
-      title: "Arquitecto de Software & <br/> Desarrollador Creativo",
+      title: "Full Stack Developer <br/> Web Apps, SEO & Performance",
       description:
-        "Construyendo experiencias web inmersivas y arquitecturas robustas utilizando tecnologías modernas como React, Next.js y Node.",
+        "Desarrollo de aplicaciones web rápidas y escalables con enfoque en rendimiento y experiencia de usuario.",
       availability: {
         status: "Disponible para trabajar",
         active: true,
       },
       stats: {
         experience: "12+",
-        projects: "100+",
+        projects: "45+",
         satisfied: "100%",
       },
       social: {
@@ -435,14 +435,15 @@ export const db: Translations = {
         link: "https://sistema.cahuitavalley.com",
       },
       {
-        title: "Anarchy Burgers",
-        category: "E-COMMERCE • RESTAURANT",
+        title: "Public Adjuster",
+        category: "WEB PLATFORM • INSURANCE",
         description:
-          "Plataforma interactiva para la venta y personalización de hamburguesas artesanales, diseñada con un enfoque oscuro e inmersivo. Cuenta con menú dinámico y experiencia de usuario fluida para pedidos.",
-        tech: ["React", "Framer Motion", "Zustand", "Three.js"],
-        windowColor: "bg-red-500/10",
+          "Ecosistema digital avanzado para la gestión de reclamos de seguros. Incluye el desarrollo de un plugin de chat inteligente personalizado que se integra mediante una API REST con una aplicación móvil en React Native, permitiendo una comunicación fluida y automatizada entre peritos y clientes.",
+        tech: ["WordPress", "PHP", "React Native", "API REST", "Tailwind CSS"],
+        windowColor: "bg-blue-500/10",
         images: [
-          "/proyectos/Anarchy-Burgers/anarchy-burgers.png"
+          "/proyectos/adjuster/imagepublic.webp",
+          "/proyectos/adjuster/mobilepublic.webp"
         ],
         link: "#",
       },
@@ -452,16 +453,16 @@ export const db: Translations = {
     personalInfo: {
       name: "Yeison",
       lastName: "Ruiz",
-      title: "Software Architect & <br/> Creative Developer",
+      title: "Full Stack Developer <br/> Web Apps, SEO & Performance",
       description:
-        "Building immersive web experiences and robust architectures using modern technologies like React, Next.js, and Node.",
+        "I develop fast and scalable web applications with a focus on performance and user experience.",
       availability: {
         status: "Available for work",
         active: true,
       },
       stats: {
         experience: "12+",
-        projects: "100+",
+        projects: "45+",
         satisfied: "100%",
       },
       social: {
@@ -882,14 +883,15 @@ export const db: Translations = {
         link: "https://sistema.cahuitavalley.com",
       },
       {
-        title: "Anarchy Burgers",
-        category: "E-COMMERCE • RESTAURANT",
+        title: "Public Adjuster",
+        category: "WEB PLATFORM • INSURANCE",
         description:
-          "Interactive platform for the sale and customization of artisanal burgers, designed with a dark and immersive focus. Features a dynamic menu.",
-        tech: ["React", "Framer Motion", "Zustand", "Three.js"],
-        windowColor: "bg-red-500/10",
+          "Advanced digital ecosystem for insurance claims management. Features a custom intelligent chat plugin integrated via REST API with a React Native mobile app, enabling seamless and automated communication between adjusters and clients.",
+        tech: ["WordPress", "PHP", "React Native", "REST API", "Tailwind CSS"],
+        windowColor: "bg-blue-500/10",
         images: [
-          "/proyectos/Anarchy-Burgers/anarchy-burgers.png"
+          "/proyectos/adjuster/imagepublic.webp",
+          "/proyectos/adjuster/mobilepublic.webp"
         ],
         link: "#",
       },
