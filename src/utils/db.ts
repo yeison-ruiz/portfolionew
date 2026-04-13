@@ -7,7 +7,7 @@ export const db: Translations = {
       lastName: "Ruiz",
       title: "Full Stack Developer <br/> Web Apps, SEO & Performance",
       description:
-        "Desarrollo de aplicaciones web rápidas y escalables con enfoque en rendimiento y experiencia de usuario.",
+        "Desarrollo de aplicaciones web robustas y escalables con un enfoque integral en arquitectura, rendimiento técnico y experiencia de usuario.",
       availability: {
         status: "Disponible para trabajar",
         active: true,
@@ -157,7 +157,7 @@ export const db: Translations = {
         badge: "Soluciones de Alto Nivel",
         title: "Elevando el",
         titleHighlight: "estándar digital",
-        descriptionHighlight: "SDD",
+        descriptionHighlight: "Sistemas Escalables",
         description: "Diseño ecosistemas de alto rendimiento bajo la arquitectura . Potencia, escalabilidad y una estética impecable.",
       },
       timeline: {
@@ -253,7 +253,7 @@ export const db: Translations = {
         icon: "code",
         title: "Desarrollo Web Frontend",
         description:
-          "Especialista en la construcción de interfaces de usuario de alto impacto bajo la metodología SDD (Speed Driven Development). Diseño arquitecturas frontend resilientes y ultrarrápidas utilizando Astro, Next.js y React, priorizando siempre un puntaje perfecto en Core Web Vitals y una experiencia de usuario (UX) fluida y cinematográfica mediante animaciones avanzadas.",
+          "Especialista en la construcción de interfaces de usuario de alto impacto y aplicaciones dinámicas. Diseño arquitecturas frontend resilientes y modulares utilizando Astro, Next.js y React, priorizando siempre un rendimiento técnico superior y una experiencia de usuario (UX) fluida y cinematográfica mediante animaciones avanzadas.",
         tags: ["Vue.js", "React", "Node", "Express", "Next.js", "Astro", "TypeScript", "Tailwind CSS"],
         gradient: "from-green-500/20 to-blue-500/20",
       },
@@ -263,7 +263,7 @@ export const db: Translations = {
         title: "Sitios Web Empresariales",
         description:
           "Desarrollo ecosistemas digitales corporativos robustos y aplicaciones web de gran escala. Mi enfoque combina la potencia de Laravel en el backend con la interactividad de Next.js o Vue.js en el frontend. Soluciones orientadas a resultados B2B/B2C que integran flujos de trabajo complejos, seguridad de grado bancario y escalabilidad horizontal para soportar el crecimiento constante de tu negocio.",
-        tags: ["Node", "Express", "Vue.js", "Laravel", "Next.js", "Astro"],
+        tags: ["PHP", "WordPress", "Laravel", "Node", "Express", "Vue.js", "Next.js", "Astro"],
         gradient: "from-purple-500/20 to-pink-500/20",
       },
       {
@@ -278,10 +278,10 @@ export const db: Translations = {
       {
         id: "seo",
         icon: "chart",
-        title: "Auditoría SEO y Rendimiento",
+        title: "Arquitectura Técnica y Performance",
         description:
-          "Maximizo la visibilidad orgánica de tu proyecto mediante auditorías técnicas exhaustivas y estrategias de optimización de rendimiento basadas en SDD. No solo mejoro los rankings, sino que optimizo el TTFB, el LCP y el CLS para garantizar que Google y tus usuarios amen tu sitio. Implemento análisis de brecha de contenido y estrategias de indexación avanzada para dominar los motores de búsqueda.",
-        tags: ["SDD", "SEO Técnico", "Core Web Vitals", "Ahrefs / Semrush", "Google Search Console", "PageSpeed"],
+          "Optimizo la infraestructura y el rendimiento de sistemas complejos mediante análisis técnicos exhaustivos. No solo mejoro la eficiencia, sino que optimizo el TTFB, el LCP y el CLS para garantizar que tu plataforma sea técnicamente impecable. Implemento estrategias de escalabilidad y optimización de recursos para soportar aplicaciones de alta demanda.",
+        tags: ["Arquitectura Técnica", "Core Web Vitals", "Optimization", "PageSpeed", "Web Performance"],
         gradient: "from-blue-600/20 to-cyan-400/20",
       },
       {
@@ -605,7 +605,7 @@ export const db: Translations = {
         badge: "High-End Solutions",
         title: "Elevating the",
         titleHighlight: "digital standard",
-        descriptionHighlight: "SDD",
+        descriptionHighlight: "Scalable Systems",
         description: "Designing high-performance ecosystems under the architecture. Power, scalability, and impeccable aesthetics.",
       },
       timeline: {
@@ -701,7 +701,7 @@ export const db: Translations = {
         icon: "code",
         title: "Frontend Web Development",
         description:
-          "Specialist in building high-impact user interfaces under the SDD (Speed Driven Development) methodology. I design resilient and ultra-fast frontend architectures using Astro, Next.js, and React, always prioritizing perfect Core Web Vitals scores and a cinematic user experience (UX) through advanced animations.",
+          "Specialist in building high-impact user interfaces and dynamic applications. I design resilient and modular frontend architectures using Astro, Next.js, and React, always prioritizing superior technical performance and a cinematic user experience (UX) through advanced animations.",
         tags: ["Vue.js", "React", "Node", "Express", "Next.js", "Astro", "TypeScript", "Tailwind CSS"],
         gradient: "from-green-500/20 to-blue-500/20",
       },
@@ -711,7 +711,7 @@ export const db: Translations = {
         title: "Enterprise Web Sites",
         description:
           "Developing robust corporate digital ecosystems and large-scale web applications. My approach combines the power of Laravel on the backend with the interactivity of Next.js or Vue.js on the frontend. B2B/B2C result-oriented solutions that integrate complex workflows, bank-grade security, and horizontal scalability.",
-        tags: ["Node", "Express", "Vue.js", "Laravel", "Next.js", "Astro"],
+        tags: ["PHP", "WordPress", "Laravel", "Node", "Express", "Vue.js", "Next.js", "Astro"],
         gradient: "from-purple-500/20 to-pink-500/20",
       },
       {
@@ -726,10 +726,10 @@ export const db: Translations = {
       {
         id: "seo",
         icon: "chart",
-        title: "SEO Audit & Performance",
+        title: "Technical Architecture & Performance",
         description:
-          "Maximizing organic visibility through exhaustive technical audits and SDD-based performance optimization strategies. I don't just improve rankings; I optimize TTFB, LCP, and CLS to ensure Google and your users love your site. Implementing advanced indexing strategies and content gap analysis.",
-        tags: ["SDD", "Technical SEO", "Core Web Vitals", "Ahrefs / Semrush", "Google Search Console", "PageSpeed"],
+          "Optimizing infrastructure and performance of complex systems through exhaustive technical analysis. I don't just improve efficiency; I optimize TTFB, LCP, and CLS to ensure your platform is technically flawless. Implementing scalability strategies and resource optimization for high-demand applications.",
+        tags: ["Technical Architecture", "Core Web Vitals", "Optimization", "PageSpeed", "Web Performance"],
         gradient: "from-blue-600/20 to-cyan-400/20",
       },
       {

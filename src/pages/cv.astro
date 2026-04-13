@@ -58,8 +58,11 @@ const { personalInfo, ui, services, timeline, projects } = db[lang];
         margin: 0;
         box-shadow: none;
         width: 100%;
-        min-height: 100%;
-        page-break-after: avoid;
+        height: 297mm; /* Altura estricta A4 */
+        max-height: 297mm;
+        overflow: hidden;
+        page-break-after: always;
+        break-after: page;
       }
       .no-print {
         display: none !important;
@@ -67,6 +70,24 @@ const { personalInfo, ui, services, timeline, projects } = db[lang];
       .page-break {
         page-break-before: always;
       }
+      .avoid-break {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+      
+      /* Forza a la grilla a comportarse mejor en impresión */
+      .print-grid-fix {
+        display: flex;
+        flex-direction: row;
+      }
+      .print-col-1 { width: 62%; }
+      .print-col-2 { width: 38%; }
+    }
+
+    /* Clase general útil incluso fuera de @media print por seguridad */
+    .avoid-break {
+      break-inside: avoid;
+      page-break-inside: avoid;
     }
   </style>
 
@@ -97,7 +118,7 @@ const { personalInfo, ui, services, timeline, projects } = db[lang];
       <div class="absolute top-0 right-10 w-40 h-[6px] bg-gray-900"></div>
       
       <!-- Logo Monogram -->
-      <div class="w-20 h-20 rounded-2xl text-white flex items-center justify-center shrink-0 translate-y-2 relative overflow-hidden bg-gray-900 shadow-xl shadow-gray-200">
+      <div class="w-20 h-20 rounded-2xl text-white flex items-center justify-center shrink-0 translate-y-2 relative overflow-hidden bg-gradient-to-br from-gray-900 to-black shadow-[0_10px_20px_rgba(0,0,0,0.15)] border border-gray-800">
         <!-- Subtítulo de fondo texturado en el logo -->
         <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 8px 8px;"></div>
         <span class="text-[36px] font-black tracking-tighter leading-none relative z-10">YR<span class="text-primary">.</span></span>
@@ -129,12 +150,10 @@ const { personalInfo, ui, services, timeline, projects } = db[lang];
       </div>
     </header>
 
-    <div class="flex-1 flex z-10 relative">
-      <!-- Right Sidebar Background -->
-      <div class="absolute top-0 right-0 w-[38%] h-full bg-[#f8f9fc] border-t border-l border-gray-100/80 -z-10 rounded-tl-[40px]"></div>
+    <div class="flex-1 flex flex-row z-10 relative print-grid-fix">
       
       <!-- COLUMNA PRINCIPAL (62%) -->
-      <div class="w-[62%] pl-14 pr-10 py-6 flex flex-col gap-6">
+      <div class="pl-14 pr-10 py-8 flex flex-col gap-8 w-[62%] print-col-1">
         
         <!-- Perfil -->
         <section>
@@ -142,8 +161,8 @@ const { personalInfo, ui, services, timeline, projects } = db[lang];
             <span class="w-1 h-3 bg-primary block rounded-full"></span>
             Resumen Ejecutivo
           </h3>
-          <p class="text-gray-600 leading-[1.7] text-[14.5px] text-justify font-medium">
-            Full Stack Developer con más de 12 años de experiencia construyendo plataformas digitales inmersivas. Especialista en la metodología SDD (Speed Driven Development), SEO de alto rendimiento e integración de Inteligencia Artificial para potenciar procesos. Construyo arquitecturas resilientes con ecosistemas modernos como React, Next.js y Node.
+          <p class="text-gray-700 leading-[1.8] text-[14.5px] text-justify font-medium">
+            Full Stack Developer con más de 12 años de experiencia liderando el desarrollo de ecosistemas digitales complejos. Especialista en el diseño de arquitecturas escalables, optimización técnica y la integración estratégica de Inteligencia Artificial para automatizar procesos críticos. Construyo soluciones robustas y resilientes utilizando React, Next.js y Node.js.
           </p>
         </section>
 
@@ -155,20 +174,20 @@ const { personalInfo, ui, services, timeline, projects } = db[lang];
           </h3>
           
           <div class="flex flex-col gap-6">
-            {timeline.filter(t => !t.isSpecial).slice(0, 4).map(item => (
-              <div class="relative pl-8 border-l-2 border-gray-100">
+            {timeline.filter(t => !t.isSpecial).slice(0, 2).map(item => (
+              <div class="relative pl-8 border-l-2 border-gray-100 avoid-break">
                 <div class="absolute w-3 h-3 bg-white border-[3px] border-primary rounded-full -left-[7.5px] top-1.5 shadow-sm"></div>
                 
-                <div class="flex items-center gap-3 mb-1.5">
-                  <h4 class="font-black text-gray-900 text-[18px] tracking-tight whitespace-nowrap">{item.title}</h4>
+                <div class="flex items-center gap-3 mb-1.5 align-middle">
+                  <h4 class="font-black text-gray-900 text-[18px] tracking-tight whitespace-nowrap leading-none">{item.title}</h4>
                   <div class="h-px bg-gray-200 flex-1"></div>
-                  <span class="text-[11px] font-black text-gray-400 uppercase tracking-[0.2em]">{item.year}</span>
+                  <span class="text-[11px] font-black text-gray-400 uppercase tracking-[0.2em] leading-none pt-1">{item.year}</span>
                 </div>
                 <h5 class="text-[12px] font-black text-primary mb-2.5 uppercase tracking-[0.15em]">{item.company}</h5>
-                <p class="text-[14px] text-gray-600 leading-[1.6] mb-4 text-justify font-medium line-clamp-3">{item.description}</p>
+                <p class="text-[14px] text-gray-700 leading-[1.6] mb-4 text-justify font-medium">{item.description}</p>
                 <div class="flex flex-wrap gap-2">
                   {item.tags.slice(0, 6).map(tag => (
-                    <span class="text-[9px] bg-gray-50 text-gray-600 px-2 py-0.5 rounded-sm font-bold uppercase tracking-widest border border-gray-100">{tag}</span>
+                    <span class="text-[9.5px] bg-white text-gray-700 px-2 py-0.5 rounded-sm font-bold uppercase tracking-widest border border-gray-200 shadow-sm">{tag}</span>
                   ))}
                 </div>
               </div>
@@ -178,7 +197,7 @@ const { personalInfo, ui, services, timeline, projects } = db[lang];
       </div>
 
       <!-- COLUMNA LATERAL (38%) -->
-      <div class="w-[38%] pr-14 pl-10 py-6 flex flex-col gap-6 relative">
+      <div class="pr-14 pl-10 py-8 flex flex-col gap-8 border-l border-gray-100 w-[38%] print-col-2">
         
         <!-- Core Skills -->
         <section>
@@ -186,15 +205,15 @@ const { personalInfo, ui, services, timeline, projects } = db[lang];
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-gray-900"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
             <h3 class="text-[11px] font-black text-gray-900 uppercase tracking-[0.25em]">Stack Principal</h3>
           </div>
-          <div class="flex flex-col gap-3.5">
+          <div class="flex flex-col gap-4">
             {services.slice(0, 5).map(s => (
-              <div>
-                <h4 class="font-black text-[8px] text-gray-400 mb-1.5 uppercase tracking-widest leading-none">
+              <div class="avoid-break">
+                <h4 class="font-black text-[9px] text-gray-500 mb-2 uppercase tracking-widest leading-none">
                   {s.title.replace(" Desarrollo", "").replace(" Diseño ", "").replace("Sitios Web ", "").replace("Auditoría ", "").replace(" e Integraciones", "")}
                 </h4>
-                <div class="flex flex-wrap gap-1">
+                <div class="flex flex-wrap gap-1.5">
                   {s.tags.slice(0, 6).map(t => (
-                    <span class="text-[11px] bg-white border border-gray-200 text-gray-800 px-2 py-0.5 rounded shadow-sm font-bold">{t}</span>
+                    <span class="text-[10px] bg-white border border-gray-200 text-gray-900 px-2.5 py-[3px] rounded font-bold shadow-sm">{t}</span>
                   ))}
                 </div>
               </div>
@@ -202,31 +221,8 @@ const { personalInfo, ui, services, timeline, projects } = db[lang];
           </div>
         </section>
 
-        <!-- Certificaciones -->
-        <section>
-          <div class="flex items-center gap-2 mb-3">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-gray-900"><path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4M17 9l-5 5-5-5M12 12.8V2.5"/></svg>
-            <h3 class="text-[11px] font-black text-gray-900 uppercase tracking-[0.25em]">Certificaciones</h3>
-          </div>
-          <div class="flex flex-col gap-1.5">
-            {personalInfo.certifications?.map(cert => (
-              <div class="flex items-start gap-2">
-                <div class="text-primary mt-0.5 shrink-0 bg-white shadow-sm border border-gray-100 p-0.5 rounded-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                </div>
-                <div class="flex flex-col">
-                  <span class="font-black text-gray-800 text-[12px] leading-tight wrap-break-word">{cert.shortName || cert.title}</span>
-                  <span class="text-[9.5px] text-gray-400 font-extrabold uppercase tracking-widest leading-none">
-                    {cert.issuer} • {cert.date}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
         <!-- Idiomas -->
-        <section class="mt-auto pt-4">
+        <section class="mt-4">
           <div class="flex items-center gap-2 mb-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-gray-900"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
             <h3 class="text-[11px] font-black text-gray-900 uppercase tracking-[0.25em]">Idiomas</h3>
@@ -241,30 +237,94 @@ const { personalInfo, ui, services, timeline, projects } = db[lang];
       </div>
     </div>
   </div>
+
+  <!-- PÁGINA 2: CONTINUACIÓN DE TRAYECTORIA Y CERTIFICACIONES -->
+  <div class="a4-page flex flex-col overflow-hidden bg-white relative page-break">
+    <header class="p-10 pb-4">
+      <h2 class="text-[13px] font-black text-gray-400 uppercase tracking-[0.3em] flex items-center gap-3">
+        <span class="w-5 h-[2px] bg-gray-300 inline-block rounded-full"></span>
+        Trayectoria Profesional (Continuación)
+      </h2>
+    </header>
+
+    <div class="flex-1 flex flex-row z-10 relative print-grid-fix">
+      <div class="pl-14 pr-10 py-6 flex flex-col gap-8 w-[62%] print-col-1">
+          <div class="flex flex-col gap-6">
+            {timeline.filter(t => !t.isSpecial).slice(2).map(item => (
+              <div class="relative pl-8 border-l-2 border-gray-100 avoid-break">
+                <div class="absolute w-3 h-3 bg-white border-[3px] border-primary rounded-full -left-[7.5px] top-1.5 shadow-sm"></div>
+                
+                <div class="flex items-center gap-3 mb-1.5 align-middle">
+                  <h4 class="font-black text-gray-900 text-[18px] tracking-tight whitespace-nowrap leading-none">{item.title}</h4>
+                  <div class="h-px bg-gray-200 flex-1"></div>
+                  <span class="text-[11px] font-black text-gray-400 uppercase tracking-[0.2em] leading-none pt-1">{item.year}</span>
+                </div>
+                <h5 class="text-[12px] font-black text-primary mb-2.5 uppercase tracking-[0.15em]">{item.company}</h5>
+                <p class="text-[14px] text-gray-700 leading-[1.6] mb-4 text-justify font-medium">{item.description}</p>
+                <div class="flex flex-wrap gap-2">
+                  {item.tags.slice(0, 6).map(tag => (
+                    <span class="text-[9.5px] bg-white text-gray-700 px-2 py-0.5 rounded-sm font-bold uppercase tracking-widest border border-gray-200 shadow-sm">{tag}</span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+      </div>
+
+      <div class="pr-14 pl-10 py-6 flex flex-col gap-4 border-l border-gray-100 w-[38%] print-col-2">
+        <section>
+          <div class="flex items-center gap-2 mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-gray-900"><path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4M17 9l-5 5-5-5M12 12.8V2.5"/></svg>
+            <h3 class="text-[11px] font-black text-gray-900 uppercase tracking-[0.25em]">Certificaciones Especializadas</h3>
+          </div>
+          <div class="grid grid-cols-1 gap-1.5 mt-2">
+            {personalInfo.certifications?.map(cert => (
+              <div class="flex items-start gap-2 avoid-break bg-white p-2 rounded-lg border border-gray-100 shadow-sm">
+                <div class="text-primary mt-0.5 shrink-0 bg-gray-50 border border-gray-100 p-0.5 rounded-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                </div>
+                <div class="flex flex-col">
+                  <span class="font-black text-gray-900 text-[12px] leading-tight wrap-break-word">{cert.shortName || cert.title}</span>
+                  <span class="text-[9.5px] text-gray-500 font-extrabold uppercase tracking-widest leading-none mt-1">
+                    {cert.issuer} • {cert.date}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <!-- Espacio inferior -->
+        <footer class="mt-auto pt-6 text-[8px] text-gray-300 font-bold uppercase tracking-[0.2em]">
+          YR. Portafolio Pro 2026
+        </footer>
+      </div>
+    </div>
+  </div>
   
   <!-- PÁGINA 2: CASOS DE ESTUDIO -->
   <div class="a4-page flex flex-col page-break bg-white relative overflow-hidden">
     <!-- Accent corner -->
     <div class="absolute top-0 right-0 w-64 h-64 bg-slate-50 rounded-bl-full -z-10"></div>
     
-    <header class="pt-16 px-14 pb-10 flex items-center justify-between relative z-10 border-b border-gray-100 mb-8">
-      <div class="flex items-center gap-6">
+    <header class="pt-10 px-14 pb-6 flex items-center justify-between relative z-10 border-b border-gray-100 mb-6">
+      <div class="flex items-center gap-4">
          <!-- Giant Number Graphic -->
-         <span class="text-[80px] font-black text-gray-100 tracking-tighter leading-none select-none">02</span>
-         <div class="pb-2">
-           <h2 class="text-[36px] font-black text-gray-900 uppercase tracking-tighter leading-none mb-2">Showcase <span class="text-primary">.</span></h2>
-           <p class="text-gray-500 text-[10px] font-black uppercase tracking-[0.3em] pl-1">Casos de Estudio & Proyectos Técnicos</p>
+         <span class="text-[60px] font-black text-gray-100 tracking-tighter leading-none select-none">03</span>
+         <div class="pb-1">
+           <h2 class="text-[28px] font-black text-gray-900 uppercase tracking-tighter leading-none mb-1">Showcase <span class="text-primary">.</span></h2>
+           <p class="text-gray-500 text-[9px] font-black uppercase tracking-[0.2em] pl-1">Proyectos Técnicos</p>
          </div>
       </div>
       <!-- Decorative Line -->
-      <div class="w-16 h-1 bg-gray-900 mb-6"></div>
+      <div class="w-12 h-1 bg-gray-900 mb-4"></div>
     </header>
     
-    <div class="px-14 flex-1 grid grid-cols-2 gap-x-12 gap-y-10 content-start relative z-10">
+    <div class="px-14 flex-1 grid grid-cols-2 gap-x-10 gap-y-6 content-start relative z-10">
       {projects.map(p => (
-        <div class="flex flex-col group">
-          <!-- Image Box (Lookbook style, strict aspect ratio, prominent shadow) -->
-          <div class={`aspect-[16/10] ${p.category.toUpperCase().includes('MOBILE') ? 'bg-gray-900 shadow-inner' : 'bg-gray-100'} rounded-xl overflow-hidden mb-6 relative drop-shadow-[0_12px_20px_rgba(0,0,0,0.06)] border border-gray-200/60 p-1 group`}>
+        <div class="flex flex-col group avoid-break">
+          <!-- Image Box -->
+          <div class={`aspect-[16/8] ${p.category.toUpperCase().includes('MOBILE') ? 'bg-gray-900 shadow-inner' : 'bg-gray-100'} rounded-xl overflow-hidden mb-4 relative drop-shadow-[0_8px_15px_rgba(0,0,0,0.05)] border border-gray-200/60 p-1 group`}>
              <div class={`w-full h-full rounded-lg overflow-hidden relative flex items-center justify-center ${p.category.toUpperCase().includes('MOBILE') ? 'p-3' : ''}`}>
                {p.images && p.images.length > 0 && (
                  <img 
@@ -276,14 +336,13 @@ const { personalInfo, ui, services, timeline, projects } = db[lang];
              </div>
           </div>
           
-          <!-- Text Box -->
           <div class="pr-4 flex flex-col flex-1">
-            <span class="text-[8px] text-primary font-black tracking-[0.25em] uppercase mb-2 block">{p.category}</span>
-            <h3 class="font-black text-gray-900 text-[18px] mb-2.5 tracking-tight">{p.title}</h3>
-            <p class="text-[12.5px] text-gray-500 mb-5 text-justify font-medium leading-[1.8]">{p.description}</p>
-            <div class="flex flex-wrap gap-1.5 mt-auto">
+            <span class="text-[7px] text-primary font-black tracking-[0.2em] uppercase mb-1.5 block">{p.category}</span>
+            <h3 class="font-black text-gray-900 text-[16px] mb-1.5 tracking-tight">{p.title}</h3>
+            <p class="text-[11px] text-gray-500 mb-3 text-justify font-medium leading-[1.6]">{p.description}</p>
+            <div class="flex flex-wrap gap-1 mt-auto">
               {p.tech.slice(0, 5).map(t => (
-                <span class="text-[8px] border border-gray-200 text-gray-600 px-2 py-[3px] rounded-sm font-bold uppercase tracking-widest bg-gray-50">{t}</span>
+                <span class="text-[7px] border border-gray-200 text-gray-600 px-1.5 py-[2px] rounded-sm font-bold uppercase tracking-widest bg-gray-50">{t}</span>
               ))}
             </div>
           </div>
@@ -291,8 +350,8 @@ const { personalInfo, ui, services, timeline, projects } = db[lang];
       ))}
     </div>
     
-    <footer class="mt-8 py-10 text-center border-t border-gray-100 mx-14 select-none">
-      <p class="text-[9px] text-gray-400 font-black uppercase tracking-[0.35em] mb-2">
+    <footer class="mt-4 py-8 text-center border-t border-gray-100 mx-14 select-none">
+      <p class="text-[8px] text-gray-400 font-black uppercase tracking-[0.3em] mb-1">
         Explora la experiencia interactiva en
       </p>
       <a href="https://yeisonruiz.dev" class="text-gray-900 font-black text-2xl hover:text-primary transition-colors tracking-tighter decoration-4 underline-offset-[6px] hover:underline">yeisonruiz.dev</a>
