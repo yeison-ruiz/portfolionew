@@ -76,21 +76,24 @@ const cards: CardData[] = [
     <div class="absolute inset-0 bg-primary/2 rounded-full blur-[120px] scale-90 z-0"></div>
 
     <div class="relative z-10 w-full overflow-hidden mask-container">
-        <video
-          id="characterVideo"
-          autoplay
-          loop
-          muted
-          playsinline
-          webkit-playsinline
-          preload="auto"
-          class="w-full h-auto object-cover character-video"
-        >
-          <source src="/videoyeison.mp4" type="video/mp4" />
-        </video>
-        <!-- Fade overlays for even softer edges -->
-        <div class="absolute inset-0 bg-linear-to-t from-transparent via-transparent to-transparent pointer-events-none"></div>
-        <div class="absolute inset-0 bg-linear-to-r from-transparent via-transparent to-transparent pointer-events-none"></div>
+        <!-- Fondo falso del mismo color que el general para que el mix-blend-mode funcione dentro del contexto de apilamiento -->
+        <div class="absolute inset-0 bg-[#13072b] z-0 mask-fake-bg"></div>
+        
+        <!-- WRAPPER: Separamos mix-blend-mode y mask (en el wrapper) del filter (en el video) para evitar el bug de Chromium que hace desaparecer el video -->
+        <div class="relative z-10 w-full video-blend-wrapper">
+            <video
+              id="characterVideo"
+              autoplay
+              loop
+              muted
+              playsinline
+              webkit-playsinline
+              preload="auto"
+              class="w-full h-auto object-cover video-crush-blacks"
+            >
+              <source src="/videoyeison.mp4" type="video/mp4" />
+            </video>
+        </div>
     </div>
     
     <!-- Tech Cards -->
@@ -177,17 +180,25 @@ const cards: CardData[] = [
     will-change: transform, opacity;
   }
   
-  .character-video {
-    /* Mix blend screen makes blacks transparent, showing the grid behind IF not covered by backing */
+  .mask-fake-bg {
+    mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, black 40%, transparent 85%);
+    -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, black 40%, transparent 85%);
+  }
+
+  .video-blend-wrapper {
+    /* Blend mode y máscara van en el contenedor padre */
     mix-blend-mode: screen;
-    /* Radial mask to aggressively feather edges away */
-    -webkit-mask-image: radial-gradient(circle at center, black 20%, transparent 90%);
-    mask-image: radial-gradient(circle at center, black 20%, transparent 90%);
-    /* Strong contrast ensures blacks stay #000 for screen blending */
-    filter: contrast(1.3);
+    mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, black 50%, transparent 95%);
+    -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, black 50%, transparent 95%);
     transition: opacity 0.5s ease;
     transform: translateZ(0);
     backface-visibility: hidden;
+  }
+
+  .video-crush-blacks {
+    /* Filtro de color va directo en el video */
+    filter: contrast(1.5) brightness(0.8);
+    display: block;
   }
 
   .mask-container {

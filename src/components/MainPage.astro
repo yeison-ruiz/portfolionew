@@ -38,7 +38,17 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
   <ChatWidget client:load lang={lang} discordWebhook={import.meta.env.PUBLIC_DISCORD_WEBHOOK_URL} />
   <VisitorAlert client:only="react" lang={lang} />
 
-  <main class="relative w-full h-screen overflow-hidden bg-[#000000]">
+  <main class="relative w-full h-screen overflow-hidden bg-transparent">
+    <!-- Fondo Vivo (Chau negro total) -->
+    <div class="absolute inset-0 z-0 pointer-events-none bg-[#13072b]">
+      <!-- Luces de ambiente mucho más potentes y coloridas -->
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_15%_30%,rgba(118,39,190,0.4)_0%,transparent_55%)]"></div>
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_85%_70%,rgba(27,157,50,0.15)_0%,transparent_50%)]"></div>
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_100%,rgba(157,78,221,0.25)_0%,transparent_60%)]"></div>
+      
+      <!-- Textura de malla para darle el toque premium -->
+      <div class="absolute inset-0 opacity-30 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)]" style="background-size: 40px 40px; mask-image: radial-gradient(ellipse at center, black 0%, transparent 80%); -webkit-mask-image: radial-gradient(ellipse at center, black 0%, transparent 80%);"></div>
+    </div>
     <!-- Section 0: Hero -->
     <section
       id="section-0"

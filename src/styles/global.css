@@ -16,30 +16,16 @@
 
 /* Base Styles */
 html, body {
-  background-color: #000000;
-  background-image: 
-    radial-gradient(circle at -3% 30%, rgba(118, 39, 190, 0.18) 0%, transparent 45%),
-    radial-gradient(circle at -3% 70%, rgba(118, 39, 190, 0.14) 0%, transparent 45%),
-    radial-gradient(circle at 105% 20%, rgba(118, 39, 190, 0.1) 0%, transparent 35%),
-    radial-gradient(circle at 105% 80%, rgba(118, 39, 190, 0.1) 0%, transparent 35%);
-  background-attachment: fixed;
+  background-color: transparent; /* Movemos el color al ::before para evitar que tape el efecto por el z-index */
   color: var(--color-text-main);
   font-family: var(--font-inter);
   overflow-x: hidden;
   overscroll-behavior-x: none;
   scroll-behavior: smooth;
+  position: relative;
 }
 
-/* Ensure absolute black background on mobile for perfect video blending */
-@media (max-width: 1023px) {
-  html, body {
-    background-color: #000000 !important;
-    background-image: 
-      radial-gradient(circle at -20% 50%, rgba(118, 39, 190, 0.25) 0%, transparent 60%),
-      radial-gradient(circle at 120% 50%, rgba(118, 39, 190, 0.25) 0%, transparent 60%) !important;
-    background-attachment: fixed !important;
-  }
-}
+
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
