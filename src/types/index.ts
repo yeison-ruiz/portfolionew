@@ -128,6 +128,20 @@ export interface SiteData {
         messageLabel: string;
         messagePlaceholder: string;
         send: string;
+        sending: string;
+        sent: string;
+        errors: {
+          nameRequired: string;
+          nameTooShort: string;
+          emailRequired: string;
+          emailInvalid: string;
+          messageRequired: string;
+          messageTooShort: string;
+          alreadySent: string;
+          rateLimited: string;
+          serverError: string;
+          networkError: string;
+        };
       };
     };
     slugs: {
@@ -162,6 +176,12 @@ export interface SiteData {
         confirmation: string;
         whatsappRedirect: string;
       };
+      validation: {
+        nameTooShort: string;
+        phoneInvalid: string;
+        emailInvalid: string;
+        detailsTooShort: string;
+      };
       options: {
         build: string;
         ai: string;
@@ -178,6 +198,24 @@ export interface SiteData {
         contactNow: string;
         closeChat: string;
       };
+    };
+    cv: {
+      download: string;
+      website: string;
+      executiveSummary: string;
+      career: string;
+      careerContinued: string;
+      coreStack: string;
+      languages: string;
+      spanish: string;
+      native: string;
+      english: string;
+      fluent: string;
+      certifications: string;
+      showcase: string;
+      techProjects: string;
+      interactiveExp: string;
+      portfolio: string;
     };
   };
 }

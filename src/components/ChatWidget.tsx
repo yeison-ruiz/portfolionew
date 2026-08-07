@@ -55,6 +55,18 @@ interface UserData {
 
 const WHATSAPP_NUMBER = "573226838387";
 
+// Mirrors the check in api/notify.ts so the client never rejects what the server
+// would accept, or vice versa.
+const isValidEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value);
+
+// Counts digits rather than matching a format: separators, parentheses and
+// country prefixes vary too much to pattern-match reliably. The 7-15 range spans
+// the shortest national numbers up to the E.164 maximum.
+const isValidPhone = (value: string) => {
+  const digits = value.replace(/\D/g, "");
+  return digits.length >= 7 && digits.length <= 15;
+};
+
 interface ChatWidgetProps {
   lang?: "es" | "en";
 }
@@ -290,25 +302,56 @@ ${lang === 'es' ? 'Hola Yeison, soy ' + (data.name || '') + ' y estoy interesado
     }
   };
 
+  // Returns the bot's correction for an invalid answer, or null when it passes.
+  // Rejecting here is what keeps unreachable leads out of Discord: a lead that
+  // looks complete but carries a malformed email cannot be followed up.
+  const validateStep = (step: Step, value: string): string | null => {
+    switch (step) {
+      case "name":
+        return value.length < 2 ? t.validation.nameTooShort : null;
+      case "phone":
+        return isValidPhone(value) ? null : t.validation.phoneInvalid;
+      case "details":
+        return value.length < 10 ? t.validation.detailsTooShort : null;
+      case "contact-input":
+        // Both remaining methods ask for an email: "Email" directly, and
+        // "Schedule a call" to send the invite. WhatsApp never reaches this step.
+        return isValidEmail(value) ? null : t.validation.emailInvalid;
+      default:
+        return null;
+    }
+  };
+
   const handleInputSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputValue.trim()) return;
 
+    const trimmedValue = inputValue.trim();
+    const validationError = validateStep(currentStep, trimmedValue);
+
     addUserMessage(inputValue);
     setInputValue("");
 
+    // The answer stays in the transcript and the bot asks again, so the exchange
+    // still reads as a conversation rather than a form rejecting input. The step
+    // is left unchanged, which is what lets the user retry.
+    if (validationError) {
+      addBotMessage(validationError);
+      return;
+    }
+
     if (currentStep === "name") {
-      const updatedData = { ...userData, name: inputValue };
+      const updatedData = { ...userData, name: trimmedValue };
       setUserData(updatedData);
       setCurrentStep("phone");
-      addBotMessage(t.questions.phone.replace("{name}", inputValue));
+      addBotMessage(t.questions.phone.replace("{name}", trimmedValue));
     } else if (currentStep === "phone") {
-      const updatedData = { ...userData, phone: inputValue };
+      const updatedData = { ...userData, phone: trimmedValue };
       setUserData(updatedData);
       setCurrentStep("qualification");
       addBotMessage(t.questions.qualification);
     } else if (currentStep === "details") {
-      const updatedData = { ...userData, details: inputValue };
+      const updatedData = { ...userData, details: trimmedValue };
       setUserData(updatedData);
       setCurrentStep("contact-method");
       addBotMessage(t.questions.contactMethod);
@@ -316,12 +359,12 @@ ${lang === 'es' ? 'Hola Yeison, soy ' + (data.name || '') + ' y estoy interesado
       // ✅ SEND PARTIAL LEAD TO DISCORD (As requested: before choosing contact method)
       sendLeadToDiscord(updatedData, true);
     } else if (currentStep === "contact-input") {
-      setUserData((prev) => ({ ...prev, contactValue: inputValue }));
+      setUserData((prev) => ({ ...prev, contactValue: trimmedValue }));
       setCurrentStep("confirmation");
       addBotMessage(t.questions.confirmation);
-      
+
       // ✅ LOGIC TO SEND TO DISCORD
-      const finalData = { ...userData, contactValue: inputValue };
+      const finalData = { ...userData, contactValue: trimmedValue };
       sendLeadToDiscord(finalData);
     }
   };

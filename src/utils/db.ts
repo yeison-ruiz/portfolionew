@@ -195,6 +195,20 @@ export const db: Translations = {
           messageLabel: "Tu Mensaje",
           messagePlaceholder: "Cuéntame sobre tu proyecto...",
           send: "Enviar Mensaje",
+          sending: "Enviando...",
+          sent: "¡Mensaje enviado!",
+          errors: {
+            nameRequired: "Escribe tu nombre",
+            nameTooShort: "El nombre debe tener al menos 2 caracteres",
+            emailRequired: "Necesito tu correo para responderte",
+            emailInvalid: "Ese correo no parece válido",
+            messageRequired: "Cuéntame sobre tu proyecto",
+            messageTooShort: "El mensaje debe tener al menos 5 caracteres",
+            alreadySent: "Ya enviaste un mensaje. ¡Gracias!",
+            rateLimited: "Demasiados intentos. Espera un minuto e inténtalo de nuevo.",
+            serverError: "No se pudo enviar el mensaje. Inténtalo de nuevo en un momento.",
+            networkError: "Sin conexión. Revisa tu internet e inténtalo de nuevo.",
+          },
         },
       },
       slugs: {
@@ -228,6 +242,12 @@ export const db: Translations = {
           contactInputCall: "Sin spam. Solo contacto relacionado al proyecto. Por favor deja tu correo para enviarte la invitación.",
           confirmation: "¡Gracias! Estaré en contacto pronto.",
           whatsappRedirect: "¡Excelente! Abriendo WhatsApp para conectarte directamente con Yeison...",
+        },
+        validation: {
+          nameTooShort: "Necesito un nombre un poco más largo para saber cómo dirigirme a ti.",
+          phoneInvalid: "Ese número no parece completo. ¿Puedes revisarlo? Incluye el código de país si es internacional.",
+          emailInvalid: "Ese correo no parece válido. ¿Puedes escribirlo de nuevo?",
+          detailsTooShort: "Cuéntame un poco más sobre tu idea para poder ayudarte mejor.",
         },
         options: {
           build: "Construir un sitio o app",
@@ -417,7 +437,7 @@ export const db: Translations = {
           "/proyectos/johana/meet.png",
           "/proyectos/johana/pago.png",
           "/proyectos/johana/admin-psicologa.png",
-          "/proyectos/johana/iPhone-12-PRO-localhost.png"
+          "/proyectos/johana/iPhone-12-PRO-localhost.webp"
         ],
         link: "https://psicologajohanavillabon.com/",
       },
@@ -448,7 +468,7 @@ export const db: Translations = {
           "/proyectos/cahuita/dashboard.png",
           "/proyectos/cahuita/admin.png",
           "/proyectos/cahuita/cliente.png",
-          "/proyectos/cahuita/iPhone-12-PRO-127.0.0.1.png"
+          "/proyectos/cahuita/iPhone-12-PRO-127.0.0.1.webp"
         ],
         link: "https://sistema.cahuitavalley.com",
       },
@@ -661,6 +681,20 @@ export const db: Translations = {
           messageLabel: "Your Message",
           messagePlaceholder: "Tell me about your project...",
           send: "Send Message",
+          sending: "Sending...",
+          sent: "Message sent!",
+          errors: {
+            nameRequired: "Please enter your name",
+            nameTooShort: "Name must be at least 2 characters",
+            emailRequired: "I need your email to reply",
+            emailInvalid: "That email doesn't look valid",
+            messageRequired: "Tell me about your project",
+            messageTooShort: "Message must be at least 5 characters",
+            alreadySent: "You already sent a message. Thanks!",
+            rateLimited: "Too many attempts. Please wait a minute and try again.",
+            serverError: "Couldn't send your message. Please try again shortly.",
+            networkError: "No connection. Check your internet and try again.",
+          },
         },
       },
       slugs: {
@@ -694,6 +728,12 @@ export const db: Translations = {
           contactInputCall: "No spam. Just project-related contact. Please leave your email to send the invite.",
           confirmation: "Thanks! I'll be in touch shortly.",
           whatsappRedirect: "Excellent! Opening WhatsApp to connect you directly with Yeison...",
+        },
+        validation: {
+          nameTooShort: "I need a slightly longer name so I know what to call you.",
+          phoneInvalid: "That number looks incomplete. Could you check it? Include the country code if it's international.",
+          emailInvalid: "That email doesn't look valid. Could you type it again?",
+          detailsTooShort: "Tell me a bit more about your idea so I can help you better.",
         },
         options: {
           build: "Build a website or app",
@@ -883,7 +923,7 @@ export const db: Translations = {
           "/proyectos/johana/meet.png",
           "/proyectos/johana/pago.png",
           "/proyectos/johana/admin-psicologa.png",
-          "/proyectos/johana/iPhone-12-PRO-localhost.png"
+          "/proyectos/johana/iPhone-12-PRO-localhost.webp"
         ],
         link: "https://psicologajohanavillabon.com/",
       },
@@ -914,7 +954,7 @@ export const db: Translations = {
           "/proyectos/cahuita/dashboard.png",
           "/proyectos/cahuita/admin.png",
           "/proyectos/cahuita/cliente.png",
-          "/proyectos/cahuita/iPhone-12-PRO-127.0.0.1.png"
+          "/proyectos/cahuita/iPhone-12-PRO-127.0.0.1.webp"
         ],
         link: "https://sistema.cahuitavalley.com",
       },
