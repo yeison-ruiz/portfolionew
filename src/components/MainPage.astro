@@ -369,17 +369,21 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
 
     // Handle all anchor clicks dynamically
     const handleAnchorClick = (e: MouseEvent) => {
-      const anchor = (e.target as HTMLElement).closest('a[href^="#"]');
+      const anchor = (e.target as HTMLElement).closest('a');
       if (!anchor) return;
       
-      e.preventDefault();
-      const href = anchor.getAttribute("href")?.substring(1) || "";
-      const targetIndex = sectionSlugs.findIndex(s => s === href);
+      const href = anchor.getAttribute("href") || "";
+      
+      if (href.startsWith("#") || href === "/" || href === "/es" || href === "") {
+        const rawSlug = href.startsWith("#") ? href.substring(1) : "";
+        const targetIndex = rawSlug ? sectionSlugs.findIndex(s => s === rawSlug) : 0;
 
-      if (targetIndex !== -1 && targetIndex !== currentIndex) {
-        gotoSection(targetIndex, targetIndex > currentIndex ? 1 : -1);
-      } else if (href === "" && currentIndex !== 0) {
-          gotoSection(0, -1);
+        if (targetIndex !== -1) {
+          e.preventDefault();
+          if (targetIndex !== currentIndex) {
+            gotoSection(targetIndex, targetIndex > currentIndex ? 1 : -1);
+          }
+        }
       }
     };
 
