@@ -52,9 +52,13 @@ const texts = {
     <div class="flex flex-wrap justify-center gap-8 max-w-6xl mx-auto">
       {personalInfo.certifications && personalInfo.certifications.map((cert) => (
         <div class="group relative authority-card opacity-0 translate-y-10 w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)] min-w-[320px]">
-          <div class="absolute inset-0 bg-primary rounded-4xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-          
-          <div class="h-full relative bg-white/5 border border-white/10 p-10 rounded-[2.5rem] backdrop-blur-xl hover:bg-white/10 transition-all duration-500 hover:-translate-y-2 flex flex-col">
+          <!-- The glow is a box-shadow rather than a blurred element behind the
+               card. A solid layer back there bled straight through the 5%-white
+               surface - and backdrop-blur then smeared it evenly across the
+               whole card - which is why hovering turned the card into a flat
+               yellow block with its own yellow text on top of it. A shadow only
+               paints outside the box, so the content stays untouched. -->
+          <div class="h-full relative bg-white/5 border border-white/10 p-10 rounded-[2.5rem] backdrop-blur-xl hover:bg-white/10 hover:border-primary/30 hover:shadow-[0_0_45px_-8px_rgba(234,179,8,0.55)] transition-all duration-500 hover:-translate-y-2 flex flex-col">
             <div class="flex items-start justify-between mb-8">
               <div class="p-5 rounded-2xl bg-black/40 border border-white/10 group-hover:border-white/20 transition-colors">
                 {cert.id.startsWith('google') ? (
