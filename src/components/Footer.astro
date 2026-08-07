@@ -11,15 +11,15 @@ const { personalInfo, ui } = db[lang];
 const { slugs } = ui;
 
 const tickerMessages = lang === "es" ? [
-  "✨ Construyendo aplicaciones web de alto rendimiento e integraciones de IA",
-  "🚀 Especializado en React, Next.js, Astro y arquitectura full-stack moderna",
-  "💡 Transformando ideas complejas en experiencias digitales de alto impacto",
-  "⚡ Core Web Vitals 100% optimizados • Código limpio y diseño escalable"
+  "Construyendo aplicaciones web de alto rendimiento e integraciones de IA",
+  "Especializado en React, Next.js, Astro y arquitectura full-stack moderna",
+  "Transformando ideas complejas en experiencias digitales de alto impacto",
+  "Core Web Vitals 100% optimizados • Código limpio y diseño escalable"
 ] : [
-  "✨ Building high-performance web applications & AI integrations",
-  "🚀 Specializing in React, Next.js, Astro & modern full-stack architecture",
-  "💡 Turning complex business ideas into seamless digital experiences",
-  "⚡ 100% Optimized Core Web Vitals • Clean Code & Scalable Architecture"
+  "Building high-performance web applications & AI integrations",
+  "Specializing in React, Next.js, Astro & modern full-stack architecture",
+  "Turning complex business ideas into seamless digital experiences",
+  "100% Optimized Core Web Vitals • Clean Code & Scalable Architecture"
 ];
 ---
 
@@ -41,10 +41,10 @@ const tickerMessages = lang === "es" ? [
       <!-- Center Content: Animated Ticker on Home, Navigation Menu on other sections -->
       {isHome ? (
         <div class="flex-2 flex flex-col items-center justify-center min-w-0">
-          <div class="relative h-6 w-full max-w-md md:max-w-lg overflow-hidden flex items-center justify-center">
+          <div class="relative h-7 w-full max-w-lg md:max-w-2xl overflow-hidden flex items-center justify-center">
             {tickerMessages.map((msg, i) => (
               <p
-                class={`footer-ticker-item text-[11px] md:text-xs font-semibold tracking-wide text-gray-300 transition-all duration-700 ease-out absolute w-full text-center truncate ${i === 0 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95 pointer-events-none'}`}
+                class={`footer-ticker-item text-xs sm:text-sm md:text-[15px] font-bold tracking-tight text-gray-200 transition-all duration-700 ease-out absolute w-full text-center truncate ${i === 0 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95 pointer-events-none'}`}
                 data-index={i}
               >
                 {msg}
