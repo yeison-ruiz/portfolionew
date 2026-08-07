@@ -179,6 +179,18 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
     const slugsData = document.getElementById("slugs-data");
     const sectionSlugs: string[] = slugsData ? JSON.parse(slugsData.getAttribute("data-slugs") || "[]") : [];
 
+    // Nothing is fetched when a section changes - the markup is already in the
+    // DOM - so the transition only has to read as a change, not cover a wait.
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const TRANSITION_DURATION = prefersReducedMotion ? 0 : 0.35;
+
+    // Just long enough to keep one gesture from firing twice. The previous
+    // 1500ms left the page ignoring input for almost a second after the
+    // animation had already finished, which reads as broken rather than slow.
+    const TRANSITION_COOLDOWN_MS = 500;
+
     let currentIndex = 0;
     let isAnimating = false;
     let lastTransitionTime = 0;
@@ -223,16 +235,31 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
           currentIndex = index;
           gsap.set(currentSection, { autoAlpha: 0, pointerEvents: "none" });
           gsap.set(nextSection, { pointerEvents: "auto" });
-          ScrollTrigger.refresh();
+
+          // Ten ScrollTrigger instances live across five sections, and a full
+          // refresh re-measures all of them. Sections are absolutely positioned
+          // and identically sized, so a transition never changes their
+          // geometry; the refresh only matters because deferred images can
+          // change a scroll container's height. Running it while the browser is
+          // idle keeps that forced layout out of the frame the user is waiting
+          // to interact with.
+          const runRefresh = () => ScrollTrigger.refresh();
+          if ("requestIdleCallback" in window) {
+            requestIdleCallback(runRefresh, { timeout: 1000 });
+          } else {
+            setTimeout(runRefresh, 200);
+          }
         },
       });
 
+      // Opacity alone composites on the GPU. Animating scale forces the whole
+      // section subtree - backdrop-filters included - to re-rasterize each
+      // frame, which was the expensive half of this transition.
       tl.to(
         currentSection,
         {
           opacity: 0,
-          scale: 0.98, // Smaller scale shift for performance
-          duration: 0.6, // Slightly faster for responsiveness
+          duration: TRANSITION_DURATION,
           ease: "power2.inOut",
         },
         0,
@@ -240,11 +267,10 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
 
       tl.fromTo(
         nextSection,
-        { opacity: 0, scale: 1.02 },
+        { opacity: 0 },
         {
           opacity: 1,
-          scale: 1,
-          duration: 0.6,
+          duration: TRANSITION_DURATION,
           ease: "power2.inOut",
         },
         0,
@@ -268,7 +294,7 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
     function handleScroll(direction: number, event?: Event) {
       if (isAnimating) return;
 
-      if (Date.now() - lastTransitionTime < 1500) return;
+      if (Date.now() - lastTransitionTime < TRANSITION_COOLDOWN_MS) return;
 
       if (event && event.target) {
         const target = event.target as HTMLElement;
