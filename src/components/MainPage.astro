@@ -42,7 +42,10 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
     <!-- Fondo Imagen User (Sin degradados) -->
     <div class="absolute inset-0 z-0 pointer-events-none bg-[#020617]">
       <div class="absolute inset-0 bg-[url('/fondoweb.webp')] bg-cover bg-center bg-no-repeat opacity-90"></div>
-      <div class="absolute inset-0 bg-[#020617]/40 backdrop-blur-[1px]"></div>
+      <!-- Darkening only. A backdrop-filter here would make the GPU re-sample
+           and blur the whole viewport every frame, and at 1px the result was
+           indistinguishable from no blur at all. -->
+      <div class="absolute inset-0 bg-[#020617]/40"></div>
       
       <!-- Textura de malla para darle el toque premium -->
       <div class="absolute inset-0 opacity-30 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)]" style="background-size: 40px 40px; mask-image: radial-gradient(ellipse at center, black 0%, transparent 80%); -webkit-mask-image: radial-gradient(ellipse at center, black 0%, transparent 80%);"></div>
@@ -143,6 +146,14 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
     width: 100%;
     height: 100%;
     overflow: hidden;
+
+    /* The opacity-0 utility on the markup hides a section without saving any
+       work: a transparent element is still laid out, painted and composited,
+       so every backdrop-filter, gradient and mask in all six sections was
+       being rendered on load. visibility:hidden lets the browser skip them
+       outright. GSAP's autoAlpha sets visibility inline on the active section,
+       so this only governs the initial state. */
+    visibility: hidden;
   }
 
   .no-scrollbar::-webkit-scrollbar {

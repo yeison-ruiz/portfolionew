@@ -381,21 +381,19 @@ const techCards = [
     mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, black 40%, transparent 85%);
     -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, black 40%, transparent 85%);
     background-color: transparent !important;
-    filter: brightness(1.1) contrast(1.05);
+    /* The brightness(1.1) contrast(1.05) grade that used to live here ran as a
+       second per-frame pass on top of the mask, for an adjustment small enough
+       to be hard to see. If it turns out to be missed, bake it into the file
+       with ffmpeg instead of paying for it on every frame. */
   }
 
   .forced-gpu {
+    /* Promotes the video to its own layer so the mask composites on the GPU.
+       will-change is deliberately absent: the video itself is never animated
+       (GSAP animates the section around it), and the previous declaration also
+       reserved resources for mix-blend-mode, which this element never uses. */
     transform: translateZ(0);
     backface-visibility: hidden;
-    perspective: 1000;
-    will-change: transform, opacity, mix-blend-mode;
-  }
-
-  /* Support for browsers with poor mix-blend-mode support on video */
-  @supports not (mix-blend-mode: screen) {
-    .video-mask {
-      filter: grayscale(1) invert(0);
-    }
   }
 </style>
 
