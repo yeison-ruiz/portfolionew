@@ -177,7 +177,10 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
     // incoming section immediately, otherwise a video is paused mid-transition.
     let activeIndex = 0;
 
-    function gotoSection(index: number, direction: number) {
+    // The direction argument is kept for readability at the call sites and for
+    // future direction-aware transitions; the underscore marks it as
+    // deliberately unused rather than forgotten.
+    function gotoSection(index: number, _direction: number) {
       if (isAnimating) return;
       isAnimating = true;
       lastTransitionTime = Date.now();
