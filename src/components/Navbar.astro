@@ -11,7 +11,12 @@ const initials = `${personalInfo.name[0]}${personalInfo.lastName[0]}`;
 
 const otherLang = lang === "es" ? "en" : "es";
 const langLabel = lang === "es" ? "EN" : "ES";
-const langPath = lang === "es" ? "/en" : "/es";
+
+// English is served from the root and Spanish from /es; there is no /en route.
+// Both of these used to assume the opposite, which is what sent the logo to the
+// 404 page from the English home.
+const homePath = lang === "es" ? "/es" : "/";
+const langPath = lang === "es" ? "/" : "/es";
 ---
 
 <header
@@ -19,7 +24,7 @@ const langPath = lang === "es" ? "/en" : "/es";
 >
   <!-- Logo -->
   <a
-    href={lang === 'es' ? "/" : `/${lang}`}
+    href={homePath}
     class="text-3xl md:text-4xl font-black text-white flex items-center gap-1.5 group tracking-tighter logo-link"
     data-slug={ui.slugs.home}
   >
