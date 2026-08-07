@@ -8,6 +8,8 @@ export const db: Translations = {
       title: "Full Stack Developer <br/> Web Apps, SEO & Performance",
       description:
         "Desarrollo de aplicaciones web robustas y escalables con un enfoque integral en arquitectura, rendimiento técnico y experiencia de usuario.",
+      summary:
+        "Full Stack Developer con más de 12 años de experiencia liderando el desarrollo de ecosistemas digitales complejos. Especialista en el diseño de arquitecturas escalables, optimización técnica y la integración estratégica de Inteligencia Artificial para automatizar procesos críticos. Construyo soluciones robustas y resilientes utilizando React, Next.js y Node.js.",
       availability: {
         status: "Disponible para trabajar",
         active: true,
@@ -494,6 +496,8 @@ export const db: Translations = {
       title: "Full Stack Developer <br/> Web Apps, SEO & Performance",
       description:
         "I develop fast and scalable web applications with a focus on performance and user experience.",
+      summary:
+        "Full Stack Developer with over 12 years of experience leading the development of complex digital ecosystems. Specialized in scalable architecture design, technical performance optimization, and strategic AI integration to automate critical processes. I build robust and resilient solutions using React, Next.js, and Node.js.",
       availability: {
         status: "Available for work",
         active: true,

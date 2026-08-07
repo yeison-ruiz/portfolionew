@@ -3,6 +3,7 @@ export interface PersonalInfo {
   lastName: string;
   title: string;
   description: string;
+  summary?: string;
   availability: {
     status: string;
     active: boolean;
