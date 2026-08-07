@@ -7,6 +7,10 @@ import react from '@astrojs/react';
 
 // https://astro.build/config
 export default defineConfig({
+  // Required for Astro.site. Without it Astro.url falls back to the dev server
+  // origin, which is how localhost:4321 ended up in the production og:url.
+  site: 'https://yeisonruiz.dev',
+
   vite: {
     plugins: [tailwindcss()]
   },
