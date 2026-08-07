@@ -14,7 +14,9 @@
   --color-text-main: #f8fafc;
   --color-text-secondary: #94a3b8; /* Slate 400 */
   
-  --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
+  /* Resolved by the <Font> component in Layout.astro, which emits the
+     self-hosted @font-face rules and this variable's value. */
+  --font-inter: var(--font-inter-family), system-ui, -apple-system, sans-serif;
 }
 
 /* Base Styles */
