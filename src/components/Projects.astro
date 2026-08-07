@@ -1,7 +1,6 @@
 ---
-import type { ImageMetadata } from "astro";
-import { getImage } from "astro:assets";
 import { db } from "../utils/db";
+import { withOptimizedImages } from "../utils/projectImages";
 
 interface Props {
   lang?: "es" | "en";
@@ -10,39 +9,12 @@ interface Props {
 const { lang = "es" } = Astro.props;
 const { projects, personalInfo, ui } = db[lang];
 
-// Screenshots live in src/assets so sharp can compress and hash them at build
-// time. db.ts still stores plain public-style paths, which are mapped to the
-// generated assets here.
-const projectAssets = import.meta.glob<{ default: ImageMetadata }>(
-  "../assets/proyectos/**/*.{png,jpg,jpeg,webp}",
-  { eager: true },
-);
-
-// getImage is used instead of the <Image /> component because the same URL has
-// to reach two places: the carousel markup and the JSON serialized into
-// data-project, which the modal script reads at runtime. <Image /> would only
-// cover the first, leaving the modal pointing at files that no longer exist.
-const optimizedByPath = new Map<string, string>();
-for (const [modulePath, module] of Object.entries(projectAssets)) {
-  const originalPath = modulePath.replace("../assets", "");
-  const optimized = await getImage({
-    src: module.default,
-    format: "webp",
-    quality: 82,
-  });
-  optimizedByPath.set(originalPath, optimized.src);
-}
-
-// Falls back to the original path so an unmapped image degrades to a broken
-// link rather than crashing the whole page render.
-const resolveImage = (path: string | undefined) =>
-  path ? (optimizedByPath.get(path) ?? path) : path;
-
-const optimizedProjects = projects.map((project) => ({
-  ...project,
-  image: resolveImage(project.image),
-  images: project.images?.map((image: string) => resolveImage(image)),
-}));
+// Resolved through the shared helper rather than the <Image /> component,
+// because the same URL has to reach two places: the carousel markup and the
+// JSON serialized into data-project, which the modal script reads at runtime.
+// <Image /> would cover only the first, leaving the modal pointing at files
+// that no longer exist.
+const optimizedProjects = withOptimizedImages(projects);
 ---
 
 <section id={ui.slugs.projects} class="relative min-h-full flex flex-col pt-40 md:pt-52 pb-24 projects-section-container">
