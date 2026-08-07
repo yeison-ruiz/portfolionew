@@ -1,15 +1,18 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg-dark: #0f0518;
+  /* Ultra-modern Slate 950 Dark Mode */
+  --color-bg-dark: #020617;
   --color-bg-card: rgba(255, 255, 255, 0.03);
   --color-bg-card-hover: rgba(255, 255, 255, 0.08);
-  --color-primary: #7627be;
-  --color-primary-glow: #9d4edd;
-  --color-green-glow:#1b9d32;
   
-  --color-text-main: #ffffff;
-  --color-text-secondary: #b3b3b3;
+  /* Solid Gold/Mustard (No gradients) */
+  --color-primary: #eab308;
+  --color-primary-glow: #eab308;
+  --color-green-glow: #eab308;
+  
+  --color-text-main: #f8fafc;
+  --color-text-secondary: #94a3b8; /* Slate 400 */
   
   --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
 }

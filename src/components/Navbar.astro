@@ -11,7 +11,7 @@ const initials = `${personalInfo.name[0]}${personalInfo.lastName[0]}`;
 
 const otherLang = lang === "es" ? "en" : "es";
 const langLabel = lang === "es" ? "EN" : "ES";
-const langPath = lang === "es" ? "/en" : "/";
+const langPath = lang === "es" ? "/en" : "/es";
 ---
 
 <header
@@ -73,14 +73,24 @@ const langPath = lang === "es" ? "/en" : "/";
   <!-- Actions -->
   <div class="flex items-center gap-4">
     <!-- Language Switcher -->
-    <a
-      id="language-toggle"
-      href={langPath}
-      class="text-xs font-bold text-text-secondary hover:text-white transition-colors px-3 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm"
-      aria-label="Switch language"
-    >
-      {langLabel}
-    </a>
+    <div class="flex items-center gap-1 p-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm">
+      <a
+        href="/es"
+        class={`flex items-center gap-1.5 px-2.5 py-1 rounded-full transition-all ${lang === 'es' ? 'bg-primary text-[#020617] shadow-sm' : 'text-text-secondary hover:text-white hover:bg-white/5'}`}
+        aria-label="Español"
+      >
+        <img src="https://flagcdn.com/w80/es.png" alt="ES flag" class="w-4 h-4 rounded-full object-cover shadow-[0_1px_3px_rgba(0,0,0,0.3)]" />
+        <span class="text-[11px] font-bold">ES</span>
+      </a>
+      <a
+        href="/"
+        class={`flex items-center gap-1.5 px-2.5 py-1 rounded-full transition-all ${lang === 'en' ? 'bg-primary text-[#020617] shadow-sm' : 'text-text-secondary hover:text-white hover:bg-white/5'}`}
+        aria-label="English"
+      >
+        <img src="https://flagcdn.com/w80/us.png" alt="EN flag" class="w-4 h-4 rounded-full object-cover shadow-[0_1px_3px_rgba(0,0,0,0.3)]" />
+        <span class="text-[11px] font-bold">EN</span>
+      </a>
+    </div>
 
     <!-- CTA Button -->
     <a
@@ -145,7 +155,7 @@ const langPath = lang === "es" ? "/en" : "/";
       <li class="w-full text-center mt-4">
         <a
           href={`#${ui.slugs.contact}`}
-          class="mobile-nav-link inline-flex items-center justify-center px-10 py-4 bg-primary text-white rounded-2xl text-lg font-bold hover:scale-105 active:scale-95 transition-all shadow-[0_8px_32px_rgba(118,39,190,0.4)]"
+          class="mobile-nav-link inline-flex items-center justify-center px-10 py-4 bg-primary text-[#020617] rounded-2xl text-lg font-bold hover:scale-105 active:scale-95 transition-all shadow-[0_8px_32px_rgba(234,179,8,0.3)]"
         >
           {lang === 'es' ? 'Hablemos' : "Let's Talk"}
         </a>
@@ -178,23 +188,23 @@ const langPath = lang === "es" ? "/en" : "/";
     border: 1px solid transparent;
   }
 
-  /* Vibrant Purple Gradient Active state for nav links */
+  /* Subtle Minimalist Active state for nav links */
   .nav-link.active {
-    color: #ffffff !important;
-    background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
-    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+    color: var(--color-primary) !important;
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
     font-weight: 800;
     transform: translateY(-1px);
   }
 
-  /* Mobile Active State with Gradient */
+  /* Mobile Active State */
   .mobile-nav-link.active {
-    color: #ffffff !important;
-    background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+    color: var(--color-primary) !important;
+    background: rgba(255, 255, 255, 0.05);
     font-weight: 900;
     padding: 10px 28px;
     border-radius: 14px;
-    box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
   }
   
   /* Hover effect for inactive links */

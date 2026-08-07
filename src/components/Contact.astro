@@ -39,7 +39,7 @@ const { slugs } = ui;
             <div class="lg:hidden absolute -top-5 left-0 w-full text-center z-30 animate-fade-in">
               <h2 class="text-3xl font-black text-white leading-tight uppercase tracking-tighter">
                 Arquitecto <br/>
-                <span class="text-transparent bg-clip-text bg-linear-to-r from-purple-500 to-blue-500">
+                <span class="text-primary">
                   Yeison
                 </span>
               </h2>
@@ -52,7 +52,7 @@ const { slugs } = ui;
       <div class="contact-form opacity-0 translate-x-10 flex flex-col items-center text-center w-full">
         <h2 class="hidden lg:block text-5xl font-bold text-white mb-2 text-left">
           {ui.contact.title} <span
-            class="text-transparent bg-clip-text bg-linear-to-r from-purple-500 to-blue-500"
+            class="text-primary"
             >{ui.contact.titleHighlight}</span
           >
         </h2>
@@ -66,7 +66,7 @@ const { slugs } = ui;
           <!-- Name Field -->
           <div class="group">
             <label
-              class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 group-focus-within:text-purple-400 transition-colors text-center md:text-left"
+              class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 group-focus-within:text-sky-400 transition-colors text-center md:text-left"
               >{ui.contact.form.nameLabel}</label
             >
             <div class="relative">
@@ -91,7 +91,7 @@ const { slugs } = ui;
                 type="text"
                 name="name"
                 placeholder={ui.contact.form.namePlaceholder}
-                class="w-full bg-[#0a0a0c] border border-white/10 rounded-xl py-3 pl-11 pr-4 text-white placeholder-gray-600 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all"
+                class="w-full bg-[#0a0a0c] border border-white/10 rounded-xl py-3 pl-11 pr-4 text-white placeholder-gray-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all"
               />
             </div>
           </div>
@@ -99,7 +99,7 @@ const { slugs } = ui;
           <!-- Email Field -->
           <div class="group">
             <label
-              class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 group-focus-within:text-purple-400 transition-colors text-center md:text-left"
+              class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 group-focus-within:text-sky-400 transition-colors text-center md:text-left"
               >{ui.contact.form.emailLabel}</label
             >
             <div class="relative">
@@ -124,7 +124,7 @@ const { slugs } = ui;
                 type="email"
                 name="email"
                 placeholder={ui.contact.form.emailPlaceholder}
-                class="w-full bg-[#0a0a0c] border border-white/10 rounded-xl py-3 pl-11 pr-4 text-white placeholder-gray-600 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all"
+                class="w-full bg-[#0a0a0c] border border-white/10 rounded-xl py-3 pl-11 pr-4 text-white placeholder-gray-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all"
               />
             </div>
           </div>
@@ -132,7 +132,7 @@ const { slugs } = ui;
           <!-- Phone Field -->
           <div class="group">
             <label
-              class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 group-focus-within:text-purple-400 transition-colors text-center md:text-left"
+              class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 group-focus-within:text-sky-400 transition-colors text-center md:text-left"
               >{ui.contact.form.phoneLabel}</label
             >
             <div class="relative">
@@ -157,7 +157,7 @@ const { slugs } = ui;
                 type="tel"
                 name="phone"
                 placeholder={ui.contact.form.phonePlaceholder}
-                class="w-full bg-[#0a0a0c] border border-white/10 rounded-xl py-3 pl-11 pr-4 text-white placeholder-gray-600 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all"
+                class="w-full bg-[#0a0a0c] border border-white/10 rounded-xl py-3 pl-11 pr-4 text-white placeholder-gray-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all"
               />
             </div>
           </div>
@@ -165,7 +165,7 @@ const { slugs } = ui;
           <!-- Message Field -->
           <div class="group">
             <label
-              class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 group-focus-within:text-purple-400 transition-colors text-center md:text-left"
+              class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 group-focus-within:text-sky-400 transition-colors text-center md:text-left"
               >{ui.contact.form.messageLabel}</label
             >
             <div class="relative">
@@ -188,9 +188,23 @@ const { slugs } = ui;
                 name="message"
                 placeholder={ui.contact.form.messagePlaceholder}
                 rows="4"
-                class="w-full bg-[#0a0a0c] border border-white/10 rounded-xl py-3 pl-11 pr-4 text-white placeholder-gray-600 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all resize-none"
+                class="w-full bg-[#0a0a0c] border border-white/10 rounded-xl py-3 pl-11 pr-4 text-white placeholder-gray-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all resize-none"
               ></textarea>
             </div>
+          </div>
+
+          <!-- Honeypot: hidden from users and assistive tech, but automated
+               scripts fill every field they find. Submissions carrying a value
+               here are silently discarded server-side. -->
+          <div class="hidden" aria-hidden="true">
+            <label for="website">Website</label>
+            <input
+              type="text"
+              id="website"
+              name="website"
+              tabindex="-1"
+              autocomplete="off"
+            />
           </div>
 
           <button
@@ -279,7 +293,8 @@ const { slugs } = ui;
       name: (formData.get('name') as string),
       email: (formData.get('email') as string),
       phone: (formData.get('phone') as string),
-      message: (formData.get('message') as string)
+      message: (formData.get('message') as string),
+      website: (formData.get('website') as string) // honeypot
     };
 
     if (!data.name || !data.email || !data.message) return;
@@ -294,28 +309,17 @@ const { slugs } = ui;
       submitBtn.disabled = true;
       submitBtn.innerText = "⏳ ...";
 
-      const webhook = import.meta.env.PUBLIC_DISCORD_WEBHOOK_URL;
-      
-      const discordMessage = {
-        embeds: [{
-          title: "📩 ¡Nuevo Mensaje de Contacto!",
-          color: 3447003, // Blue
-          fields: [
-            { name: "👤 Nombre", value: data.name, inline: true },
-            { name: "📧 Email", value: data.email, inline: true },
-            { name: "📞 Teléfono", value: data.phone || "N/A", inline: true },
-            { name: "💬 Mensaje", value: data.message },
-            { name: "🕒 Hora", value: new Date().toLocaleString() }
-          ],
-          footer: { text: "Yeison Portfolio Contact Form" }
-        }]
-      };
-
-      await fetch(webhook, {
+      // Only structured data is sent. The embed is assembled server-side in
+      // /api/notify, which also holds the webhook credential.
+      const response = await fetch('/api/notify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(discordMessage)
+        body: JSON.stringify({ type: 'contact', ...data })
       });
+
+      if (!response.ok) {
+        throw new Error(`Notification endpoint responded ${response.status}`);
+      }
 
       sessionStorage.setItem('contact_form_sent', 'true');
       submitBtn.innerText = "✅ ¡Enviado!";

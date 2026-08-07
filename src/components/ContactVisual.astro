@@ -71,13 +71,13 @@ const cards: CardData[] = [
   <!-- Central Video Character -->
   <div class="relative w-full max-w-[450px] md:max-w-[550px] flex items-center justify-center video-glow-container mt-8 lg:mt-0">
     
-    <!-- Even more subtle backing to blend with the global purple -->
-    <div class="absolute inset-0 bg-purple-600/5 rounded-full blur-[100px] scale-[0.6] z-0 opacity-40"></div>
+    <!-- Even more subtle backing to blend with the global sky -->
+    <div class="absolute inset-0 bg-sky-600/5 rounded-full blur-[100px] scale-[0.6] z-0 opacity-40"></div>
     <div class="absolute inset-0 bg-primary/2 rounded-full blur-[120px] scale-90 z-0"></div>
 
     <div class="relative z-10 w-full overflow-hidden mask-container">
         <!-- Fondo falso del mismo color que el general para que el mix-blend-mode funcione dentro del contexto de apilamiento -->
-        <div class="absolute inset-0 bg-[#13072b] z-0 mask-fake-bg"></div>
+        <div class="absolute inset-0 bg-[#020617] z-0 mask-fake-bg"></div>
         
         <!-- WRAPPER: Separamos mix-blend-mode y mask (en el wrapper) del filter (en el video) para evitar el bug de Chromium que hace desaparecer el video -->
         <div class="relative z-10 w-full video-blend-wrapper">
@@ -103,7 +103,7 @@ const cards: CardData[] = [
             class={`tech-card-html absolute ${card.position} opacity-0 translate-y-4`}
             data-index={index}
           >
-            <div class="bg-black/80 backdrop-blur-2xl border border-white/10 rounded-2xl p-2.5 md:p-3.5 flex items-center gap-3 shadow-2xl min-w-[140px] md:min-w-[180px] pointer-events-auto transition-all hover:border-purple-500/50 hover:shadow-purple-500/10">
+            <div class="bg-black/80 backdrop-blur-2xl border border-white/10 rounded-2xl p-2.5 md:p-3.5 flex items-center gap-3 shadow-2xl min-w-[140px] md:min-w-[180px] pointer-events-auto transition-all hover:border-sky-500/50 hover:shadow-sky-500/10">
               <div class="w-8 h-8 md:w-10 md:h-10 rounded-xl flex items-center justify-center p-1.5 md:p-2 shrink-0" style={`background: ${card.color}20; color: ${card.color}`}>
                 <Fragment set:html={card.icon} />
               </div>

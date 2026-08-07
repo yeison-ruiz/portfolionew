@@ -1,0 +1,12 @@
+---
+import CVPage from "../../components/CVPage.astro";
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: "en" } },
+  ];
+}
+
+const { lang } = Astro.params as { lang: "en" };
+---
+<CVPage lang={lang} />

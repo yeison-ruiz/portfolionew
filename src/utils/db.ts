@@ -14,7 +14,7 @@ export const db: Translations = {
       },
       stats: {
         experience: "12+",
-        projects: "45+",
+        projects: "68+",
         satisfied: "100%",
       },
       social: {
@@ -246,6 +246,24 @@ export const db: Translations = {
           closeChat: "Cerrar chat",
         },
       },
+      cv: {
+        download: "Descargar CV",
+        website: "Website",
+        executiveSummary: "Resumen Ejecutivo",
+        career: "Trayectoria Profesional",
+        careerContinued: "Trayectoria Profesional (Continuación)",
+        coreStack: "Stack Principal",
+        languages: "Idiomas",
+        spanish: "Español",
+        native: "Nativo",
+        english: "Inglés",
+        fluent: "B2",
+        certifications: "Certificaciones Especializadas",
+        showcase: "Showcase",
+        techProjects: "Proyectos Técnicos",
+        interactiveExp: "Explora la experiencia interactiva en",
+        portfolio: "Portafolio Pro",
+      },
     },
     services: [
       {
@@ -264,7 +282,7 @@ export const db: Translations = {
         description:
           "Desarrollo ecosistemas digitales corporativos robustos y aplicaciones web de gran escala. Mi enfoque combina la potencia de Laravel en el backend con la interactividad de Next.js o Vue.js en el frontend. Soluciones orientadas a resultados B2B/B2C que integran flujos de trabajo complejos, seguridad de grado bancario y escalabilidad horizontal para soportar el crecimiento constante de tu negocio.",
         tags: ["PHP", "WordPress", "Laravel", "Node", "Express", "Vue.js", "Next.js", "Astro"],
-        gradient: "from-purple-500/20 to-pink-500/20",
+        gradient: "from-sky-500/20 to-pink-500/20",
       },
       {
         id: "uiux",
@@ -291,7 +309,7 @@ export const db: Translations = {
         description:
           "Especialista en la creación de pipelines de CI/CD automatizados utilizando GitHub Actions para despliegues continuos y sin errores. Arquitecto e implemento infraestructuras Cloud Native en AWS y Google Cloud, garantizando alta disponibilidad. Experto en la orquestación de APIs masivas e integración de ecosistemas digitales eficientes.",
         tags: ["GitHub Actions", "CI/CD", "AWS", "Google Cloud", "API REST", "Docker"],
-        gradient: "from-indigo-500/20 to-purple-500/20",
+        gradient: "from-indigo-500/20 to-sky-500/20",
         badge: {
           text: "DevOps",
           color: "bg-indigo-500",
@@ -392,7 +410,7 @@ export const db: Translations = {
         description:
           "Innovadora plataforma de citas psicológicas automatizadas. Destaca por integrar una pre-sesión con Inteligencia Artificial que sondea al paciente, proporcionando a la psicóloga contexto vital y resumen clínico detallado antes de iniciar cada consulta.",
         tech: ["Next.js", "AI Integration", "Supabase", "Cloudinary", "TailwindCSS", "TypeScript", "Zustand"],
-        windowColor: "bg-purple-500/10",
+        windowColor: "bg-primary/10",
         images: [
           "/proyectos/johana/psicologa.png",
           "/proyectos/johana/agendar.png",
@@ -409,7 +427,7 @@ export const db: Translations = {
         description:
           "Aplicación móvil diseñada para la gestión de recordatorios e historiales médicos personales, facilitando el control y apego al tratamiento.",
         tech: ["React Native Expo", "Supabase", "Tailwind CSS", "Zustand", "TypeScript"],
-        windowColor: "bg-blue-500/10",
+        windowColor: "bg-primary/10",
         images: [
           "/proyectos/meditrack/1.jpeg",
           "/proyectos/meditrack/2.jpeg",
@@ -425,7 +443,7 @@ export const db: Translations = {
         description:
           "Plataforma administrativa y panel de control del sistema de hipotecas Cahuita Valley. Gestión ágil de pagos, clientes, y reportes analíticos para el control interno administrativo.",
         tech: ["Laravel", "TailwindCSS", "Alpine.js", "MySQL", "MVC"],
-        windowColor: "bg-emerald-500/10",
+        windowColor: "bg-primary/10",
         images: [
           "/proyectos/cahuita/dashboard.png",
           "/proyectos/cahuita/admin.png",
@@ -440,7 +458,7 @@ export const db: Translations = {
         description:
           "Ecosistema digital avanzado para la gestión de reclamos de seguros. Incluye el desarrollo de un plugin de chat inteligente personalizado que se integra mediante una API REST con una aplicación móvil en React Native, permitiendo una comunicación fluida y automatizada entre peritos y clientes.",
         tech: ["WordPress", "PHP", "React Native", "API REST", "Tailwind CSS"],
-        windowColor: "bg-blue-500/10",
+        windowColor: "bg-primary/10",
         images: [
           "/proyectos/adjuster/imagepublic.webp",
           "/proyectos/adjuster/mobilepublic.webp"
@@ -462,7 +480,7 @@ export const db: Translations = {
       },
       stats: {
         experience: "12+",
-        projects: "45+",
+        projects: "68+",
         satisfied: "100%",
       },
       social: {
@@ -694,6 +712,24 @@ export const db: Translations = {
           closeChat: "Close chat",
         },
       },
+      cv: {
+        download: "Download CV",
+        website: "Website",
+        executiveSummary: "Executive Summary",
+        career: "Professional Experience",
+        careerContinued: "Professional Experience (Cont.)",
+        coreStack: "Core Stack",
+        languages: "Languages",
+        spanish: "Spanish",
+        native: "Native",
+        english: "English",
+        fluent: "B2",
+        certifications: "Specialized Certifications",
+        showcase: "Showcase",
+        techProjects: "Technical Projects",
+        interactiveExp: "Explore the interactive experience at",
+        portfolio: "Pro Portfolio",
+      },
     },
     services: [
       {
@@ -712,7 +748,7 @@ export const db: Translations = {
         description:
           "Developing robust corporate digital ecosystems and large-scale web applications. My approach combines the power of Laravel on the backend with the interactivity of Next.js or Vue.js on the frontend. B2B/B2C result-oriented solutions that integrate complex workflows, bank-grade security, and horizontal scalability.",
         tags: ["PHP", "WordPress", "Laravel", "Node", "Express", "Vue.js", "Next.js", "Astro"],
-        gradient: "from-purple-500/20 to-pink-500/20",
+        gradient: "from-sky-500/20 to-pink-500/20",
       },
       {
         id: "uiux",
@@ -739,7 +775,7 @@ export const db: Translations = {
         description:
           "Specialist in creating automated CI/CD pipelines using GitHub Actions for continuous, error-free deployments. I architect and implement Cloud Native infrastructures on AWS and Google Cloud, ensuring high availability. Expert in mass API orchestration and building efficient digital ecosystems.",
         tags: ["GitHub Actions", "CI/CD", "AWS", "Google Cloud", "REST API", "Docker"],
-        gradient: "from-indigo-500/20 to-purple-500/20",
+        gradient: "from-indigo-500/20 to-sky-500/20",
         badge: {
           text: "DevOps",
           color: "bg-indigo-500",
@@ -840,7 +876,7 @@ export const db: Translations = {
         description:
           "Innovative automated psychological appointment platform. Features an AI-powered pre-session that surveys the patient, providing clinical context to the psychologist before each consultation.",
         tech: ["Next.js", "AI Integration", "Supabase", "Cloudinary", "TailwindCSS", "TypeScript", "Zustand"],
-        windowColor: "bg-purple-500/10",
+        windowColor: "bg-primary/10",
         images: [
           "/proyectos/johana/psicologa.png",
           "/proyectos/johana/agendar.png",
@@ -857,7 +893,7 @@ export const db: Translations = {
         description:
           "Mobile application designed for managing personal medical records and reminders, facilitating treatment adherence and control.",
         tech: ["React Native Expo", "Supabase", "Tailwind CSS", "Zustand", "TypeScript"],
-        windowColor: "bg-blue-500/10",
+        windowColor: "bg-primary/10",
         images: [
           "/proyectos/meditrack/1.jpeg",
           "/proyectos/meditrack/2.jpeg",
@@ -873,7 +909,7 @@ export const db: Translations = {
         description:
           "Administrative platform and control panel for the Cahuita Valley mortgage system. Agile management of payments, clients, and analytical reports.",
         tech: ["Laravel", "TailwindCSS", "Alpine.js", "MySQL", "MVC"],
-        windowColor: "bg-emerald-500/10",
+        windowColor: "bg-primary/10",
         images: [
           "/proyectos/cahuita/dashboard.png",
           "/proyectos/cahuita/admin.png",
@@ -888,7 +924,7 @@ export const db: Translations = {
         description:
           "Advanced digital ecosystem for insurance claims management. Features a custom intelligent chat plugin integrated via REST API with a React Native mobile app, enabling seamless and automated communication between adjusters and clients.",
         tech: ["WordPress", "PHP", "React Native", "REST API", "Tailwind CSS"],
-        windowColor: "bg-blue-500/10",
+        windowColor: "bg-primary/10",
         images: [
           "/proyectos/adjuster/imagepublic.webp",
           "/proyectos/adjuster/mobilepublic.webp"

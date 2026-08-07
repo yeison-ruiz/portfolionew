@@ -4,6 +4,9 @@ import {
   MessageSquare,
   X,
   Send,
+  Rocket,
+  Bot,
+  UserPlus,
   Zap,
   Briefcase,
   Code,
@@ -54,12 +57,11 @@ const WHATSAPP_NUMBER = "573226838387";
 
 interface ChatWidgetProps {
   lang?: "es" | "en";
-  discordWebhook?: string;
 }
 
 // --- Component ---
 
-export default function ChatWidget({ lang = "es", discordWebhook }: ChatWidgetProps) {
+export default function ChatWidget({ lang = "es" }: ChatWidgetProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState<Step>("welcome");
   const [messages, setMessages] = useState<Message[]>([]);
@@ -325,66 +327,29 @@ ${lang === 'es' ? 'Hola Yeison, soy ' + (data.name || '') + ' y estoy interesado
   };
 
   const sendLeadToDiscord = async (data: UserData, isPartial: boolean = false) => {
-    const webhook = discordWebhook || import.meta.env.PUBLIC_DISCORD_WEBHOOK_URL;
-    
-    if (!webhook) {
-      console.warn("Discord Webhook URL not available.");
-      return;
-    }
-
     try {
-      // Robustly get all data even if state is slightly behind
-      const safeData = {
-        name: data.name || "N/A",
-        phone: data.phone || "N/A",
-        intent: data.intent || "N/A",
-        projectType: data.projectType || "N/A",
-        scope: data.scope || "N/A",
-        details: (data.details || "N/A").substring(0, 1000), 
-        contactMethod: data.contactMethod || "N/A",
-        contactValue: (data.contactValue || "N/A").substring(0, 1000)
-      };
-
-      const titleMap = {
-        partial: lang === 'es' ? "⏳ Lead en progreso (Detalles recibidos)" : "⏳ Lead in progress (Details received)",
-        final: lang === 'es' ? "✅ ¡Lead Completo y Validado!" : "✅ Final Lead Received!"
-      };
-
-      const message = {
-        embeds: [
-          {
-            title: isPartial ? titleMap.partial : titleMap.final,
-            color: isPartial ? 16761095 : 11807190, // Gold for partial, Purple for final
-            fields: [
-              { name: lang === 'es' ? "👤 Nombre" : "👤 Name", value: safeData.name, inline: true },
-              { name: lang === 'es' ? "📞 Teléfono" : "📞 Phone", value: safeData.phone, inline: true },
-              { name: lang === 'es' ? "📍 Intención" : "📍 Intent", value: safeData.intent, inline: true },
-              { name: lang === 'es' ? "💼 Tipo" : "💼 Type", value: safeData.projectType, inline: true },
-              { name: lang === 'es' ? "📊 Alcance" : "📊 Scope", value: safeData.scope, inline: true },
-              { name: lang === 'es' ? "📝 Detalles" : "📝 Details", value: safeData.details, inline: false },
-              { 
-                name: lang === 'es' ? "📞 Contacto Final" : "📞 Final Contact", 
-                value: safeData.contactMethod === "WhatsApp" ? "Redirigido a WhatsApp 🚀" : `[${safeData.contactMethod}] ${safeData.contactValue}`, 
-                inline: false 
-              },
-              { name: "🕒 Hora", value: new Date().toLocaleString(), inline: true }
-            ],
-            footer: { text: "Yeison Portfolio Chat System" }
-          }
-        ]
-      };
-
-      const response = await fetch(webhook, {
+      // Only structured data is sent. The embed is assembled server-side in
+      // /api/notify, which also holds the webhook credential.
+      const response = await fetch("/api/notify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(message)
+        body: JSON.stringify({
+          type: "lead",
+          lang,
+          partial: isPartial,
+          name: data.name,
+          phone: data.phone,
+          intent: data.intent,
+          projectType: data.projectType,
+          scope: data.scope,
+          details: data.details,
+          contactMethod: data.contactMethod,
+          contactValue: data.contactValue,
+        }),
       });
 
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Discord API error:", response.status, errorText);
-      } else {
-        console.log("Lead successfully sent to Discord! ✅");
+        console.error("Notification endpoint error:", response.status);
       }
     } catch (e) {
       console.error("Network error sending chat lead:", e);
@@ -399,7 +364,7 @@ ${lang === 'es' ? 'Hola Yeison, soy ' + (data.name || '') + ' y estoy interesado
         return (
           <div className="flex flex-col gap-2 mt-4">
             <OptionButton
-              icon={<Zap size={18} className="text-yellow-400" />}
+              icon={<Rocket size={18} className="text-primary" />}
               label={t.options.build}
               onClick={() =>
                 handleOptionClick(t.options.build, "name", {
@@ -408,14 +373,14 @@ ${lang === 'es' ? 'Hola Yeison, soy ' + (data.name || '') + ' y estoy interesado
               }
             />
             <OptionButton
-              icon={<Code size={18} className="text-blue-400" />}
+              icon={<Bot size={18} className="text-blue-400" />}
               label={t.options.ai}
               onClick={() =>
                 handleOptionClick(t.options.ai, "name", { intent: "ai" })
               }
             />
             <OptionButton
-              icon={<Briefcase size={18} className="text-purple-400" />}
+              icon={<UserPlus size={18} className="text-emerald-400" />}
               label={t.options.hire}
               onClick={() =>
                 handleOptionClick(t.options.hire, "name", { intent: "hire" })
@@ -433,12 +398,12 @@ ${lang === 'es' ? 'Hola Yeison, soy ' + (data.name || '') + ' y estoy interesado
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               placeholder={currentStep === "name" ? (lang === 'es' ? "Tu nombre..." : "Your name...") : (lang === 'es' ? "Tu teléfono..." : "Your phone...")}
-              className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-purple-500 transition-colors"
+              className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-primary-500 transition-colors"
               autoFocus
             />
             <button
               type="submit"
-              className="bg-purple-600 hover:bg-purple-700 text-white p-2 rounded-xl transition-colors"
+              className="bg-primary hover:bg-primary text-white p-2 rounded-xl transition-colors"
             >
               <Send size={18} />
             </button>
@@ -500,12 +465,12 @@ ${lang === 'es' ? 'Hola Yeison, soy ' + (data.name || '') + ' y estoy interesado
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               placeholder={t.options.detailsPlaceholder}
-              className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-purple-500 transition-colors resize-none h-24"
+              className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-primary-500 transition-colors resize-none h-24"
               autoFocus
             />
             <button
               type="submit"
-              className="bg-purple-600 hover:bg-purple-700 text-white p-3 rounded-xl transition-colors self-end"
+              className="bg-primary hover:bg-primary text-white p-3 rounded-xl transition-colors self-end"
             >
               <Send size={18} />
             </button>
@@ -526,7 +491,7 @@ ${lang === 'es' ? 'Hola Yeison, soy ' + (data.name || '') + ' y estoy interesado
               onClick={() => handleContactMethodSelect("Email", t.options.contactEmail)}
             />
             <OptionButton
-              icon={<Calendar size={18} className="text-purple-500" />}
+              icon={<Calendar size={18} className="text-primary" />}
               label={t.options.contactCall}
               onClick={() => handleContactMethodSelect("Schedule a call", t.options.contactCall)}
             />
@@ -541,12 +506,12 @@ ${lang === 'es' ? 'Hola Yeison, soy ' + (data.name || '') + ' y estoy interesado
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               placeholder={t.options.inputPlaceholder}
-              className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-purple-500 transition-colors"
+              className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-primary-500 transition-colors"
               autoFocus
             />
             <button
               type="submit"
-              className="bg-purple-600 hover:bg-purple-700 text-white p-2 rounded-xl transition-colors"
+              className="bg-primary hover:bg-[#fcd34d] text-[#020617] p-2 rounded-xl transition-colors"
             >
               <Send size={18} />
             </button>
@@ -592,10 +557,10 @@ ${lang === 'es' ? 'Hola Yeison, soy ' + (data.name || '') + ' y estoy interesado
             className="fixed inset-x-4 top-6 bottom-6 md:inset-auto md:bottom-6 md:right-6 w-auto md:w-[400px] md:h-[600px] h-auto bg-[#0A0A0A] rounded-3xl border border-white/10 shadow-2xl overflow-hidden z-[100] flex flex-col font-sans"
           >
             {/* Header - no backdrop-blur on mobile for perf */}
-            <div className="p-4 bg-purple-900/90 md:backdrop-blur-md border-b border-white/10 flex items-center justify-between shrink-0">
+            <div className="p-4 bg-[#18181b]/90 md:backdrop-blur-md border-b border-white/10 flex items-center justify-between shrink-0">
               <div className="flex items-center gap-3">
                 <div className="relative">
-                  <div className="w-10 h-10 rounded-full bg-linear-to-br from-purple-400 to-blue-500 flex items-center justify-center overflow-hidden border-2 border-white/20">
+                  <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center overflow-hidden border-2 border-white/20">
                     <img
                       src="/chat-avatar.png"
                       alt="Yeison AI"
@@ -608,8 +573,8 @@ ${lang === 'es' ? 'Hola Yeison, soy ' + (data.name || '') + ' y estoy interesado
                   <h3 className="text-white font-bold text-sm">
                     {t.assistantName}
                   </h3>
-                  <p className="text-purple-300 text-xs flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse"></span>
+                  <p className="text-white/80 text-xs flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
                     {t.onlineStatus}
                   </p>
                 </div>
@@ -632,9 +597,9 @@ ${lang === 'es' ? 'Hola Yeison, soy ' + (data.name || '') + ' y estoy interesado
                   }`}
                 >
                   <div
-                    className={`max-w-[85%] rounded-2xl px-5 py-4 text-sm leading-relaxed shadow-lg ${
+                    className={`max-w-[85%] rounded-2xl px-5 py-4 text-sm font-medium leading-relaxed shadow-lg ${
                       msg.sender === "user"
-                        ? "bg-purple-600 text-white rounded-tr-sm"
+                        ? "bg-primary text-[#020617] rounded-tr-sm font-bold"
                         : "bg-[#18181b] border border-white/10 text-gray-200 rounded-tl-sm"
                     }`}
                   >
@@ -721,33 +686,38 @@ ${lang === 'es' ? 'Hola Yeison, soy ' + (data.name || '') + ' y estoy interesado
             exit={{ opacity: 0, scale: 0.8 }}
             whileHover={{ scale: 1.05 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-4 md:bottom-8 right-4 md:right-8 bg-[#2e1065] border border-white/20 p-1.5 pr-6 rounded-full shadow-[0_8px_30px_rgba(46,16,101,0.6)] cursor-pointer z-[100] flex items-center gap-4 group transition-all overflow-hidden"
+            className="fixed bottom-4 md:bottom-8 right-4 md:right-8 bg-white border-none p-1.5 pr-6 rounded-full shadow-[0_15px_35px_rgba(0,0,0,0.2)] cursor-pointer z-[100] flex items-center gap-4 group transition-all duration-500 overflow-hidden"
           >
-            <div className="absolute inset-0 bg-linear-to-r from-violet-600/50 to-purple-600/50 pointer-events-none"></div>
+            {/* Dynamic Geometric Shapes */}
+            <div className="absolute inset-0 pointer-events-none rounded-full overflow-hidden">
+              {/* Main diagonal gold block */}
+              <div className="absolute top-[-50%] bottom-[-50%] right-[-10%] w-[88%] bg-primary skew-x-[24deg] group-hover:-translate-x-2 transition-transform duration-500 shadow-[-5px_0_15px_rgba(0,0,0,0.05)]"></div>
+              {/* Secondary parallel accent strip */}
+              <div className="absolute top-[-50%] bottom-[-50%] right-[78%] w-1.5 bg-black/10 skew-x-[24deg] group-hover:-translate-x-4 transition-transform duration-500"></div>
+            </div>
+
             <div className="relative z-10">
-              <div className="w-12 h-12 rounded-full border-2 border-white/10 overflow-hidden relative">
+              <div className="w-12 h-12 rounded-full border-none overflow-hidden relative shadow-md">
                 <img
                   src="/chat-avatar.png"
                   alt="AI"
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-linear-to-tr from-white/20 to-transparent pointer-events-none"></div>
               </div>
-              <div className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-[#2e1065] rounded-full drop-shadow-[0_0_8px_rgba(34,197,94,0.8)]"></div>
+              <div className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 rounded-full border-2 border-white shadow-sm"></div>
             </div>
-            <div className="flex flex-col items-start justify-center z-10 h-10">
-              <span className="text-xs font-bold text-purple-300 leading-none mb-0.5">
+            <div className="flex flex-col items-start justify-center z-10 h-10 relative">
+              <span className="text-[10px] font-black text-black leading-none mb-1 tracking-wider uppercase">
                 {t.floatingLabel}
               </span>
-              <div className="flex items-center gap-1 text-white font-bold text-base shadow-black drop-shadow-md leading-none">
+              <div className="flex items-center gap-1 text-black font-black text-base leading-none">
                 {t.startChatting}
                 <ArrowRight
                   size={16}
-                  className="group-hover:translate-x-1 transition-transform"
+                  className="text-primary group-hover:translate-x-1 transition-transform"
                 />
               </div>
             </div>
-            <div className="absolute inset-0 pointer-events-none rounded-full ring-1 ring-white/10 group-hover:ring-purple-400/50 transition-all"></div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -769,7 +739,7 @@ function OptionButton({
   return (
     <button
       onClick={onClick}
-      className="ml-auto w-fit max-w-[90%] flex items-center gap-3 px-5 py-3 bg-[#1e1e24] hover:bg-[#27272f] border border-white/10 hover:border-purple-500/50 rounded-2xl rounded-tr-sm transition-all duration-200 group text-left shadow-md"
+      className="ml-auto w-fit max-w-[90%] flex items-center gap-3 px-5 py-3 bg-[#1e1e24] hover:bg-[#27272f] border border-white/10 hover:border-primary-500/50 rounded-2xl rounded-tr-sm transition-all duration-200 group text-left shadow-md"
     >
       <div className="p-1.5 bg-black/30 rounded-lg group-hover:scale-110 transition-transform shrink-0">
         {icon}

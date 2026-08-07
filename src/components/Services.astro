@@ -13,7 +13,7 @@ const { services, ui } = db[lang];
   <!-- Advanced Background Mesh (From Initial Design) -->
   <div class="absolute inset-0 pointer-events-none overflow-hidden">
     <div class="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-primary/10 blur-[180px] rounded-full animate-pulse-slow"></div>
-    <div class="absolute top-[20%] -right-[5%] w-[35%] h-[35%] bg-purple-600/5 blur-[150px] rounded-full animate-pulse-slow delay-1000"></div>
+    <div class="absolute top-[20%] -right-[5%] w-[35%] h-[35%] bg-sky-600/5 blur-[150px] rounded-full animate-pulse-slow delay-1000"></div>
     
     <!-- Subtle Grid Pattern -->
     <div class="absolute inset-0 opacity-[0.02] bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-size-[60px_60px]"></div>
@@ -28,7 +28,7 @@ const { services, ui } = db[lang];
       </div>
 
       <h2 class="text-5xl md:text-7xl font-black text-white tracking-tighter leading-none mb-6">
-        {ui.services.title} <span class="bg-linear-to-r from-primary via-purple-400 to-blue-400 bg-clip-text text-transparent">{ui.services.titleHighlight}</span>
+        {ui.services.title} <span class="text-primary">{ui.services.titleHighlight}</span>
       </h2>
       
       <p class="text-lg text-text-secondary max-w-xl mx-auto leading-relaxed font-medium">
@@ -44,7 +44,7 @@ const { services, ui } = db[lang];
       {
         services.map((service, index) => {
           const bgColor = service.gradient.includes('green') ? 'rgba(34,197,94,0.05)' : 
-                         service.gradient.includes('purple') ? 'rgba(168,85,247,0.05)' :
+                         service.gradient.includes('sky') ? 'rgba(168,85,247,0.05)' :
                          service.gradient.includes('yellow') ? 'rgba(234,179,8,0.05)' :
                          service.gradient.includes('blue') ? 'rgba(59,130,246,0.05)' : 'rgba(99,102,241,0.05)';
           

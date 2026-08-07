@@ -122,12 +122,8 @@ const techCards = [
     <div
       class="z-10 flex flex-col items-center lg:items-start text-center lg:text-left mt-4 lg:mt-0"
     >
-      <div
-        class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/20 border border-primary/30 text-primary-glow text-sm font-semibold mb-6"
-      >
-        <span
-          class="w-2 h-2 rounded-full bg-green-glow shadow-[0_0_10px_var(--color-primary-glow)]"
-        ></span>
+      <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-lg bg-white/5 border border-white/10 backdrop-blur-md text-white/90 text-sm font-medium tracking-wide mb-6">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><polyline points="20 6 9 17 4 12"></polyline></svg>
         {personalInfo.availability.status}
       </div>
 
@@ -145,7 +141,7 @@ const techCards = [
       />
 
       <p
-        class="text-text-secondary text-lg leading-relaxed max-w-lg mb-10 mx-auto lg:mx-0"
+        class="text-gray-100/95 font-medium text-lg md:text-xl leading-relaxed max-w-lg mb-10 mx-auto lg:mx-0 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
       >
         {personalInfo.description}
       </p>
@@ -153,7 +149,7 @@ const techCards = [
       <div class="flex gap-6 mb-16 justify-center lg:justify-start">
         <a
           href={`#${ui.slugs.projects}`}
-          class="inline-flex items-center justify-center px-8 py-3 rounded-lg font-bold bg-linear-to-r from-primary to-primary-glow text-white shadow-[0_4px_15px_rgba(118,39,190,0.3)] hover:translate-y-[-2px] hover:shadow-[0_8px_25px_rgba(118,39,190,0.5)] transition-all duration-300"
+          class="inline-flex items-center justify-center px-8 py-3 rounded-lg font-black bg-primary text-[#020617] shadow-[0_4px_15px_rgba(234,179,8,0.3)] hover:translate-y-[-2px] hover:shadow-[0_8px_25px_rgba(234,179,8,0.5)] transition-all duration-300"
         >
           {ui.hero.explore}
         </a>
