@@ -189,11 +189,14 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
     // Just long enough to keep one gesture from firing twice. The previous
     // 1500ms left the page ignoring input for almost a second after the
     // animation had already finished, which reads as broken rather than slow.
-    const TRANSITION_COOLDOWN_MS = 500;
+    const TRANSITION_COOLDOWN_MS = 800;
 
     let currentIndex = 0;
     let isAnimating = false;
     let lastTransitionTime = 0;
+    let lastWheelEventTime = 0;
+    let edgeReachedTime = 0;
+    let wasAtEdge = false;
 
     // Mirrors currentIndex but is updated the moment a transition starts, while
     // currentIndex only settles in the GSAP onComplete. Media decisions need the
@@ -206,6 +209,8 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
     function gotoSection(index: number, _direction: number) {
       if (isAnimating) return;
       isAnimating = true;
+      wasAtEdge = false;
+      edgeReachedTime = Date.now();
       lastTransitionTime = Date.now();
 
       const currentSection = sections[currentIndex];
@@ -214,6 +219,13 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
       if (!currentSection || !nextSection) {
         isAnimating = false;
         return;
+      }
+
+      const nextScrollContainer = nextSection.querySelector(
+        ".overflow-y-auto",
+      ) as HTMLElement;
+      if (nextScrollContainer) {
+        nextScrollContainer.scrollTop = 0;
       }
 
       activeIndex = index;
@@ -286,10 +298,6 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
       tolerance: 20, 
       preventDefault: false,
     });
-
-    let lastWheelEventTime = 0;
-    let edgeReachedTime = 0;
-    let wasAtEdge = false;
 
     function handleScroll(direction: number, event?: Event) {
       if (isAnimating) return;
