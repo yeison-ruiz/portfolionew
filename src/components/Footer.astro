@@ -3,11 +3,24 @@ import { db } from "../utils/db";
 
 interface Props {
   lang?: "es" | "en";
+  isHome?: boolean;
 }
 
-const { lang = "es" } = Astro.props;
+const { lang = "es", isHome = false } = Astro.props;
 const { personalInfo, ui } = db[lang];
 const { slugs } = ui;
+
+const tickerMessages = lang === "es" ? [
+  "✨ Construyendo aplicaciones web de alto rendimiento e integraciones de IA",
+  "🚀 Especializado en React, Next.js, Astro y arquitectura full-stack moderna",
+  "💡 Transformando ideas complejas en experiencias digitales de alto impacto",
+  "⚡ Core Web Vitals 100% optimizados • Código limpio y diseño escalable"
+] : [
+  "✨ Building high-performance web applications & AI integrations",
+  "🚀 Specializing in React, Next.js, Astro & modern full-stack architecture",
+  "💡 Turning complex business ideas into seamless digital experiences",
+  "⚡ 100% Optimized Core Web Vitals • Clean Code & Scalable Architecture"
+];
 ---
 
 <footer class="mt-auto border-t border-white/5 bg-[#0A0A0A]/50 backdrop-blur-md shrink-0">
@@ -25,71 +38,63 @@ const { slugs } = ui;
         </a>
       </div>
 
-      <!-- Navigation Menu & Copyright (Centered) -->
-      <div class="flex-2 flex flex-col items-center gap-8 md:gap-6">
-        <nav class="flex flex-wrap justify-center items-center gap-x-6 gap-y-4 md:gap-x-8 md:gap-y-3">
-          <a
-            href={`#${slugs.timeline}`}
-            class="footer-nav-link text-sm text-gray-400 hover:text-white transition-all duration-300 font-medium whitespace-nowrap px-3 py-1 rounded-full"
-            data-slug={slugs.timeline}
-            >{ui.nav.timeline}</a
-          >
-          <a
-            href={`#${slugs.certificaciones}`}
-            class="footer-nav-link text-sm text-gray-400 hover:text-white transition-all duration-300 font-medium whitespace-nowrap px-3 py-1 rounded-full"
-            data-slug={slugs.certificaciones}
-            >{ui.nav.certificaciones}</a
-          >
-          <a
-            href={`#${slugs.services}`}
-            class="footer-nav-link text-sm text-gray-400 hover:text-white transition-all duration-300 font-medium whitespace-nowrap px-3 py-1 rounded-full"
-            data-slug={slugs.services}
-            >{ui.nav.services}</a
-          >
-          <a
-            href={`#${slugs.projects}`}
-            class="footer-nav-link text-sm text-gray-400 hover:text-white transition-all duration-300 font-medium whitespace-nowrap px-3 py-1 rounded-full"
-            data-slug={slugs.projects}
-            >{ui.nav.projects}</a
-          >
-          <a
-            href={`#${slugs.contact}`}
-            class="footer-nav-link text-sm text-gray-400 hover:text-white transition-all duration-300 font-medium whitespace-nowrap px-3 py-1 rounded-full"
-            data-slug={slugs.contact}
-            >{ui.nav.contact}</a
-          >
-        </nav>
-        
-        <p class="text-xs text-gray-500">
-          © {new Date().getFullYear()} {personalInfo.name} {personalInfo.lastName}. {ui.footer.rights}
-        </p>
-      </div>
-
-<style>
-  .footer-nav-link.active {
-    color: var(--color-primary) !important;
-    background: rgba(255, 255, 255, 0.05);
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-  }
-</style>
-
-<script>
-  const footerLinks = document.querySelectorAll<HTMLAnchorElement>(".footer-nav-link");
-
-  window.addEventListener("sectionChange", ((e: CustomEvent) => {
-    const activeIndex = e.detail.index;
-    const slugsData = document.getElementById("slugs-data");
-    const sectionSlugs: string[] = slugsData ? JSON.parse(slugsData.getAttribute("data-slugs") || "[]") : [];
-    const currentSlug = sectionSlugs[activeIndex];
-
-    footerLinks.forEach(link => {
-      link.classList.remove("active");
-      if (currentSlug && link.getAttribute("data-slug") === currentSlug) {
-        link.classList.add("active");
-      }
-    });
-  }) as EventListener);
-</script>
+      <!-- Center Content: Animated Ticker on Home, Navigation Menu on other sections -->
+      {isHome ? (
+        <div class="flex-2 flex flex-col items-center justify-center min-w-0">
+          <div class="relative h-6 w-full max-w-md md:max-w-lg overflow-hidden flex items-center justify-center">
+            {tickerMessages.map((msg, i) => (
+              <p
+                class={`footer-ticker-item text-[11px] md:text-xs font-semibold tracking-wide text-gray-300 transition-all duration-700 ease-out absolute w-full text-center truncate ${i === 0 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95 pointer-events-none'}`}
+                data-index={i}
+              >
+                {msg}
+              </p>
+            ))}
+          </div>
+          <p class="text-[10px] text-gray-500 mt-0.5">
+            © {new Date().getFullYear()} {personalInfo.name} {personalInfo.lastName}. {ui.footer.rights}
+          </p>
+        </div>
+      ) : (
+        <div class="flex-2 flex flex-col items-center gap-4 md:gap-3">
+          <nav class="flex flex-wrap justify-center items-center gap-x-6 gap-y-4 md:gap-x-8 md:gap-y-3">
+            <a
+              href={`#${slugs.timeline}`}
+              class="footer-nav-link text-sm text-gray-400 hover:text-white transition-all duration-300 font-medium whitespace-nowrap px-3 py-1 rounded-full"
+              data-slug={slugs.timeline}
+              >{ui.nav.timeline}</a
+            >
+            <a
+              href={`#${slugs.certificaciones}`}
+              class="footer-nav-link text-sm text-gray-400 hover:text-white transition-all duration-300 font-medium whitespace-nowrap px-3 py-1 rounded-full"
+              data-slug={slugs.certificaciones}
+              >{ui.nav.certificaciones}</a
+            >
+            <a
+              href={`#${slugs.services}`}
+              class="footer-nav-link text-sm text-gray-400 hover:text-white transition-all duration-300 font-medium whitespace-nowrap px-3 py-1 rounded-full"
+              data-slug={slugs.services}
+              >{ui.nav.services}</a
+            >
+            <a
+              href={`#${slugs.projects}`}
+              class="footer-nav-link text-sm text-gray-400 hover:text-white transition-all duration-300 font-medium whitespace-nowrap px-3 py-1 rounded-full"
+              data-slug={slugs.projects}
+              >{ui.nav.projects}</a
+            >
+            <a
+              href={`#${slugs.contact}`}
+              class="footer-nav-link text-sm text-gray-400 hover:text-white transition-all duration-300 font-medium whitespace-nowrap px-3 py-1 rounded-full"
+              data-slug={slugs.contact}
+              >{ui.nav.contact}</a
+            >
+          </nav>
+          
+          <p class="text-xs text-gray-500">
+            © {new Date().getFullYear()} {personalInfo.name} {personalInfo.lastName}. {ui.footer.rights}
+          </p>
+        </div>
+      )}
 
       <!-- Social Icons (Right on Desktop) -->
       <div class="flex-1 flex justify-center md:justify-end gap-5">
@@ -117,3 +122,51 @@ const { slugs } = ui;
     </div>
   </div>
 </footer>
+
+<style>
+  .footer-nav-link.active {
+    color: var(--color-primary) !important;
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  }
+</style>
+
+<script>
+  const footerLinks = document.querySelectorAll<HTMLAnchorElement>(".footer-nav-link");
+
+  window.addEventListener("sectionChange", ((e: CustomEvent) => {
+    const activeIndex = e.detail.index;
+    const slugsData = document.getElementById("slugs-data");
+    const sectionSlugs: string[] = slugsData ? JSON.parse(slugsData.getAttribute("data-slugs") || "[]") : [];
+    const currentSlug = sectionSlugs[activeIndex];
+
+    footerLinks.forEach(link => {
+      link.classList.remove("active");
+      if (currentSlug && link.getAttribute("data-slug") === currentSlug) {
+        link.classList.add("active");
+      }
+    });
+  }) as EventListener);
+
+  const startTicker = () => {
+    const tickerItems = document.querySelectorAll<HTMLElement>(".footer-ticker-item");
+    if (tickerItems.length > 1) {
+      let currentTicker = 0;
+      setInterval(() => {
+        const prev = tickerItems[currentTicker];
+        currentTicker = (currentTicker + 1) % tickerItems.length;
+        const next = tickerItems[currentTicker];
+
+        if (prev && next) {
+          prev.classList.remove("opacity-100", "translate-y-0", "scale-100");
+          prev.classList.add("opacity-0", "-translate-y-4", "scale-95", "pointer-events-none");
+
+          next.classList.remove("opacity-0", "translate-y-4", "-translate-y-4", "scale-95", "pointer-events-none");
+          next.classList.add("opacity-100", "translate-y-0", "scale-100");
+        }
+      }, 3500);
+    }
+  };
+
+  startTicker();
+</script>
