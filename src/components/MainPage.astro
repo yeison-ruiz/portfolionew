@@ -35,7 +35,7 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
 <Layout title={title} description={description} lang={lang}>
   <Navbar lang={lang} />
 
-  <ChatWidget client:load lang={lang} />
+  <ChatWidget client:idle lang={lang} />
   <VisitorAlert client:only="react" lang={lang} />
 
   <main class="relative w-full h-screen overflow-hidden bg-transparent">
@@ -172,6 +172,11 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
     let isAnimating = false;
     let lastTransitionTime = 0;
 
+    // Mirrors currentIndex but is updated the moment a transition starts, while
+    // currentIndex only settles in the GSAP onComplete. Media decisions need the
+    // incoming section immediately, otherwise a video is paused mid-transition.
+    let activeIndex = 0;
+
     function gotoSection(index: number, direction: number) {
       if (isAnimating) return;
       isAnimating = true;
@@ -184,6 +189,8 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
         isAnimating = false;
         return;
       }
+
+      activeIndex = index;
 
       gsap.set(nextSection, { zIndex: 10, autoAlpha: 1 });
       gsap.set(currentSection, { zIndex: 0 });
@@ -331,11 +338,20 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
     document.addEventListener("click", handleAnchorClick);
 
     // Optimized Video Management for Mobile
+    //
+    // Sections are absolutely positioned and stacked, so every one of them
+    // intersects the viewport regardless of which is currently shown. Playing on
+    // intersection alone would therefore start every video at load and download
+    // them all. Only videos inside the active section are allowed to play; the
+    // sectionChange listener below wakes the rest as the user navigates.
     const videos = document.querySelectorAll('video');
     const videoObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         const video = entry.target as HTMLVideoElement;
-        if (entry.isIntersecting) {
+        const section = video.closest('.full-page-section');
+        const isInActiveSection = !section || section === sections[activeIndex];
+
+        if (entry.isIntersecting && isInActiveSection) {
           video.play().catch(() => {});
         } else {
           video.pause();
@@ -367,6 +383,7 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
         // Immediate state change without GSAP timeline/delay
         gsap.set(targetSection, { autoAlpha: 1, zIndex: 10, pointerEvents: "auto", scale: 1 });
         currentIndex = finalIndex;
+        activeIndex = finalIndex;
         
         // Sync the Navbar immediately if it's not the first section
         // (If it's the first section, Navbar is already at Home)
