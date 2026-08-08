@@ -107,7 +107,7 @@ const techCards = [
 
 <section
   id={ui.slugs.home}
-  class="relative flex-1 min-h-0 pt-24 lg:pt-28 pb-2 px-6 lg:px-12 flex flex-col justify-center bg-transparent overflow-hidden"
+  class="relative w-full h-auto lg:h-full lg:flex-1 min-h-0 flex-shrink-0 lg:flex-shrink pt-24 sm:pt-28 lg:pt-28 pb-8 lg:pb-2 px-4 sm:px-8 lg:px-12 flex flex-col justify-start lg:justify-center bg-transparent"
 >
   <!-- Left ambient glow - Hidden on mobile for video blending -->
   <div
@@ -116,19 +116,19 @@ const techCards = [
   </div>
 
   <div
-    class="container mx-auto px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center w-full relative z-10"
+    class="container mx-auto px-2 sm:px-8 grid grid-cols-1 lg:grid-cols-2 gap-1.5 sm:gap-4 lg:gap-x-12 lg:gap-y-4 items-center w-full relative z-10"
   >
-    <!-- Text Content -->
+    <!-- Text Header Content (Status + Name + Title) - Above character on mobile -->
     <div
-      class="z-10 flex flex-col items-center lg:items-start text-center lg:text-left mt-4 lg:mt-0"
+      class="z-10 flex flex-col items-center lg:items-start text-center lg:text-left mt-1 lg:mt-0 order-1 lg:col-start-1 lg:row-start-1 mb-1 lg:mb-0"
     >
-      <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-lg bg-white/5 border border-white/10 backdrop-blur-md text-white/90 text-sm font-medium tracking-wide mb-6">
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-xl bg-white/10 border border-white/15 backdrop-blur-md text-white font-semibold text-xs sm:text-sm tracking-wide mb-2 sm:mb-4 shadow-md">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><polyline points="20 6 9 17 4 12"></polyline></svg>
         {personalInfo.availability.status}
       </div>
 
       <h1
-        class="hidden lg:block text-6xl lg:text-8xl font-extrabold leading-[0.9] tracking-tighter mb-2"
+        class="text-4xl xs:text-5xl lg:text-8xl font-black leading-[0.95] lg:leading-[0.9] tracking-tighter mb-2 text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]"
       >
         {personalInfo.name}
         {personalInfo.lastName}
@@ -136,83 +136,19 @@ const techCards = [
       </h1>
 
       <h2
-        class="hidden lg:block text-3xl lg:text-4xl font-semibold mb-6 text-gradient"
+        class="text-lg xs:text-xl lg:text-4xl font-bold text-gradient mb-0 drop-shadow-sm"
         set:html={personalInfo.title}
       />
-
-      <p
-        class="text-gray-100/95 font-medium text-lg md:text-xl leading-relaxed max-w-lg mb-10 mx-auto lg:mx-0 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
-      >
-        {personalInfo.description}
-      </p>
-
-      <div class="flex gap-6 mb-16 justify-center lg:justify-start">
-        <a
-          href={`#${ui.slugs.projects}`}
-          class="inline-flex items-center justify-center px-8 py-3 rounded-lg font-black bg-primary text-[#020617] shadow-[0_4px_15px_rgba(234,179,8,0.3)] hover:translate-y-[-2px] hover:shadow-[0_8px_25px_rgba(234,179,8,0.5)] transition-all duration-300"
-        >
-          {ui.hero.explore}
-        </a>
-        <a
-          href={`#${ui.slugs.services}`}
-          class="inline-flex items-center justify-center px-8 py-3 rounded-lg font-bold bg-transparent border border-white/20 text-white hover:border-primary hover:bg-primary/10 transition-all duration-300"
-        >
-          {ui.hero.viewServices}
-        </a>
-      </div>
-
-      <div class="flex items-center gap-4 sm:gap-8 lg:gap-12 justify-center lg:justify-start w-full px-2 lg:px-0">
-        <div class="flex flex-col">
-          <strong class="text-2xl xs:text-3xl lg:text-4xl xl:text-5xl font-extrabold"
-            >{personalInfo.stats.experience}</strong
-          >
-          <span
-            class="text-text-secondary text-[10px] xs:text-xs lg:text-sm uppercase tracking-tight xs:tracking-widest mt-1"
-            >{ui.hero.expLabel}</span
-          >
-        </div>
-        <div class="w-px h-12 bg-white/10"></div>
-        <div class="flex flex-col">
-          <strong class="text-2xl xs:text-3xl lg:text-4xl xl:text-5xl font-extrabold"
-            >{personalInfo.stats.projects}</strong
-          >
-          <span
-            class="text-text-secondary text-[10px] xs:text-xs lg:text-sm uppercase tracking-tight xs:tracking-widest mt-1"
-            >{ui.hero.projectsLabel}</span
-          >
-        </div>
-        <div class="w-px h-12 bg-white/10"></div>
-        <div class="flex flex-col">
-          <strong class="text-2xl xs:text-3xl lg:text-4xl xl:text-5xl font-extrabold"
-            >{personalInfo.stats.satisfied}</strong
-          >
-          <span
-            class="text-text-secondary text-[10px] xs:text-xs lg:text-sm uppercase tracking-tight xs:tracking-widest mt-1"
-            >{ui.hero.satisfiedLabel}</span
-          >
-        </div>
-      </div>
     </div>
 
-    <!-- Video Content with Stacking Context Fix -->
+    <!-- Video Content (3D Character Avatar) - In middle on mobile -->
     <div
       id="hero-scene-container"
-      class="relative h-[480px] sm:h-[550px] md:h-[520px] lg:h-[600px] w-full flex justify-center items-center order-first lg:order-last bg-transparent overscroll-x-none touch-pan-y"
+      class="relative h-[340px] xs:h-[380px] sm:h-[460px] lg:h-[600px] w-full flex justify-center items-center order-2 lg:col-start-2 lg:row-start-1 lg:row-span-2 bg-transparent overscroll-x-none touch-pan-y -my-2 sm:my-0"
     >
-      <!-- Mobile Greeting - Visible only on mobile/tablet -->
-      <div class="absolute top-[2%] lg:hidden z-30 text-center w-full px-4 animate-fade-in">
-        <h2 class="text-4xl xs:text-5xl font-extrabold tracking-tighter mb-1 select-none">
-          {personalInfo.name} <span class="text-gradient">{personalInfo.lastName}</span>
-        </h2>
-        <p class="text-text-secondary text-[10px] xs:text-xs uppercase tracking-[0.3em] font-bold opacity-80 select-none">
-          {personalInfo.title.replace('<br/>', '')}
-        </p>
-      </div>
-
       <!-- Omit central glow to keep background pure black behind video -->
 
-      <!-- IMPORTANTE: Usamos w-auto h-full para que el tag <video> abrace exactamente el contenido del video y la máscara se aplique a los bordes reales, no al contenedor vacío -->
-      <div class="relative z-20 w-full max-w-[450px] md:max-w-[580px] lg:max-w-[700px] h-full mx-auto mt-12 lg:mt-0 pointer-events-none select-none flex justify-center items-center bg-transparent">
+      <div class="relative z-20 w-full max-w-[450px] md:max-w-[580px] lg:max-w-[700px] h-full mx-auto pointer-events-none select-none flex justify-center items-center bg-transparent">
         <video
           id="hero-video"
           autoplay
@@ -223,7 +159,7 @@ const techCards = [
           preload="metadata"
           poster="/yeison-poster.jpg"
           draggable="false"
-          class="w-auto h-[95%] md:h-full max-w-full mx-auto object-cover video-mask forced-gpu"
+          class="w-auto h-[98%] md:h-full max-w-full mx-auto object-cover video-mask forced-gpu scale-[1.25] sm:scale-100"
         >
           <!-- VP9 first: browsers pick the first source they can decode, and it
                is ~12% smaller than the H.264 fallback. -->
@@ -258,6 +194,64 @@ const techCards = [
         }
       </div>
     </div>
+
+    <!-- Text Body Content (Description + Buttons + Stats) - Below character on mobile -->
+    <div
+      class="z-10 flex flex-col items-center lg:items-start text-center lg:text-left order-3 lg:col-start-1 lg:row-start-2"
+    >
+      <p
+        class="text-gray-100/95 font-medium text-base sm:text-lg md:text-xl leading-relaxed max-w-lg mb-6 lg:mb-10 mx-auto lg:mx-0 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
+      >
+        {personalInfo.description}
+      </p>
+
+      <div class="flex gap-4 sm:gap-6 mb-8 lg:mb-16 justify-center lg:justify-start w-full sm:w-auto">
+        <a
+          href={`#${ui.slugs.projects}`}
+          class="inline-flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-3.5 rounded-xl font-black bg-primary text-[#020617] shadow-[0_4px_15px_rgba(234,179,8,0.3)] hover:translate-y-[-2px] hover:shadow-[0_8px_25px_rgba(234,179,8,0.5)] transition-all duration-300 text-sm sm:text-base"
+        >
+          {ui.hero.explore}
+        </a>
+        <a
+          href={`#${ui.slugs.services}`}
+          class="inline-flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-3.5 rounded-xl font-bold bg-transparent border border-white/20 text-white hover:border-primary hover:bg-primary/10 transition-all duration-300 text-sm sm:text-base"
+        >
+          {ui.hero.viewServices}
+        </a>
+      </div>
+
+      <div class="flex items-center gap-5 sm:gap-8 lg:gap-12 justify-center lg:justify-start w-full px-2 lg:px-0">
+        <div class="flex flex-col">
+          <strong class="text-3xl xs:text-4xl lg:text-4xl xl:text-5xl font-black"
+            >{personalInfo.stats.experience}</strong
+          >
+          <span
+            class="text-text-secondary text-xs lg:text-sm uppercase tracking-wider font-semibold mt-1"
+            >{ui.hero.expLabel}</span
+          >
+        </div>
+        <div class="w-px h-12 bg-white/20"></div>
+        <div class="flex flex-col">
+          <strong class="text-3xl xs:text-4xl lg:text-4xl xl:text-5xl font-black"
+            >{personalInfo.stats.projects}</strong
+          >
+          <span
+            class="text-text-secondary text-xs lg:text-sm uppercase tracking-wider font-semibold mt-1"
+            >{ui.hero.projectsLabel}</span
+          >
+        </div>
+        <div class="w-px h-12 bg-white/20"></div>
+        <div class="flex flex-col">
+          <strong class="text-3xl xs:text-4xl lg:text-4xl xl:text-5xl font-black"
+            >{personalInfo.stats.satisfied}</strong
+          >
+          <span
+            class="text-text-secondary text-xs lg:text-sm uppercase tracking-wider font-semibold mt-1"
+            >{ui.hero.satisfiedLabel}</span
+          >
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -270,17 +264,17 @@ const techCards = [
       -webkit-backdrop-filter: blur(12px);
       background: rgba(30, 30, 35, 0.6);
     }
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
     display: flex;
     align-items: center;
-    padding: 6px 8px;
-    gap: 6px;
+    padding: 6px 9px;
+    gap: 7px;
     @media (min-width: 1024px) {
       padding: 8px 12px;
       gap: 10px;
     }
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
     user-select: none;
     -webkit-user-drag: none;
     touch-action: auto;
@@ -381,17 +375,9 @@ const techCards = [
     mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, black 40%, transparent 85%);
     -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, black 40%, transparent 85%);
     background-color: transparent !important;
-    /* The brightness(1.1) contrast(1.05) grade that used to live here ran as a
-       second per-frame pass on top of the mask, for an adjustment small enough
-       to be hard to see. If it turns out to be missed, bake it into the file
-       with ffmpeg instead of paying for it on every frame. */
   }
 
   .forced-gpu {
-    /* Promotes the video to its own layer so the mask composites on the GPU.
-       will-change is deliberately absent: the video itself is never animated
-       (GSAP animates the section around it), and the previous declaration also
-       reserved resources for mix-blend-mode, which this element never uses. */
     transform: translateZ(0);
     backface-visibility: hidden;
   }
@@ -504,7 +490,7 @@ const techCards = [
         const angle = (index / techCards.length) * Math.PI * 2;
         const totalAngle = angle + rotationY;
 
-        const radius = isMobile ? 200 : 320;
+        const radius = isMobile ? 170 : 320;
         const x = radius * Math.cos(totalAngle);
         const z = radius * Math.sin(totalAngle);
 
@@ -512,18 +498,17 @@ const techCards = [
         const y = level * (isMobile ? 55 : 80);
 
         const focalLength = isMobile ? 350 : 650;
-        const baseScale = isMobile ? 0.7 : 0.8;
+        const baseScale = isMobile ? 0.78 : 0.8;
         const scale = (focalLength / (focalLength - z)) * baseScale;
 
         const screenX = x * scale;
-        const screenY = (y * scale) + (isMobile ? 110 : 0);
+        const screenY = y * scale;
 
         el.style.transform = `translate3d(${screenX}px, ${screenY}px, 0) scale(${scale})`;
         el.style.zIndex = z > 0 ? "30" : "10";
 
         const opacity = z > 0 ? 1 : 0.4 + ((z + radius) / (radius * 2)) * 0.6;
         el.style.opacity = opacity.toString();
-        // Removed blur filter for better performance
       });
     };
 
