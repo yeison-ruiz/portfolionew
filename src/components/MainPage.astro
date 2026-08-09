@@ -389,20 +389,23 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
       }
     }
 
-    // Handle all anchor clicks dynamically (internal section links only)
+    // Handle all anchor clicks dynamically (internal section links & home links)
     const handleAnchorClick = (e: MouseEvent) => {
       const anchor = (e.target as HTMLElement).closest('a');
       if (!anchor) return;
       
       const href = anchor.getAttribute("href") || "";
       
-      if (href.startsWith("#")) {
-        const rawSlug = href.substring(1);
+      if (href.startsWith("#") || href === "/" || href === "/es" || href === "/es/") {
+        const rawSlug = href.startsWith("#") ? href.substring(1) : "";
         const targetIndex = findSectionIndex(rawSlug);
 
         e.preventDefault();
         if (targetIndex !== currentIndex) {
           gotoSection(targetIndex, targetIndex > currentIndex ? 1 : -1);
+        } else if (targetIndex === 0 && window.location.hash) {
+          const cleanPath = window.location.pathname.replace(/\/+$/, "");
+          window.history.replaceState(null, "", cleanPath || "/");
         }
       }
     };
@@ -447,6 +450,12 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
     // Handle initial hash on load - SILENT JUMP (no animation) to avoid the "flash"
     const hash = window.location.hash.substring(1);
     const finalIndex = findSectionIndex(hash);
+    
+    // Clean URL if on Home (remove stray # if present)
+    if (finalIndex === 0 && window.location.hash) {
+      const cleanPath = window.location.pathname.replace(/\/+$/, "");
+      window.history.replaceState(null, "", cleanPath || "/");
+    }
     
     // Jump to the correct section immediately
     const targetSection = sections[finalIndex];
