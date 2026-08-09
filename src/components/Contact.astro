@@ -292,6 +292,11 @@ const { slugs } = ui;
 
   const section = document.querySelector('section[id="contactenos"], section[id="contact"]');
 
+  const revealContact = () => {
+    gsap.to(".contact-visual", { opacity: 1, x: 0, duration: 0.8, overwrite: "auto" });
+    gsap.to(".contact-form", { opacity: 1, x: 0, duration: 0.8, overwrite: "auto" });
+  };
+
   if (section) {
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -316,6 +321,17 @@ const { slugs } = ui;
       },
       "-=0.8",
     );
+  }
+
+  window.addEventListener("sectionChange", (e: any) => {
+    if (e.detail.index === 5) { // Contact section
+      revealContact();
+    }
+  });
+
+  const initialHashContact = window.location.hash.substring(1).toLowerCase();
+  if (["contact", "contactenos", "contacto"].includes(initialHashContact)) {
+    revealContact();
   }
 
   // --- FORM LOGIC TO DISCORD ---

@@ -139,6 +139,11 @@ const { services, ui } = db[lang];
 
       gsap.registerPlugin(ScrollTrigger);
 
+      const revealServices = () => {
+        gsap.to(".service-header", { opacity: 1, y: 0, duration: 0.8, overwrite: "auto" });
+        gsap.to(".service-card", { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, overwrite: "auto" });
+      };
+
       const initAnimations = () => {
         const section = document.querySelector(".services-section-container");
         const scrollContainer = "#services-scroll-container";
@@ -170,6 +175,17 @@ const { services, ui } = db[lang];
           });
         }
       };
+
+      window.addEventListener("sectionChange", (e: any) => {
+        if (e.detail.index === 3) { // Services section
+          revealServices();
+        }
+      });
+
+      const initialHashServices = window.location.hash.substring(1).toLowerCase();
+      if (["services", "servicios"].includes(initialHashServices)) {
+        revealServices();
+      }
 
       initAnimations();
       document.addEventListener("astro:page-load", initAnimations);

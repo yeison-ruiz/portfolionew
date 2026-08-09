@@ -121,6 +121,11 @@ const texts = {
 
     gsap.registerPlugin(ScrollTrigger);
 
+    const revealAuthority = () => {
+        gsap.to(".authority-header", { opacity: 1, y: 0, duration: 0.8, overwrite: "auto" });
+        gsap.to(".authority-card", { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, overwrite: "auto" });
+    };
+
     const initAuthority = () => {
         const scroller = "#certificaciones-scroll-container";
         
@@ -146,6 +151,17 @@ const texts = {
                 start: "top 85%"
             }
         });
+    }
+
+    window.addEventListener("sectionChange", (e: any) => {
+        if (e.detail.index === 2) { // Authority section
+            revealAuthority();
+        }
+    });
+
+    const initialHashAuthority = window.location.hash.substring(1).toLowerCase();
+    if (["certificaciones", "certifications", "authority"].includes(initialHashAuthority)) {
+        revealAuthority();
     }
 
     document.addEventListener("astro:page-load", () => {

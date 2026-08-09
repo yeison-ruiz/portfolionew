@@ -699,15 +699,26 @@ const optimizedProjects = withOptimizedImages(projects);
       }, autoPlayDelay);
     };
 
+    const revealProjects = () => {
+      gsap.to(".project-header", { opacity: 1, y: 0, duration: 0.6, overwrite: "auto" });
+      gsap.to(".project-card", { opacity: 1, scale: 1, duration: 0.5, stagger: 0.05, overwrite: "auto" });
+    };
+
     // Also listen for section change to ensure it's re-evaluated
     window.addEventListener("sectionChange", (e: any) => {
       if (e.detail.index === 4) { // Projects section
+        revealProjects();
         initMainPosition();
         startMainAutoPlay();
       } else {
         stopMainAutoPlay();
       }
     });
+
+    const initialHash = window.location.hash.substring(1).toLowerCase();
+    if (["projects", "proyectos"].includes(initialHash)) {
+      revealProjects();
+    }
 
     const stopMainAutoPlay = () => {
       if (mainSlideInterval) {

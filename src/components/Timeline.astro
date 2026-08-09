@@ -229,6 +229,23 @@ const { timeline, ui } = db[lang];
     });
   };
 
+  const revealTimeline = () => {
+    gsap.to(".service-header", { opacity: 1, y: 0, duration: 0.8, overwrite: "auto" });
+    gsap.to(".timeline-card-left, .timeline-card-right", { opacity: 1, x: 0, duration: 0.8, stagger: 0.1, overwrite: "auto" });
+    gsap.to(".timeline-item .rounded-full.border-4", { scale: 1, opacity: 1, duration: 0.5, overwrite: "auto" });
+  };
+
+  window.addEventListener("sectionChange", (e: any) => {
+    if (e.detail.index === 1) { // Timeline section
+      revealTimeline();
+    }
+  });
+
+  const initialHashTimeline = window.location.hash.substring(1).toLowerCase();
+  if (["timeline", "trayectoria", "experience"].includes(initialHashTimeline)) {
+    revealTimeline();
+  }
+
   initAnimations();
   document.addEventListener("astro:page-load", initAnimations);
 </script>
