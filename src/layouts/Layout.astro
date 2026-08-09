@@ -58,9 +58,9 @@ const socialImageURL = new URL("/og-image.png", Astro.site);
     <!-- Fonts are downloaded at build time and served from this origin, so no
          render-blocking stylesheet and no extra DNS/TLS handshake to Google. -->
     <Font cssVariable="--font-inter-family" preload />
-    <ClientRouter />
+    <ClientRouter fallback="swap" />
   </head>
-  <body class="antialiased bg-transparent text-white">
+  <body class="antialiased bg-transparent text-white" transition:animate="none">
     <slot />
   </body>
 </html>

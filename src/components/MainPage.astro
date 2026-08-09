@@ -184,7 +184,8 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
-    const TRANSITION_DURATION = prefersReducedMotion ? 0 : 0.35;
+    const isMobile = window.innerWidth < 768;
+    const TRANSITION_DURATION = prefersReducedMotion || isMobile ? 0.1 : 0.25;
 
     // Just long enough to keep one gesture from firing twice. The previous
     // 1500ms left the page ignoring input for almost a second after the
