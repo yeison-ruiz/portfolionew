@@ -156,7 +156,7 @@ const techCards = [
     >
       <!-- Omit central glow to keep background pure black behind video -->
 
-      <div class="relative z-20 w-full max-w-[450px] md:max-w-[580px] lg:max-w-[700px] h-full mx-auto pointer-events-none select-none flex justify-center items-center bg-transparent">
+      <div class="relative z-20 w-full max-w-[450px] md:max-w-[580px] lg:max-w-[700px] h-full mx-auto pointer-events-none select-none flex justify-center items-center bg-transparent video-mask">
         <video
           id="hero-video"
           autoplay
@@ -167,7 +167,7 @@ const techCards = [
           preload="metadata"
           poster="/yeison-poster.jpg"
           draggable="false"
-          class="w-auto h-[98%] md:h-full max-w-full mx-auto object-cover video-mask forced-gpu scale-[1.25] sm:scale-110 lg:scale-[1.38]"
+          class="w-auto h-[98%] md:h-full max-w-full mx-auto object-cover forced-gpu scale-[1.25] sm:scale-110 lg:scale-[1.38]"
         >
           <!-- VP9 first: browsers pick the first source they can decode, and it
                is ~12% smaller than the H.264 fallback. -->
@@ -181,7 +181,7 @@ const techCards = [
         {
           techCards.map((card, index) => (
             <div
-              class={`absolute tech-card-floating pointer-events-auto ${card.isSpecial ? 'cert-badge' : ''}`}
+              class={`absolute tech-card-floating opacity-0 pointer-events-auto ${card.isSpecial ? 'cert-badge' : ''}`}
               style={`animation-delay: ${card.delay}s; left: 50%; top: 50%; margin-left: -90px; margin-top: -30px;`}
               data-index={index}
               draggable="false"
