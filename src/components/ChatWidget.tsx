@@ -131,31 +131,49 @@ export default function ChatWidget({ lang = "es" }: ChatWidgetProps) {
     }
   }, [isOpen]);
 
-  // Auto-open logic specifically for Home page
+  // Listen for sectionChange to cancel auto-open if user navigates away from Home
   useEffect(() => {
-    // We only auto-open on the Home page ( root or /en )
-    const isHome = window.location.pathname === "/" || window.location.pathname === "/en" || window.location.pathname === "/en/";
-    
-    // Check if we've already handled the initial auto-open for this session
-    const hasAlreadyAutoOpened = sessionStorage.getItem("chat_auto_triggered");
+    const cancelAutoOpenOnNav = () => {
+      sessionStorage.setItem("chat_auto_triggered", "true");
+    };
+    window.addEventListener("sectionChange", cancelAutoOpenOnNav);
+    return () => window.removeEventListener("sectionChange", cancelAutoOpenOnNav);
+  }, []);
 
-    if (isHome && !hasAlreadyAutoOpened && !isOpen && messages.length === 0) {
+  // Auto-open logic specifically for Home page (once per session)
+  useEffect(() => {
+    const pathname = window.location.pathname;
+    const isHome = pathname === "/" || pathname === "/es" || pathname === "/es/" || pathname === "/en" || pathname === "/en/";
+    
+    const hasAlreadyAutoOpened = sessionStorage.getItem("chat_auto_triggered");
+    const isDismissed = sessionStorage.getItem("chat_dismissed");
+
+    if (isHome && !hasAlreadyAutoOpened && !isDismissed && !isOpen && messages.length === 0) {
       const timer = setTimeout(() => {
-        setIsOpen(true);
+        // Re-check hash before auto-opening (ensure user is still on Home)
+        const currentHash = window.location.hash;
+        if (!currentHash || currentHash === "#" || currentHash === "#home" || currentHash === "#inicio") {
+          setIsOpen(true);
+        }
         sessionStorage.setItem("chat_auto_triggered", "true");
-      }, 5000); // 5s wait time on Home for a premium feel
+      }, 7000);
       return () => clearTimeout(timer);
     }
   }, []);
 
-  // Start the prompt cycle after 4s (restored to be more proactive)
+  // Tooltip prompt cycle (only if not dismissed)
   useEffect(() => {
+    const isDismissed = sessionStorage.getItem("chat_dismissed");
+    if (isDismissed || isOpen) {
+      setShowPrompt(false);
+      setIsBubbleVisible(false);
+      return;
+    }
+
     const timer = setTimeout(() => {
-      if (!isOpen) {
-        setShowPrompt(true);
-        setIsBubbleVisible(true);
-      }
-    }, 4000);
+      setShowPrompt(true);
+      setIsBubbleVisible(true);
+    }, 5000);
     return () => clearTimeout(timer);
   }, [isOpen]);
 
@@ -178,18 +196,18 @@ export default function ChatWidget({ lang = "es" }: ChatWidgetProps) {
     };
   }, []);
 
-  // Play sound when chat opens
+  // Play sound ONLY when chat is explicitly opened
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && !isInitialMount.current) {
       const audio = new Audio("/sounds/notification.mp3");
-      audio.volume = 0.6;
-      audio.play().catch((e) => console.log("Audio permission denied:", e));
+      audio.volume = 0.5;
+      audio.play().catch(() => {});
     }
   }, [isOpen]);
 
-  // Cycle visibility and text
+  // Cycle visibility and text for prompt bubble
   useEffect(() => {
-    if (!showPrompt) return;
+    if (!showPrompt || isOpen) return;
 
     let timer: NodeJS.Timeout;
 
@@ -201,11 +219,8 @@ export default function ChatWidget({ lang = "es" }: ChatWidgetProps) {
       timer = setTimeout(() => {
         setPromptIndex((prev) => (prev + 1) % prompts.length);
         setIsBubbleVisible(true);
-      }, 500);
+      }, 4000);
     }
-    return () => clearTimeout(timer);
-  }, [isBubbleVisible, showPrompt]);
-
   // Auto-scroll
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -722,7 +737,7 @@ ${lang === 'es' ? 'Hola Yeison, soy ' + (data.name || '') + ' y estoy interesado
 
       {/* Main Trigger Pill */}
       <AnimatePresence>
-        {!isOpen && showPrompt && (
+        {!isOpen && (
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
