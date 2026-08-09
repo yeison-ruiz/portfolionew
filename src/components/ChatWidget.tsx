@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import {
   MessageSquare,
   X,
@@ -605,25 +604,26 @@ ${lang === 'es' ? 'Hola Yeison, soy ' + (data.name || '') + ' y estoy interesado
     }
   };
 
+  const promptVisible = !isOpen && showPrompt && isBubbleVisible;
+
   return (
     <>
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ duration: 0.2, type: "tween" }}
-            style={{ willChange: "transform, opacity", transform: "translateZ(0)" }}
-            className="fixed inset-x-4 top-6 bottom-6 md:inset-auto md:bottom-6 md:right-6 w-auto md:w-[400px] md:h-[600px] h-auto bg-[#0A0A0A] rounded-3xl border border-white/10 shadow-2xl overflow-hidden z-[100] flex flex-col font-sans"
-          >
+      <div
+        style={{ willChange: "transform, opacity", transform: "translateZ(0)" }}
+        aria-hidden={!isOpen}
+        className={`fixed inset-x-4 top-6 bottom-6 md:inset-auto md:bottom-6 md:right-6 w-auto md:w-[400px] md:h-[600px] h-auto bg-[#0A0A0A] rounded-3xl border border-white/10 shadow-2xl overflow-hidden z-[100] flex flex-col font-sans transition-all duration-200 ease-out ${
+          isOpen
+            ? "opacity-100 translate-y-0 scale-100 pointer-events-auto"
+            : "opacity-0 translate-y-5 scale-95 pointer-events-none"
+        }`}
+      >
             {/* Header - no backdrop-blur on mobile for perf */}
             <div className="p-4 bg-[#18181b]/90 md:backdrop-blur-md border-b border-white/10 flex items-center justify-between shrink-0">
               <div className="flex items-center gap-3">
                 <div className="relative">
                   <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center overflow-hidden border-2 border-white/20">
                     <img
-                      src="/chat-avatar.png"
+                      src="/chat-avatar.webp"
                       alt="Yeison AI"
                       className="w-full h-full object-cover"
                     />
@@ -703,52 +703,43 @@ ${lang === 'es' ? 'Hola Yeison, soy ' + (data.name || '') + ' y estoy interesado
                 </p>
               )}
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      </div>
 
       {/* Floating Prompt Bubble */}
-      <AnimatePresence>
-        {!isOpen && showPrompt && isBubbleVisible && (
-          <motion.div
-            initial={{ opacity: 0, y: 10, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ type: "tween", duration: 0.15 }}
-            className="fixed bottom-20 md:bottom-28 right-4 md:right-8 z-[100] max-w-[180px] md:max-w-[200px]"
-          >
+      <div
+        aria-hidden={!promptVisible}
+        className={`fixed bottom-20 md:bottom-28 right-4 md:right-8 z-[100] max-w-[180px] md:max-w-[200px] transition-all duration-150 ease-out ${
+          promptVisible
+            ? "opacity-100 translate-y-0 scale-100 pointer-events-auto"
+            : "opacity-0 translate-y-2.5 scale-90 pointer-events-none"
+        }`}
+      >
             <div className="bg-white border-2 border-black px-5 py-3 rounded-2xl shadow-[4px_4px_0px_rgba(0,0,0,1)] relative">
               <div className="relative z-10 flex items-center justify-center gap-3 text-xs font-bold tracking-wide text-black">
                 <div className="w-8 h-8 rounded-full bg-yellow-300 flex items-center justify-center border-2 border-black shrink-0">
                   <Sparkles size={14} className="text-black fill-white" />
                 </div>
-                <motion.span
+                <span
                   key={promptIndex}
-                  initial={{ opacity: 0, x: 5 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -5 }}
-                  className="uppercase leading-tight text-center"
+                  className="uppercase leading-tight text-center chat-prompt-enter"
                 >
                   {prompts[promptIndex]}
-                </motion.span>
+                </span>
               </div>
               <div className="absolute -bottom-[12px] right-8 w-5 h-5 bg-white border-r-2 border-b-2 border-black transform rotate-45"></div>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      </div>
 
       {/* Main Trigger Pill */}
-      <AnimatePresence>
-        {!isOpen && (
-          <motion.div
-            initial={false}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            whileHover={{ scale: 1.05 }}
-            onClick={() => setIsOpen(true)}
-            className="fixed bottom-4 md:bottom-8 right-4 md:right-8 bg-white border-none p-1.5 pr-6 rounded-full shadow-[0_15px_35px_rgba(0,0,0,0.2)] cursor-pointer z-[100] flex items-center gap-4 group transition-all duration-500 overflow-hidden"
-          >
+      <div
+        aria-hidden={isOpen}
+        onClick={() => setIsOpen(true)}
+        className={`fixed bottom-4 md:bottom-8 right-4 md:right-8 bg-white border-none p-1.5 pr-6 rounded-full shadow-[0_15px_35px_rgba(0,0,0,0.2)] cursor-pointer z-[100] flex items-center gap-4 group transition-all duration-300 overflow-hidden hover:scale-105 ${
+          isOpen
+            ? "opacity-0 scale-[0.8] pointer-events-none"
+            : "opacity-100 scale-100 pointer-events-auto"
+        }`}
+      >
             {/* Dynamic Geometric Shapes */}
             <div className="absolute inset-0 pointer-events-none rounded-full overflow-hidden">
               {/* Main diagonal gold block */}
@@ -760,7 +751,7 @@ ${lang === 'es' ? 'Hola Yeison, soy ' + (data.name || '') + ' y estoy interesado
             <div className="relative z-10">
               <div className="w-12 h-12 rounded-full border-none overflow-hidden relative shadow-md">
                 <img
-                  src="/chat-avatar.png"
+                  src="/chat-avatar.webp"
                   alt="AI"
                   className="w-full h-full object-cover"
                 />
@@ -779,9 +770,7 @@ ${lang === 'es' ? 'Hola Yeison, soy ' + (data.name || '') + ' y estoy interesado
                 />
               </div>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      </div>
     </>
   );
 }

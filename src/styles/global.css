@@ -68,3 +68,13 @@ html, body {
 .chat-msg-enter {
   animation: fadeIn 0.2s ease-out forwards;
 }
+
+/* Prompt bubble text crossfade when the cycling tip changes */
+.chat-prompt-enter {
+  animation: chatPromptFadeIn 0.15s ease-out forwards;
+}
+
+@keyframes chatPromptFadeIn {
+  from { opacity: 0; transform: translateX(5px); }
+  to { opacity: 1; transform: translateX(0); }
+}
