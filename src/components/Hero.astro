@@ -391,11 +391,22 @@ const techCards = [
   }
 </style>
 
-<script>
+  let isEngineInitialized = false;
+  let animationReqId: number | null = null;
+
   const initEngine = () => {
     const container = document.getElementById("hero-scene-container");
     const techCards = document.querySelectorAll(".tech-card-floating");
     const video = document.getElementById("hero-video") as HTMLVideoElement;
+
+    if (!container || techCards.length === 0) return;
+
+    if (video && video.paused) {
+      video.play().catch(() => {});
+    }
+
+    if (isEngineInitialized) return;
+    isEngineInitialized = true;
 
     if (video) {
       const ensurePlay = () => {
@@ -405,14 +416,7 @@ const techCards = [
       };
       window.addEventListener("touchstart", ensurePlay, { once: true });
       window.addEventListener("click", ensurePlay, { once: true });
-      
-      // Also try to play immediately
-      video.play().catch(() => {
-        console.log("Autoplay blocked, waiting for interaction");
-      });
     }
-
-    if (!container || techCards.length === 0) return;
 
     let isDragging = false;
     let startX = 0;
@@ -431,11 +435,11 @@ const techCards = [
     });
     window.addEventListener("mouseup", () => {
       isDragging = false;
-      container.style.cursor = "default";
+      if (container) container.style.cursor = "default";
     });
     container.addEventListener("mouseleave", () => {
       isDragging = false;
-      container.style.cursor = "default";
+      if (container) container.style.cursor = "default";
     });
     let touchStartX = 0;
     let touchStartY = 0;
@@ -451,8 +455,6 @@ const techCards = [
       { passive: true },
     );
     window.addEventListener("touchend", () => (isDragging = false));
-
-    container.addEventListener("wheel", () => {}, { passive: true });
 
     const handleMove = (clientX: number) => {
       if (isDragging) {
@@ -483,9 +485,8 @@ const techCards = [
       { passive: true },
     );
 
-    let reqId: number;
     const animate = () => {
-      reqId = requestAnimationFrame(animate);
+      animationReqId = requestAnimationFrame(animate);
 
       if (!isDragging) {
         targetRotationY -= 0.003; 
@@ -522,15 +523,18 @@ const techCards = [
 
     animate();
 
-    document.addEventListener(
-      "astro:before-preparation",
-      () => {
-        cancelAnimationFrame(reqId);
-      },
-      { once: true },
-    );
+    // Section visibility optimization: pause video when away from Home
+    window.addEventListener("sectionChange", (e: any) => {
+      const isHomeActive = e.detail.index === 0;
+      if (video) {
+        if (isHomeActive) {
+          if (video.paused) video.play().catch(() => {});
+        } else {
+          if (!video.paused) video.pause();
+        }
+      }
+    });
   };
 
   initEngine();
-  document.addEventListener("astro:page-load", initEngine);
 </script>

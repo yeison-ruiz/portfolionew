@@ -186,9 +186,17 @@ const cards: CardData[] = [
     });
   });
 
-  // Re-trigger card entrance whenever Contact section becomes active
+  // Re-trigger card entrance and manage video playback whenever Contact section changes
   window.addEventListener("sectionChange", (e: any) => {
-    if (e.detail.index === 5) {
+    const isContactActive = e.detail.index === 5;
+    if (video) {
+      if (isContactActive) {
+        if (video.paused) video.play().catch(() => {});
+      } else {
+        if (!video.paused) video.pause();
+      }
+    }
+    if (isContactActive) {
       animateCards();
     }
   });
