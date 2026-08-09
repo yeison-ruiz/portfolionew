@@ -302,6 +302,9 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
     function handleScroll(direction: number, event?: Event) {
       if (isAnimating) return;
 
+      // Do not automatically switch section on wheel/touch when on Home section (index 0)
+      if (currentIndex === 0) return;
+
       if (Date.now() - lastTransitionTime < TRANSITION_COOLDOWN_MS) return;
 
       if (event && event.target) {
@@ -367,15 +370,15 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
       }
     }
 
-    // Handle all anchor clicks dynamically
+    // Handle all anchor clicks dynamically (internal section links only)
     const handleAnchorClick = (e: MouseEvent) => {
       const anchor = (e.target as HTMLElement).closest('a');
       if (!anchor) return;
       
       const href = anchor.getAttribute("href") || "";
       
-      if (href.startsWith("#") || href === "/" || href === "/es" || href === "") {
-        const rawSlug = href.startsWith("#") ? href.substring(1) : "";
+      if (href.startsWith("#")) {
+        const rawSlug = href.substring(1);
         const targetIndex = rawSlug ? sectionSlugs.findIndex(s => s === rawSlug) : 0;
 
         if (targetIndex !== -1) {

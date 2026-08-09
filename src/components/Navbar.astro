@@ -80,6 +80,7 @@ const langPath = lang === "es" ? "/" : "/es";
     <!-- Language Switcher -->
     <div class="flex items-center gap-1 p-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm">
       <a
+        id="lang-btn-es"
         href="/es"
         class={`flex items-center gap-1.5 px-2.5 py-1 rounded-full transition-all ${lang === 'es' ? 'bg-primary text-[#020617] shadow-sm' : 'text-text-secondary hover:text-white hover:bg-white/5'}`}
         aria-label="Español"
@@ -88,6 +89,7 @@ const langPath = lang === "es" ? "/" : "/es";
         <span class="text-[11px] font-bold">ES</span>
       </a>
       <a
+        id="lang-btn-en"
         href="/"
         class={`flex items-center gap-1.5 px-2.5 py-1 rounded-full transition-all ${lang === 'en' ? 'bg-primary text-[#020617] shadow-sm' : 'text-text-secondary hover:text-white hover:bg-white/5'}`}
         aria-label="English"
@@ -177,15 +179,22 @@ const langPath = lang === "es" ? "/" : "/es";
 <!-- Data for dynamic language switching -->
 <div 
   id="lang-data" 
-  data-other-slugs={JSON.stringify([
-    db[otherLang].ui.slugs.home,
-    db[otherLang].ui.slugs.timeline,
-    db[otherLang].ui.slugs.certificaciones,
-    db[otherLang].ui.slugs.services,
-    db[otherLang].ui.slugs.projects,
-    db[otherLang].ui.slugs.contact
+  data-es-slugs={JSON.stringify([
+    db['es'].ui.slugs.home,
+    db['es'].ui.slugs.timeline,
+    db['es'].ui.slugs.certificaciones,
+    db['es'].ui.slugs.services,
+    db['es'].ui.slugs.projects,
+    db['es'].ui.slugs.contact
   ])} 
-  data-base-path={langPath}
+  data-en-slugs={JSON.stringify([
+    db['en'].ui.slugs.home,
+    db['en'].ui.slugs.timeline,
+    db['en'].ui.slugs.certificaciones,
+    db['en'].ui.slugs.services,
+    db['en'].ui.slugs.projects,
+    db['en'].ui.slugs.contact
+  ])} 
   hidden
 ></div>
 
@@ -258,14 +267,17 @@ const langPath = lang === "es" ? "/" : "/es";
     const sectionSlugs: string[] = slugsData ? JSON.parse(slugsData.getAttribute("data-slugs") || "[]") : [];
     const currentSlug = sectionSlugs[index];
 
-    // Update language toggle URL
+    // Update language toggle URLs
     const langData = document.getElementById("lang-data");
-    const languageToggle = document.getElementById("language-toggle") as HTMLAnchorElement;
-    if (langData && languageToggle) {
-      const otherSlugs = JSON.parse(langData.getAttribute("data-other-slugs") || "[]");
-      const basePath = langData.getAttribute("data-base-path") || "/";
-      const otherSlug = otherSlugs[index];
-      languageToggle.href = otherSlug ? `${basePath}#${otherSlug}` : basePath;
+    const esToggle = document.getElementById("lang-btn-es") as HTMLAnchorElement;
+    const enToggle = document.getElementById("lang-btn-en") as HTMLAnchorElement;
+    if (langData) {
+      const esSlugs = JSON.parse(langData.getAttribute("data-es-slugs") || "[]");
+      const enSlugs = JSON.parse(langData.getAttribute("data-en-slugs") || "[]");
+      const esSlug = esSlugs[index];
+      const enSlug = enSlugs[index];
+      if (esToggle) esToggle.href = esSlug && index > 0 ? `/es#${esSlug}` : "/es";
+      if (enToggle) enToggle.href = enSlug && index > 0 ? `/#${enSlug}` : "/";
     }
 
     if (currentSlug !== undefined) {
