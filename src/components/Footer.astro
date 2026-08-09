@@ -30,6 +30,7 @@ const tickerMessages = lang === "es" ? [
       <div class="flex-1 flex justify-center md:justify-start">
         <a
           href={lang === 'es' ? '/es/#inicio' : '/#home'}
+          data-astro-reload
           class="logo-link font-black text-2xl text-white flex items-center justify-center lg:justify-start gap-1 group tracking-tighter"
         >
           <span class="text-primary group-hover:text-white transition-colors duration-400">&lt;</span>
@@ -60,30 +61,35 @@ const tickerMessages = lang === "es" ? [
           <nav class="flex flex-wrap justify-center items-center gap-x-6 gap-y-4 md:gap-x-8 md:gap-y-3">
             <a
               href={`#${slugs.timeline}`}
+              data-astro-reload
               class="footer-nav-link text-sm text-gray-400 hover:text-white transition-all duration-300 font-medium whitespace-nowrap px-3 py-1 rounded-full"
               data-slug={slugs.timeline}
               >{ui.nav.timeline}</a
             >
             <a
               href={`#${slugs.certificaciones}`}
+              data-astro-reload
               class="footer-nav-link text-sm text-gray-400 hover:text-white transition-all duration-300 font-medium whitespace-nowrap px-3 py-1 rounded-full"
               data-slug={slugs.certificaciones}
               >{ui.nav.certificaciones}</a
             >
             <a
               href={`#${slugs.services}`}
+              data-astro-reload
               class="footer-nav-link text-sm text-gray-400 hover:text-white transition-all duration-300 font-medium whitespace-nowrap px-3 py-1 rounded-full"
               data-slug={slugs.services}
               >{ui.nav.services}</a
             >
             <a
               href={`#${slugs.projects}`}
+              data-astro-reload
               class="footer-nav-link text-sm text-gray-400 hover:text-white transition-all duration-300 font-medium whitespace-nowrap px-3 py-1 rounded-full"
               data-slug={slugs.projects}
               >{ui.nav.projects}</a
             >
             <a
               href={`#${slugs.contact}`}
+              data-astro-reload
               class="footer-nav-link text-sm text-gray-400 hover:text-white transition-all duration-300 font-medium whitespace-nowrap px-3 py-1 rounded-full"
               data-slug={slugs.contact}
               >{ui.nav.contact}</a
