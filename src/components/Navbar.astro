@@ -332,10 +332,16 @@ const langPath = lang === "es" ? "/" : "/es";
   });
 
   // Initial check focused on current hash
-  const initialHash = window.location.hash.substring(1);
-  const slugsDataInitial = document.getElementById("slugs-data");
-  const sectionSlugsInitial: string[] = slugsDataInitial ? JSON.parse(slugsDataInitial.getAttribute("data-slugs") || "[]") : [];
-  const initialIndex = initialHash ? sectionSlugsInitial.findIndex(s => s === initialHash) : 0;
+  const sectionAliasesNav: string[][] = [
+    ["", "home", "inicio"],
+    ["timeline", "trayectoria", "experience"],
+    ["certificaciones", "certifications", "authority"],
+    ["services", "servicios"],
+    ["projects", "proyectos"],
+    ["contact", "contactenos", "contacto"]
+  ];
+  const initialHash = window.location.hash.substring(1).toLowerCase();
+  const initialIndex = initialHash ? sectionAliasesNav.findIndex(aliases => aliases.includes(initialHash)) : 0;
   
   activateLink(initialIndex !== -1 ? initialIndex : 0);
 </script>
