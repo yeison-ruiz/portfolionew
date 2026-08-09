@@ -149,14 +149,28 @@ const cards: CardData[] = [
       window.addEventListener('click', ensurePlay, { once: true });
   }
 
+  const animateCards = () => {
+    const cards = document.querySelectorAll('.tech-card-html');
+    cards.forEach((card, i) => {
+      gsap.to(card, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        delay: i * 0.06,
+        ease: "power3.out",
+        overwrite: "auto"
+      });
+    });
+  };
+
   // Floating animation for each card
   cards.forEach((card, i) => {
-    // Initial entrance
+    // Initial entrance attempt
     gsap.to(card, {
       opacity: 1,
       y: 0,
       duration: 1,
-      delay: 0.5 + (i * 0.1),
+      delay: 0.3 + (i * 0.08),
       ease: "power3.out"
     });
 
@@ -171,6 +185,18 @@ const cards: CardData[] = [
       delay: i * 0.15
     });
   });
+
+  // Re-trigger card entrance whenever Contact section becomes active
+  window.addEventListener("sectionChange", (e: any) => {
+    if (e.detail.index === 5) {
+      animateCards();
+    }
+  });
+
+  const initialHashVisual = window.location.hash.substring(1).toLowerCase();
+  if (["contact", "contactenos", "contacto"].includes(initialHashVisual)) {
+    animateCards();
+  }
 
   // Pulse animation for the central area - simplified for performance
   gsap.to('.video-glow-container', {

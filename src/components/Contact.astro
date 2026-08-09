@@ -295,6 +295,7 @@ const { slugs } = ui;
   const revealContact = () => {
     gsap.to(".contact-visual", { opacity: 1, x: 0, duration: 0.8, overwrite: "auto" });
     gsap.to(".contact-form", { opacity: 1, x: 0, duration: 0.8, overwrite: "auto" });
+    gsap.to(".tech-card-html", { opacity: 1, y: 0, duration: 0.8, stagger: 0.06, overwrite: "auto" });
   };
 
   if (section) {
