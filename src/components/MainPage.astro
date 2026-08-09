@@ -247,7 +247,7 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
 
       activeIndex = index;
 
-      gsap.set(nextSection, { zIndex: 10, autoAlpha: 1 });
+      gsap.set(nextSection, { zIndex: 10, visibility: "visible", opacity: 0 });
       gsap.set(currentSection, { zIndex: 0 });
 
       window.dispatchEvent(

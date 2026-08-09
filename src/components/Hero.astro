@@ -486,15 +486,7 @@ const techCards = [
       { passive: true },
     );
 
-    const animate = () => {
-      animationReqId = requestAnimationFrame(animate);
-
-      if (!isDragging) {
-        targetRotationY -= 0.003; 
-      }
-
-      rotationY += (targetRotationY - rotationY) * 0.1;
-
+    const updateCards = () => {
       techCards.forEach((card, index) => {
         const el = card as HTMLElement;
         const angle = (index / techCards.length) * Math.PI * 2;
@@ -522,17 +514,27 @@ const techCards = [
       });
     };
 
+    const animate = () => {
+      animationReqId = requestAnimationFrame(animate);
+
+      if (!isDragging) {
+        targetRotationY -= 0.003; 
+      }
+
+      rotationY += (targetRotationY - rotationY) * 0.1;
+      updateCards();
+    };
+
     animate();
 
     // Section visibility optimization: pause video when away from Home
     window.addEventListener("sectionChange", (e: any) => {
       const isHomeActive = e.detail.index === 0;
-      if (video) {
-        if (isHomeActive) {
-          if (video.paused) video.play().catch(() => {});
-        } else {
-          if (!video.paused) video.pause();
-        }
+      if (isHomeActive) {
+        if (video && video.paused) video.play().catch(() => {});
+        updateCards();
+      } else {
+        if (video && !video.paused) video.pause();
       }
     });
   };
