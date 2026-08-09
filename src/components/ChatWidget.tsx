@@ -221,6 +221,9 @@ export default function ChatWidget({ lang = "es" }: ChatWidgetProps) {
         setIsBubbleVisible(true);
       }, 4000);
     }
+    return () => clearTimeout(timer);
+  }, [isBubbleVisible, showPrompt, isOpen]);
+
   // Auto-scroll
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
