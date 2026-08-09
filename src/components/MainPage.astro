@@ -393,11 +393,14 @@ const sectionSlugs = [slugs.home, slugs.timeline, slugs.certificaciones, slugs.s
     const handleAnchorClick = (e: MouseEvent) => {
       const anchor = (e.target as HTMLElement).closest('a');
       if (!anchor) return;
-      
+
+      // Ignore language switcher buttons so they can switch language routes
+      if (anchor.id === 'lang-btn-es' || anchor.id === 'lang-btn-en') return;
+
       const href = anchor.getAttribute("href") || "";
-      
-      if (href.startsWith("#") || href === "/" || href === "/es" || href === "/es/") {
-        const rawSlug = href.startsWith("#") ? href.substring(1) : "";
+
+      if (href.includes("#") || href === "/" || href === "/es" || href === "/es/") {
+        const rawSlug = href.includes("#") ? href.split("#")[1] : "";
         const targetIndex = findSectionIndex(rawSlug);
 
         e.preventDefault();
