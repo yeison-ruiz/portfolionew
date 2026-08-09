@@ -159,7 +159,7 @@ const techCards = [
           preload="metadata"
           poster="/yeison-poster.jpg"
           draggable="false"
-          class="w-auto h-[98%] md:h-full max-w-full mx-auto object-cover video-mask forced-gpu scale-[1.25] sm:scale-100"
+          class="w-auto h-[98%] md:h-full max-w-full mx-auto object-cover video-mask forced-gpu scale-[1.25] sm:scale-110 lg:scale-[1.38]"
         >
           <!-- VP9 first: browsers pick the first source they can decode, and it
                is ~12% smaller than the H.264 fallback. -->
@@ -490,15 +490,15 @@ const techCards = [
         const angle = (index / techCards.length) * Math.PI * 2;
         const totalAngle = angle + rotationY;
 
-        const radius = isMobile ? 170 : 320;
+        const radius = isMobile ? 170 : 360;
         const x = radius * Math.cos(totalAngle);
         const z = radius * Math.sin(totalAngle);
 
         const level = (index % 3) - 1;
-        const y = level * (isMobile ? 55 : 80);
+        const y = level * (isMobile ? 55 : 90);
 
         const focalLength = isMobile ? 350 : 650;
-        const baseScale = isMobile ? 0.78 : 0.8;
+        const baseScale = isMobile ? 0.78 : 0.9;
         const scale = (focalLength / (focalLength - z)) * baseScale;
 
         const screenX = x * scale;
