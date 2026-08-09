@@ -392,14 +392,14 @@ const techCards = [
   }
 </style>
 
-<script>
+<script data-astro-rerun type="module">
   let isEngineInitialized = false;
-  let animationReqId: number | null = null;
+  let animationReqId = null;
 
   const initEngine = () => {
     const container = document.getElementById("hero-scene-container");
     const techCards = document.querySelectorAll(".tech-card-floating");
-    const video = document.getElementById("hero-video") as HTMLVideoElement;
+    const video = document.getElementById("hero-video");
 
     if (!container || techCards.length === 0) return;
 
@@ -458,7 +458,7 @@ const techCards = [
     );
     window.addEventListener("touchend", () => (isDragging = false));
 
-    const handleMove = (clientX: number) => {
+    const handleMove = (clientX) => {
       if (isDragging) {
         const delta = clientX - startX;
         targetRotationY += delta * 0.005;
@@ -489,7 +489,7 @@ const techCards = [
 
     const updateCards = () => {
       techCards.forEach((card, index) => {
-        const el = card as HTMLElement;
+        const el = card;
         const angle = (index / techCards.length) * Math.PI * 2;
         const totalAngle = angle + rotationY;
 
@@ -528,11 +528,46 @@ const techCards = [
 
     animate();
 
+    // This script's source is byte-identical across the ES/EN pages, so
+    // Astro's transition dedupe (deselectScripts in swap-functions.js) skips
+    // re-running it after a language switch, leaving the freshly swapped-in
+    // cards without a loop to position them. The data-astro-rerun attribute
+    // on this <script> tag forces re-execution on every navigation instead,
+    // so the previous instance's loop - still targeting DOM nodes that no
+    // longer exist - has to be stopped here or it just keeps ticking forever
+    // in the background.
+    document.addEventListener(
+      "astro:before-swap",
+      () => {
+        if (animationReqId !== null) cancelAnimationFrame(animationReqId);
+      },
+      { once: true },
+    );
+
+    // Chromium sometimes fails to regenerate the backdrop-filter snapshot for
+    // these cards once the ancestor section flips visibility mid-transition,
+    // leaving them painted as fully transparent until something forces a
+    // repaint (a manual refresh always "fixes" it). Toggling the filter off
+    // and back on forces the layer to be rebuilt instead of reusing the
+    // stale, empty one.
+    const repaintCardLayers = () => {
+      techCards.forEach((card) => {
+        const el = card;
+        const style = el.style;
+        style.backdropFilter = "none";
+        style.webkitBackdropFilter = "none";
+        void el.offsetHeight;
+        style.backdropFilter = "";
+        style.webkitBackdropFilter = "";
+      });
+    };
+
     // Section visibility optimization: pause video when away from Home
-    window.addEventListener("sectionChange", (e: any) => {
+    window.addEventListener("sectionChange", (e) => {
       const isHomeActive = e.detail.index === 0;
       if (isHomeActive) {
         if (video && video.paused) video.play().catch(() => {});
+        repaintCardLayers();
         updateCards();
       } else {
         if (video && !video.paused) video.pause();
