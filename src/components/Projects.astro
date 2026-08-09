@@ -392,42 +392,36 @@ const optimizedProjects = withOptimizedImages(projects);
   // the browser considers them all to be in the viewport. loading="lazy" is
   // therefore useless here: it defers by viewport proximity, and by that
   // measure the Projects section is as visible as the hero. Holding the URL in
-  // data-src keeps the request from being made at all until this section is
-  // actually reached.
-  const projectsSection = document
-    .querySelector(".projects-section-container")
-    ?.closest(".full-page-section");
-  const allSections = Array.from(document.querySelectorAll(".full-page-section"));
-
   const loadDeferredImages = () => {
-    projectsSection
-      ?.querySelectorAll<HTMLImageElement>("img[data-src]")
+    document
+      .querySelectorAll<HTMLImageElement>("img[data-src]")
       .forEach((img) => {
         const src = img.dataset.src;
         if (!src) return;
 
         const loadedClass = img.dataset.loadedClass ?? "opacity-100";
-        img.addEventListener(
-          "load",
-          () => {
-            img.classList.remove("opacity-0");
-            img.classList.add(loadedClass);
-          },
-          { once: true },
-        );
+        const reveal = () => {
+          img.classList.remove("opacity-0");
+          img.classList.add(loadedClass);
+        };
+
+        img.addEventListener("load", reveal, { once: true });
+        img.addEventListener("error", reveal, { once: true });
 
         img.src = src;
         delete img.dataset.src;
+
+        if (img.complete) {
+          reveal();
+        }
       });
   };
 
-  // MainPage announces the incoming section as its transition starts rather
-  // than when it ends, so decoding overlaps the fade instead of following it.
-  // The same event fires for the section resolved from the URL hash on load,
-  // which covers landing straight on this section.
+  loadDeferredImages();
+
   window.addEventListener("sectionChange", (event) => {
     const { index } = (event as CustomEvent<{ index: number }>).detail;
-    if (allSections[index] === projectsSection) loadDeferredImages();
+    if (index === 4) loadDeferredImages();
   });
 
   // Helper for Infinite Main Projects Carousel
@@ -700,6 +694,7 @@ const optimizedProjects = withOptimizedImages(projects);
     };
 
     const revealProjects = () => {
+      loadDeferredImages();
       gsap.to(".project-header", { opacity: 1, y: 0, duration: 0.6, overwrite: "auto" });
       gsap.to(".project-card", { opacity: 1, scale: 1, duration: 0.5, stagger: 0.05, overwrite: "auto" });
     };
