@@ -276,7 +276,7 @@ const langPath = lang === "es" ? "/" : "/es";
       const enSlugs = JSON.parse(langData.getAttribute("data-en-slugs") || "[]");
       const esSlug = esSlugs[index];
       const enSlug = enSlugs[index];
-      if (esToggle) esToggle.href = esSlug && index > 0 ? `/es#${esSlug}` : "/es";
+      if (esToggle) esToggle.href = esSlug && index > 0 ? `/es/#${esSlug}` : "/es/";
       if (enToggle) enToggle.href = enSlug && index > 0 ? `/#${enSlug}` : "/";
     }
 
